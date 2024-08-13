@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:online_bike_shopping_appuntitled/presentation/auth/widgets/discover_widget.dart';
+import 'package:online_bike_shopping_appuntitled/presentation/auth/widgets/login_widget.dart';
 import 'package:online_bike_shopping_appuntitled/presentation/auth/widgets/register_widget.dart';
 
 

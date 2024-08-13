@@ -22,6 +22,7 @@ class _RegisterWidgetState extends State<RegisterWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.blue[50],
       body: SafeArea(
         child: Padding(
           padding: AppTheme.padding,
