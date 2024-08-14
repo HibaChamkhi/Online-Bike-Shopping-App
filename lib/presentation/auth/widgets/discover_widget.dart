@@ -24,45 +24,48 @@ class _DiscoverWidgetState extends State<DiscoverWidget> {
     return Scaffold(
       backgroundColor: Colors.blue[50],
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Container(
-              margin: EdgeInsets.only(top: 150.h),
-              child: Column(
-                children: [
-                  Container(
-                      margin: EdgeInsets.symmetric(vertical: 40.h),
-                      child: Image.asset(
-                        'assets/images/bicycl.png',
-                      )),
-                  Container(
-                    width: 180.w,
-                    child:  Text(
-                      textAlign: TextAlign.center,
-                      "Discover your first bike",
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontFamily: 'Poppins',
-                          fontSize: 25.sp),
-                    ),
-                  ),
-                  Container(
-                    padding: EdgeInsets.only(top: 20.h, bottom: 40.h),
-                    width: 300.w,
-                    child: const Text(
-                      textAlign: TextAlign.center,
-                      "Explore the bike you want to ride and all its accessories based on your interests",
-                      style: TextStyle(
-                        fontFamily: 'Poppins',
+        child: SingleChildScrollView(
+          physics: const NeverScrollableScrollPhysics(),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Container(
+                margin: EdgeInsets.only(top: 150.h),
+                child: Column(
+                  children: [
+                    Container(
+                        margin: EdgeInsets.symmetric(vertical: 40.h),
+                        child: Image.asset(
+                          'assets/images/bicycl.png',
+                        )),
+                    Container(
+                      width: 180.w,
+                      child:  Text(
+                        textAlign: TextAlign.center,
+                        "Discover your first bike",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'Poppins',
+                            fontSize: 25.sp),
                       ),
                     ),
-                  ),
-                ],
+                    Container(
+                      padding: EdgeInsets.only(top: 20.h, bottom: 40.h),
+                      width: 300.w,
+                      child: const Text(
+                        textAlign: TextAlign.center,
+                        "Explore the bike you want to ride and all its accessories based on your interests",
+                        style: TextStyle(
+                          fontFamily: 'Poppins',
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-            _buildSelectionButtons()
-          ],
+              _buildSelectionButtons()
+            ],
+          ),
         ),
       ),
     );
@@ -124,7 +127,7 @@ class _DiscoverWidgetState extends State<DiscoverWidget> {
           padding: EdgeInsets.symmetric(vertical: 12.h),
           decoration: BoxDecoration(
             color: isSelected ? AppConstants.cornflowerBlueColor : Colors.transparent,
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(8.r),
           ),
           child: Text(
             label,
