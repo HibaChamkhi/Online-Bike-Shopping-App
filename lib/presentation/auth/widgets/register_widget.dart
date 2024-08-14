@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:online_bike_shopping_appuntitled/core/colors/colors.dart';
 import 'package:online_bike_shopping_appuntitled/core/colors/theme.dart';
 import 'package:online_bike_shopping_appuntitled/core/widgets/input_field.dart';
+import 'package:online_bike_shopping_appuntitled/presentation/auth/widgets/login_widget.dart';
 
 import '../../../core/utils/input_validation.dart';
 import '../../../core/widgets/main_button.dart';
@@ -32,7 +33,9 @@ class _RegisterWidgetState extends State<RegisterWidget> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               IconButton(
-                  onPressed: () {}, icon: Icon(Icons.chevron_left_rounded, size: 30.h,)),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  }, icon: Icon(Icons.chevron_left_rounded, size: 30.h,)),
               SizedBox(height: 40.h),
               Form(
                 key: _formKey,
@@ -145,8 +148,8 @@ class _RegisterWidgetState extends State<RegisterWidget> {
   }
 
   navigateToLoginScreen() {
-    // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
-    //   return const LoginPage();
-    // }));
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
+      return const LoginWidget();
+    }));
   }
 }

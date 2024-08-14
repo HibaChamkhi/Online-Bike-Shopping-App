@@ -89,7 +89,7 @@ class _TextFormFieldWidget extends State<InputField> {
                   fontFamily: "Poppins",
                   color: const Color(0xffF04438),
                   fontWeight: FontWeight.w500,
-                  fontSize: 15.sp),
+                  fontSize: 13.sp),
               errorBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(16.r),
                 borderSide: const BorderSide(color: Colors.red),

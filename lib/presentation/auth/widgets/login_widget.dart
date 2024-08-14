@@ -59,13 +59,11 @@ class _LoginWidgetState extends State<LoginWidget> {
                     SizedBox(height: 40.h),
                     InputField(
                         hintText: 'example@email.com',
-                        prefixIcon: 'assets/icons/email_icon.svg',
                         controller: _emailController,
                         validator: (value) => validateEmail(value!, context)),
                     SizedBox(height: 20.h),
                     InputField(
                       hintText: 'Password',
-                      prefixIcon: 'assets/icons/password_icon.svg',
                       isPassword: true,
                       controller: _passwordController,
                       validator: (value) => validatePassword(value!, context),
