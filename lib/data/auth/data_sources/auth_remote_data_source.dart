@@ -46,18 +46,26 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
   @override
   Future<Unit> signInUser(String email, String password) async {
+
+    print('email ${email}');
+    print(password);
+
     try {
       final AuthResponse res = await supabase.auth.signInWithPassword(
         email: email,
         password: password,
       );
       final User? user = res.user;
+      print(res.session);
+
+
       if (user == null) {
         return Future.error('Error signing in: user is null');
       } else {
         return Future.value(unit);
       }
     } catch (e) {
+      print('e ${e.toString()}');
       throw ServerException(message: e.toString());
     }
   }

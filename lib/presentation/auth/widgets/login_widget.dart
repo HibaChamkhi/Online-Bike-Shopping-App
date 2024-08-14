@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:online_bike_shopping_appuntitled/presentation/auth/pages/sign_in_page.dart';
 import 'package:online_bike_shopping_appuntitled/presentation/auth/widgets/register_widget.dart';
@@ -10,6 +11,7 @@ import '../../../core/colors/theme.dart';
 import '../../../core/utils/input_validation.dart';
 import '../../../core/widgets/input_field.dart';
 import '../../../core/widgets/main_button.dart';
+import '../bloc/login_bloc/login_bloc.dart';
 
 class LoginWidget extends StatefulWidget {
   const LoginWidget({super.key});
@@ -83,7 +85,19 @@ class _LoginWidgetState extends State<LoginWidget> {
               ),
               const Spacer(),
               MainButton(
-                buttonFunction: () {},
+                buttonFunction: () {
+                  final isValid = _formKey.currentState!.validate();
+                  if (isValid) {
+                    final String email;
+                    final String password;
+                    email = _emailController.text;
+                    password = _passwordController.text;
+                    BlocProvider.of<LoginBloc>(context).add(LoginUserEvent(
+                      email: email,
+                      password: password,
+                    ));
+                  }
+                },
                 text: "Sign In",
                 // isLoading: widget.isLoading
               ),
