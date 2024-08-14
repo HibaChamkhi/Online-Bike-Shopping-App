@@ -11,6 +11,8 @@ dependencies:
   internet_connection_checker: ^1.0.0+1
   flutter_screenutil: ^5.9.3
   flutter_svg: ^2.0.10+1
+  flutter_bloc: ^8.0.1
+  equatable: ^2.0.5
 
 
 dev_dependencies:
