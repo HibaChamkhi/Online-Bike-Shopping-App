@@ -16,6 +16,8 @@ dependencies:
   get_it: ^7.7.0
   equatable: ^2.0.5
   supabase_flutter: ^2.5.2
+  flutter_bloc: ^8.1.5
+  injectable: ^2.4.4
 
 
 dev_dependencies:
