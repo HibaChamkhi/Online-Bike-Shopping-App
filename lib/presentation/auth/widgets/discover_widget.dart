@@ -6,6 +6,7 @@ import 'package:online_bike_shopping_appuntitled/presentation/auth/widgets/login
 import 'package:online_bike_shopping_appuntitled/presentation/auth/widgets/register_widget.dart';
 
 import '../../../core/colors/colors.dart';
+import '../pages/sign_in_page.dart';
 
 class DiscoverWidget extends StatefulWidget {
   const DiscoverWidget({super.key});
@@ -86,7 +87,7 @@ class _DiscoverWidgetState extends State<DiscoverWidget> {
                 isDeliverSelected = true;
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (context) => const LoginWidget(),
+                    builder: (context) => const SignInPage(),
                   ),
                 );
               });

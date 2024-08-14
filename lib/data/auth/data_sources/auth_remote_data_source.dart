@@ -11,12 +11,14 @@ abstract class AuthRemoteDataSource {
         required String email,
         required String password,
       });
+
+  Future<Unit> signInUser(String email, String password);
+
 }
 @Injectable(as: AuthRemoteDataSource)
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
-  final SupabaseClient supabase;
-
-  AuthRemoteDataSourceImpl({required this.supabase,});
+  AuthRemoteDataSourceImpl();
+  final supabase = Supabase.instance.client;
 
   @override
   Future<Unit> signUp(
@@ -38,6 +40,25 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       return Future.value(unit);
     } on AuthException catch (e) {
       throw ServerException(message: e.message);
+    }
+  }
+
+
+  @override
+  Future<Unit> signInUser(String email, String password) async {
+    try {
+      final AuthResponse res = await supabase.auth.signInWithPassword(
+        email: email,
+        password: password,
+      );
+      final User? user = res.user;
+      if (user == null) {
+        return Future.error('Error signing in: user is null');
+      } else {
+        return Future.value(unit);
+      }
+    } catch (e) {
+      throw ServerException(message: e.toString());
     }
   }
 
