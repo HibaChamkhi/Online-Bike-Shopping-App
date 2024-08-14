@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../core/error/exception.dart';
+import 'package:injectable/injectable.dart';
 
 abstract class AuthRemoteDataSource {
   Future<Unit> signUp(
@@ -11,7 +12,7 @@ abstract class AuthRemoteDataSource {
         required String password,
       });
 }
-
+@Injectable(as: AuthRemoteDataSource)
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   final SupabaseClient supabase;
 
@@ -34,14 +35,6 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
           'phone_number': number,
         },
       );
-      UserResponse? user = await supabase.auth.getUser();
-
-      await supabase.from('members').insert({
-        'user_id': user.user?.id,
-        'username': userName,
-      });
-
-      await supabase.auth.signOut();
       return Future.value(unit);
     } on AuthException catch (e) {
       throw ServerException(message: e.message);
