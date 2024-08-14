@@ -30,8 +30,17 @@ class _LoginWidgetState extends State<LoginWidget> {
         child: Padding(
           padding: AppTheme.padding,
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              IconButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  icon: Icon(
+                    Icons.chevron_left_rounded,
+                    size: 30.h,
+                  )),
+              SizedBox(height: 40.h),
               Form(
                 key: _formKey,
                 child: Column(
@@ -68,11 +77,6 @@ class _LoginWidgetState extends State<LoginWidget> {
                       controller: _passwordController,
                       validator: (value) => validatePassword(value!, context),
                     ),
-                    SizedBox(height: 20.h),
-                    const Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [Text('Forget password')],
-                    )
                   ],
                 ),
               ),
@@ -83,27 +87,34 @@ class _LoginWidgetState extends State<LoginWidget> {
                 // isLoading: widget.isLoading
               ),
               SizedBox(height: 50.h),
-              RichText(
-                text:  TextSpan(
-                  children: [
-                    TextSpan(
-                      text: "I'm new user ",
-                      style: TextStyle(color: Colors.grey),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  RichText(
+                    text: TextSpan(
+                      children: [
+                        const TextSpan(
+                          text: "I'm new user ",
+                          style: TextStyle(color: Colors.grey),
+                        ),
+                        TextSpan(
+                          text: 'Register now',
+                          style: const TextStyle(
+                              color: AppConstants.cornflowerBlueColor),
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              print('Register now tapped!');
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) => const RegisterWidget(),
+                                ),
+                              );
+                            },
+                        ),
+                      ],
                     ),
-                    TextSpan(
-                      onEnter: (event) {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => const RegisterWidget(),
-                          ),
-                        );
-                      },
-                      text: 'Register now',
-                      style: TextStyle(color: AppConstants.cornflowerBlueColor),
-                    )
-
-                  ],
-                ),
+                  ),
+                ],
               ),
             ],
           ),
