@@ -5,7 +5,9 @@ import '../../../../core/error/failures.dart';
 import '../../../../core/network/network_info.dart';
 import '../../../domain/auth/repositories/auth_repository.dart';
 import '../data_sources/auth_remote_data_source.dart';
-@Injectable(as: AuthRepositoryImpl)
+
+
+@Injectable(as: AuthRepository)
 class AuthRepositoryImpl implements AuthRepository {
   final AuthRemoteDataSource remoteDataSource;
   final NetworkInfo networkInfo;
@@ -35,4 +37,22 @@ class AuthRepositoryImpl implements AuthRepository {
       return Left(OfflineFailure());
     }
   }
+
+
+
+  Future<Either<Failure, Unit>> signInUser(
+      String email, String password) async {
+    if (await networkInfo.isConnected) {
+      try {
+        final remoteResponse =
+        await remoteDataSource.signInUser(email, password);
+        return Right(remoteResponse);
+      } on ServerException catch (e) {
+        return Left(ServerFailure(message: e.message));
+      }
+    } else {
+      return Left(OfflineFailure());
+    }
+  }
+
 }
