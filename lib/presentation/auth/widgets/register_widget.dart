@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:online_bike_shopping_appuntitled/core/colors/colors.dart';
 import 'package:online_bike_shopping_appuntitled/core/colors/theme.dart';
 import 'package:online_bike_shopping_appuntitled/core/widgets/input_field.dart';
 
@@ -16,6 +17,7 @@ class RegisterWidget extends StatefulWidget {
 class _RegisterWidgetState extends State<RegisterWidget> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _numberController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -27,52 +29,96 @@ class _RegisterWidgetState extends State<RegisterWidget> {
         child: Padding(
           padding: AppTheme.padding,
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              IconButton(
+                  onPressed: () {}, icon: Icon(Icons.chevron_left_rounded, size: 30.h,)),
+              SizedBox(height: 40.h),
               Form(
                 key: _formKey,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      "Create account",
-                      style: TextStyle(
-                        fontFamily: 'Poppins',
-                        fontSize: 26.sp,
-                        fontWeight: FontWeight.w500,
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 10.w),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Create Account",
+                        style: TextStyle(
+                          fontFamily: 'Poppins',
+                          fontSize: 26.sp,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
-                    ),
-                    SizedBox(height: 40.h),
-                    InputField(
-                        hintText: 'Full Name',
-                        prefixIcon: 'assets/icons/user_icon.svg',
-                        controller: _nameController,
-                        validator: (value) =>
-                            validateField(value!, 'Name', context)),
-                    SizedBox(height: 20.h),
-                    InputField(
-                        hintText: 'example@email.com',
-                        prefixIcon: 'assets/icons/email_icon.svg',
-                        controller: _emailController,
-                        validator: (value) => validateEmail(value!, context)),
-                    SizedBox(height: 20.h),
-                    InputField(
-                      hintText: 'Password',
-                      prefixIcon: 'assets/icons/password_icon.svg',
-                      isPassword: true,
-                      controller: _passwordController,
-                      validator: (value) => validatePassword(value!, context),
-                    ),
-                  ],
+                      SizedBox(height: 40.h),
+                      InputField(
+                          hintText: 'Full Name',
+                          controller: _nameController,
+                          validator: (value) =>
+                              validateField(value!, 'Name', context)),
+                      SizedBox(height: 20.h),
+                      InputField(
+                          hintText: 'Phone number',
+                          controller: _numberController,
+                          validator: (value) => validateEmail(value!, context)),
+                      SizedBox(height: 20.h),
+                      InputField(
+                          hintText: 'Email address',
+                          controller: _emailController,
+                          validator: (value) => validateEmail(value!, context)),
+                      SizedBox(height: 20.h),
+                      InputField(
+                        hintText: 'Password',
+                        isPassword: true,
+                        controller: _passwordController,
+                        validator: (value) => validatePassword(value!, context),
+                      ),
+                    ],
+                  ),
                 ),
               ),
               const Spacer(),
-              MainButton(
-                buttonFunction: () {
-                  validateCredentialsThenRegisterUser(context);
-                },
-                text: "Sign Up",
-                // isLoading: widget.isLoading
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 10.w),
+                child: Column(
+                  children: [
+                    MainButton(
+                      buttonFunction: () {
+                        validateCredentialsThenRegisterUser(context);
+                      },
+                      text: "Sign Up",
+                      // isLoading: widget.isLoading
+                    ),
+                    SizedBox(height: 20.h),
+
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text("I'm already a member",
+                            style: TextStyle(
+                                fontFamily: 'Inter',
+                                fontSize: 16.sp,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.grey[700]
+                            )),
+                        SizedBox(
+                          width: 10.w,
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            navigateToLoginScreen();
+                          },
+                          child: Text("Sign In",
+                              style: TextStyle(
+                                fontFamily: 'Poppins',
+                                fontSize: 16.sp,
+                                fontWeight: FontWeight.w500,
+                                color: AppConstants.cornflowerBlueColor,
+                              )),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
               SizedBox(height: 50.h),
             ],
@@ -96,5 +142,11 @@ class _RegisterWidgetState extends State<RegisterWidget> {
 
       // widget.registerFunction(name, email, password);
     }
+  }
+
+  navigateToLoginScreen() {
+    // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
+    //   return const LoginPage();
+    // }));
   }
 }

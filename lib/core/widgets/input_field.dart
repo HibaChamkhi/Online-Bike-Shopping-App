@@ -119,7 +119,8 @@ class _TextFormFieldWidget extends State<InputField> {
                   ? IconButton(
                       icon: SvgPicture.asset(
                         'assets/icons/hide_password_icon.svg',
-                        height: 24.h,
+                        height: 18.h,
+                        color: Colors.grey,
                       ),
                       onPressed: () {
                         setState(() {
