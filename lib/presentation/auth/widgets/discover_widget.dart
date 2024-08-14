@@ -1,10 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:online_bike_shopping_appuntitled/presentation/auth/widgets/login_widget.dart';
-import 'package:online_bike_shopping_appuntitled/presentation/auth/widgets/register_widget.dart';
-
+import 'package:online_bike_shopping_appuntitled/presentation/auth/pages/register_page.dart';
 import '../../../core/colors/colors.dart';
 import '../pages/sign_in_page.dart';
 
@@ -101,7 +97,7 @@ class _DiscoverWidgetState extends State<DiscoverWidget> {
                 isDeliverSelected = false;
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (context) => const RegisterWidget(),
+                    builder: (context) => const RegisterPage(),
                   ),
                 );
               });

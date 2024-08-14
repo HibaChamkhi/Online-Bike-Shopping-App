@@ -24,6 +24,9 @@ import 'package:online_bike_shopping_appuntitled/domain/auth/repositories/auth_r
     as _i222;
 import 'package:online_bike_shopping_appuntitled/presentation/auth/bloc/login_bloc/login_bloc.dart'
     as _i727;
+import 'package:online_bike_shopping_appuntitled/presentation/auth/bloc/register_bloc/register_bloc.dart'
+    as _i695;
+import 'package:supabase_flutter/supabase_flutter.dart' as _i454;
 
 extension GetItInjectableX on _i174.GetIt {
 // initializes the registration of main-scope dependencies inside of GetIt
@@ -37,6 +40,7 @@ extension GetItInjectableX on _i174.GetIt {
       environmentFilter,
     );
     final coreModule = _$CoreModule();
+    gh.lazySingleton<_i454.SupabaseClient>(() => coreModule.supabaseClient);
     gh.lazySingleton<_i973.InternetConnectionChecker>(
         () => coreModule.dataConnectionChecker);
     gh.factory<_i979.AuthRemoteDataSource>(
@@ -47,6 +51,8 @@ extension GetItInjectableX on _i174.GetIt {
           remoteDataSource: gh<_i979.AuthRemoteDataSource>(),
           networkInfo: gh<_i51.NetworkInfo>(),
         ));
+    gh.factory<_i695.RegisterBloc>(
+        () => _i695.RegisterBloc(gh<_i222.AuthRepository>()));
     gh.factory<_i727.LoginBloc>(
         () => _i727.LoginBloc(authRepository: gh<_i222.AuthRepository>()));
     return this;

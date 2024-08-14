@@ -3,13 +3,17 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:online_bike_shopping_appuntitled/core/colors/colors.dart';
 import 'package:online_bike_shopping_appuntitled/core/colors/theme.dart';
 import 'package:online_bike_shopping_appuntitled/core/widgets/input_field.dart';
-import 'package:online_bike_shopping_appuntitled/presentation/auth/widgets/login_widget.dart';
-
 import '../../../core/utils/input_validation.dart';
+import '../../../core/utils/used_functions.dart';
 import '../../../core/widgets/main_button.dart';
 
 class RegisterWidget extends StatefulWidget {
-  const RegisterWidget({Key? key}) : super(key: key);
+  final bool isLoading;
+  final Function(String, String, String, String) registerFunction;
+
+  const RegisterWidget(
+      {Key? key, required this.isLoading, required this.registerFunction})
+      : super(key: key);
 
   @override
   _RegisterWidgetState createState() => _RegisterWidgetState();
@@ -29,102 +33,109 @@ class _RegisterWidgetState extends State<RegisterWidget> {
       body: SafeArea(
         child: Padding(
           padding: AppTheme.padding,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              IconButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  }, icon: Icon(Icons.chevron_left_rounded, size: 30.h,)),
-              SizedBox(height: 40.h),
-              Form(
-                key: _formKey,
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 10.w),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text(
-                        "Create Account",
-                        style: TextStyle(
-                          fontFamily: 'Poppins',
-                          fontSize: 26.sp,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      SizedBox(height: 40.h),
-                      InputField(
-                          hintText: 'Full Name',
-                          controller: _nameController,
-                          validator: (value) =>
-                              validateField(value!, 'Name', context)),
-                      SizedBox(height: 20.h),
-                      InputField(
-                          hintText: 'Phone number',
-                          controller: _numberController,
-                          validator: (value) => validateEmail(value!, context)),
-                      SizedBox(height: 20.h),
-                      InputField(
-                          hintText: 'Email address',
-                          controller: _emailController,
-                          validator: (value) => validateEmail(value!, context)),
-                      SizedBox(height: 20.h),
-                      InputField(
-                        hintText: 'Password',
-                        isPassword: true,
-                        controller: _passwordController,
-                        validator: (value) => validatePassword(value!, context),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              const Spacer(),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10.w),
-                child: Column(
-                  children: [
-                    MainButton(
-                      buttonFunction: () {
-                        validateCredentialsThenRegisterUser(context);
+          child: SingleChildScrollView(
+            child: IntrinsicHeight(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  IconButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
                       },
-                      text: "Sign Up",
-                      // isLoading: widget.isLoading
-                    ),
-                    SizedBox(height: 20.h),
-
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text("I'm already a member",
+                      icon: Icon(
+                        Icons.chevron_left_rounded,
+                        size: 30.h,
+                      ),
+                  ),
+                  SizedBox(height: 40.h),
+                  Form(
+                    key: _formKey,
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 10.w),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            "Create Account",
                             style: TextStyle(
-                                fontFamily: 'Inter',
-                                fontSize: 16.sp,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.grey[700]
-                            )),
-                        SizedBox(
-                          width: 10.w,
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            navigateToLoginScreen();
+                              fontFamily: 'Poppins',
+                              fontSize: 26.sp,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          SizedBox(height: 40.h),
+                          InputField(
+                              hintText: 'Full Name',
+                              controller: _nameController,
+                              validator: (value) =>
+                                  validateField(value!, 'Name', context)),
+                          SizedBox(height: 20.h),
+                          InputField(
+                              hintText: 'Phone number',
+                              controller: _numberController,
+                              validator: (value) => validateNumber(value!, context)),
+                          SizedBox(height: 20.h),
+                          InputField(
+                              hintText: 'Email address',
+                              controller: _emailController,
+                              validator: (value) => validateEmail(value!, context)),
+                          SizedBox(height: 20.h),
+                          InputField(
+                            hintText: 'Password',
+                            isPassword: true,
+                            controller: _passwordController,
+                            validator: (value) => validatePassword(value!, context),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 100.h),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 10.w),
+                    child: Column(
+                      children: [
+                        MainButton(
+                          buttonFunction: () {
+                            validateCredentialsThenRegisterUser(context);
                           },
-                          child: Text("Sign In",
-                              style: TextStyle(
-                                fontFamily: 'Poppins',
-                                fontSize: 16.sp,
-                                fontWeight: FontWeight.w500,
-                                color: AppConstants.cornflowerBlueColor,
-                              )),
+                          text: "Sign Up",
+                          // isLoading: widget.isLoading
+                        ),
+                        SizedBox(height: 20.h),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text("I'm already a member",
+                                style: TextStyle(
+                                    fontFamily: 'Inter',
+                                    fontSize: 16.sp,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.grey[700])),
+                            SizedBox(
+                              width: 10.w,
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                navigateToLoginScreen(context);
+                              },
+                              child: Text("Sign In",
+                                  style: TextStyle(
+                                    fontFamily: 'Poppins',
+                                    fontSize: 16.sp,
+                                    fontWeight: FontWeight.w500,
+                                    color: AppConstants.cornflowerBlueColor,
+                                  )),
+                            ),
+                          ],
                         ),
                       ],
                     ),
-                  ],
-                ),
+                  ),
+                  SizedBox(height: 50.h),
+                ],
               ),
-              SizedBox(height: 50.h),
-            ],
+            ),
           ),
         ),
       ),
@@ -138,18 +149,14 @@ class _RegisterWidgetState extends State<RegisterWidget> {
       final String name;
       final String email;
       final String password;
+      final String number;
 
       name = _nameController.text;
       email = _emailController.text;
       password = _passwordController.text;
+      number = _numberController.text;
 
-      // widget.registerFunction(name, email, password);
+      widget.registerFunction(name, email, number, password);
     }
-  }
-
-  navigateToLoginScreen() {
-    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
-      return const LoginWidget();
-    }));
   }
 }
