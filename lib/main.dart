@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:online_bike_shopping_appuntitled/presentation/auth/widgets/discover_widget.dart';
+import 'package:online_bike_shopping_appuntitled/presentation/products/widgets/home_widget.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'injection.dart';
 
@@ -25,9 +26,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: DiscoverWidget(),
+      home: BikeShopUI(),
     );
   }
 }
