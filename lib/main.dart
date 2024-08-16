@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:online_bike_shopping_appuntitled/presentation/auth/widgets/discover_widget.dart';
 import 'package:online_bike_shopping_appuntitled/presentation/products/widgets/home_widget.dart';
+import 'package:online_bike_shopping_appuntitled/presentation/products/widgets/product_details.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'injection.dart';
 
@@ -28,7 +29,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: BikeShopUI(),
+      home: ProductDetails(),
     );
   }
 }

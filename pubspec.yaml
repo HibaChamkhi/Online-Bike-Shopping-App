@@ -18,7 +18,7 @@ dependencies:
   supabase_flutter: ^2.5.2
   injectable: ^2.4.4
   build_runner: ^2.4.6
-
+  smooth_page_indicator: ^1.2.0+3
 dev_dependencies:
   flutter_test:
     sdk: flutter
