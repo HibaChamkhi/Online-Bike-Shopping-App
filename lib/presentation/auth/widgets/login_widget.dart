@@ -3,6 +3,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:online_bike_shopping_appuntitled/presentation/auth/pages/sign_in_page.dart';
 import 'package:online_bike_shopping_appuntitled/presentation/auth/widgets/register_widget.dart';
 
 import '../../../core/colors/colors.dart';
@@ -120,7 +121,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                               print('Register now tapped!');
                               Navigator.of(context).push(
                                 MaterialPageRoute(
-                                  builder: (context) => const RegisterWidget(),
+                                  builder: (context) => const SignInPage(),
                                 ),
                               );
                             },

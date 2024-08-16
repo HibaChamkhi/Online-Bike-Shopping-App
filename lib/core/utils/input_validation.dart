@@ -83,3 +83,10 @@ String? validateCheckbox(bool value, BuildContext context) {
   }
   return null;
 }
+
+String? validateNumber(String value, BuildContext context) {
+  if (value.trim().isEmpty) {
+    return "Phone number can't be empty";
+  }
+  return null;
+}
