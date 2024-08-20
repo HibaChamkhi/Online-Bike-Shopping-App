@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
+import 'package:flutter_swipe_button/flutter_swipe_button.dart';
 import '../../../core/colors/colors.dart';
 import 'home_widget.dart';
 
@@ -19,7 +19,9 @@ class ShoppingCart extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   UnicornOutlineButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
                     strokeWidth: 2.w,
                     radius: 10.w,
                     gradient: LinearGradient(
@@ -52,7 +54,10 @@ class ShoppingCart extends StatelessWidget {
                   ),
                   const Text(
                     'My Shopping Cart',
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white),
+                    style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white),
                   ),
                   Container()
                 ],
@@ -118,7 +123,7 @@ class CartItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 10),
+      // margin: const EdgeInsets.symmetric(vertical: 10),
       padding: const EdgeInsets.all(8.0),
       child: Row(
         children: [
@@ -128,30 +133,62 @@ class CartItem extends StatelessWidget {
                 color: Colors.white.withOpacity(0.15),
                 borderRadius: BorderRadius.circular(16),
               ),
-              child: Image.asset(imageUrl, height: 60)),
+              child: Image.asset(
+                imageUrl,
+                height: 90,
+                width: 100,
+              )),
           // Replace with your asset
-          SizedBox(width: 20),
+          const SizedBox(width: 20),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(itemName,
                   style: TextStyle(fontSize: 15, color: Colors.white)),
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Column(
+                  SizedBox(
+                      width: 100,
+                      child: Text('\$$price',
+                          style: TextStyle(color: Colors.blue))),
+                  Row(
                     children: [
-                      Text('\$$price', style: TextStyle(color: Colors.blue)),
+                      IconButton(
+                        icon: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10.r),
+                              gradient: LinearGradient(
+                                colors: [
+                                  AppConstants.pictonBlue,
+                                  AppConstants.royalBlue.withOpacity(.7)
+                                ],
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                              ),
+                            ),
+                            child: Icon(Icons.add, color: Colors.white)),
+                        onPressed: () {},
+                      ),
+                      Text('1', style: TextStyle(color: Colors.white)),
+                      IconButton(
+                        icon: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10.r),
+                              gradient: LinearGradient(
+                                colors: [
+                                  AppConstants.pictonBlue,
+                                  AppConstants.royalBlue.withOpacity(.7)
+                                ],
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                              ),
+                            ),
+                            child: Icon(Icons.remove, color: Colors.white)),
+                        onPressed: () {},
+                      ),
                     ],
-                  ),
-                  IconButton(
-                    icon: Icon(Icons.add, color: Colors.blue),
-                    onPressed: () {},
-                  ),
-                  Text('1', style: TextStyle(color: Colors.white)),
-                  IconButton(
-                    icon: Icon(Icons.remove, color: Colors.blue),
-                    onPressed: () {},
-                  ),
+                  )
                 ],
               ),
             ],
@@ -171,7 +208,12 @@ class CouponField extends StatelessWidget {
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             decoration: BoxDecoration(
-              color:Color(0xFF242C3B),
+              border: Border(
+                left: BorderSide(color: Colors.white.withOpacity(0.1)),
+                top: BorderSide(color: Colors.white.withOpacity(0.1)),
+                bottom: BorderSide(color: Colors.white.withOpacity(0.1)),
+              ),
+              color: Color(0xFF242C3B),
               borderRadius: BorderRadius.circular(16),
             ),
             child: TextField(
@@ -183,10 +225,8 @@ class CouponField extends StatelessWidget {
             ),
           ),
         ),
-        SizedBox(width: 10),
         Container(
-          padding: EdgeInsets.symmetric(horizontal: 30,vertical: 10),
-          child: Text('Apply', style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
+          padding: EdgeInsets.symmetric(horizontal: 30, vertical: 14),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8),
             gradient: LinearGradient(
@@ -197,6 +237,10 @@ class CouponField extends StatelessWidget {
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),
+          ),
+          child: Text(
+            'Apply',
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
           ),
         ),
       ],
@@ -232,7 +276,9 @@ class SummaryRow extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(label, style: TextStyle(fontSize: isTotal ? 20 : 16 , color: Colors.white)),
+          Text(label,
+              style:
+                  TextStyle(fontSize: isTotal ? 20 : 16, color: Colors.white)),
           Text(
             value,
             style: TextStyle(
@@ -247,9 +293,41 @@ class SummaryRow extends StatelessWidget {
 }
 
 class CheckoutButton extends StatelessWidget {
-  @override
+  const CheckoutButton({super.key});
+
   Widget build(BuildContext context) {
-    return Container(
+    return const Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        SizedBox(
+          width: 200,
+          child: SwipeButton(
+            thumb: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Icon(
+                  Icons.arrow_forward_ios,
+                  color: Colors.white,
+                ),
+              ],
+            ),
+            activeTrackColor: Color(0xFF020C2A),
+            activeThumbColor: Color(0xFF4A8EFF),
+            elevationThumb: 2,
+            elevationTrack: 0,
+            child: Center(
+              child: Text(
+                'Checkout',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

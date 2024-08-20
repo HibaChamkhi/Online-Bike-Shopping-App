@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:online_bike_shopping_appuntitled/presentation/products/widgets/shopping_cart.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../../../core/colors/colors.dart';
@@ -46,14 +47,14 @@ class _ProductDetailsState extends State<ProductDetails> {
                             begin: Alignment.topLeft,
                             end: Alignment.bottomRight,
                             colors: [
-                              Colors.black,
+                              Color(0xFF4B4CED),
                               Colors.blue,
                             ],
                           ),
                         ),
                         child: Transform.rotate(
-                          angle: -0.785398, // -45 degrees in radians
-                          origin: Offset(100, -250),
+                          angle: -0.985398, // -45 degrees in radians
+                          origin: const Offset(-150, 200),
                           child: Container(
                             color: Colors.black,
                           ),
@@ -75,7 +76,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                         child: SmoothPageIndicator(
                           controller: _pageController,
                           count: images.length,
-                          effect: ExpandingDotsEffect(
+                          effect: const ExpandingDotsEffect(
                             dotColor: Colors.white24,
                             activeDotColor: Colors.white,
                             dotHeight: 8,
@@ -94,7 +95,9 @@ class _ProductDetailsState extends State<ProductDetails> {
                 child: Row(
                   children: [
                     UnicornOutlineButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
                       strokeWidth: 2.w,
                       radius: 10.w,
                       gradient: LinearGradient(
@@ -125,10 +128,10 @@ class _ProductDetailsState extends State<ProductDetails> {
                         ),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 45,
                     ),
-                    Text(
+                    const Text(
                       'PEUGEOT - LR01',
                       style: TextStyle(
                         color: Colors.white,
@@ -151,28 +154,85 @@ class _ProductDetailsState extends State<ProductDetails> {
               child: Column(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.symmetric(vertical: 30.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        TextButton(
-                          onPressed: () {},
-                          child: Text(
-                            'Description',
-                            style: TextStyle(color: Colors.white),
+                        Container(
+                          decoration: BoxDecoration(
+                            color:Color(0xFF323B4F),
+                            borderRadius: BorderRadius.circular(15), // Rounded corners
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.white.withOpacity(0.1), // Red shadow
+                                blurRadius: 5,
+                                offset: Offset(-5, -3), // Shadow on top-left
+                              ),
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.2), // Green shadow
+                                blurRadius: 10,
+                                offset: Offset(5, 5), // Shadow on bottom-right
+                              ),
+                            ],
+                          ),
+                          child: TextButton(
+                            onPressed: () {},
+                            child:  Text(
+                              'Description',
+                              style: TextStyle(color: Color(0xFF3D9CEA),fontWeight: FontWeight.bold),
+                            ),
                           ),
                         ),
-                        SizedBox(width: 16),
-                        TextButton(
-                          onPressed: () {},
-                          child: Text(
-                            'Specification',
-                            style: TextStyle(color: Colors.white60),
+                        const SizedBox(width: 20,),
+                        Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15), // Rounded corners
+                            color: Color(0xFF28303F), // Button background color
+                          ),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(15), // Match the outer container
+                            child: Stack(
+                              children: [
+                                // Inset shadow effect
+                                Positioned.fill(
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(15),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.white.withOpacity(0.2),
+                                          blurRadius: 50,
+                                          offset: Offset(-55, -55),
+                                        ),
+                                        BoxShadow(
+                                          color: Colors.black.withOpacity(0.2),
+                                          blurRadius: 20,
+                                          offset: Offset(35, 40),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                TextButton(
+                                  onPressed: () {},
+                                  child: const Text(
+                                    'Specification',
+                                    style: TextStyle(color: Colors.grey),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ],
                     ),
-                  ),
+                  )
+
+
+
+
+
+                  ,
                   Container(
                     padding: EdgeInsets.only(left: 16),
                     alignment: AlignmentDirectional.topStart,
@@ -211,26 +271,35 @@ class _ProductDetailsState extends State<ProductDetails> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        Container(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: 32,
-                              vertical: 16,
-                            ),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(16),
-                              gradient: LinearGradient(
-                                colors: [
-                                  AppConstants.pictonBlue,
-                                  AppConstants.royalBlue.withOpacity(.7)
-                                ],
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight,
+                        InkWell(
+                          onTap: (){
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) =>  ShoppingCart(),
                               ),
-                            ),
-                            child: Text(
-                              'Add to Cart',
-                              style: TextStyle(color: Colors.white),
-                            )),
+                            );
+                          },
+                          child: Container(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 32,
+                                vertical: 16,
+                              ),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(16),
+                                gradient: LinearGradient(
+                                  colors: [
+                                    AppConstants.pictonBlue,
+                                    AppConstants.royalBlue.withOpacity(.7)
+                                  ],
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                ),
+                              ),
+                              child: Text(
+                                'Add to Cart',
+                                style: TextStyle(color: Colors.white),
+                              )),
+                        ),
                       ],
                     ),
                   ),
@@ -243,3 +312,4 @@ class _ProductDetailsState extends State<ProductDetails> {
     );
   }
 }
+

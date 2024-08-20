@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:online_bike_shopping_appuntitled/core/colors/colors.dart';
 import 'package:online_bike_shopping_appuntitled/core/colors/theme.dart';
+import 'package:online_bike_shopping_appuntitled/presentation/products/widgets/product_details.dart';
 
 class BikeShopUI extends StatelessWidget {
   @override
@@ -97,7 +98,7 @@ class BikeShopUI extends StatelessWidget {
                       ),
                       itemCount: 6,
                       itemBuilder: (context, index) {
-                        return buildProductCard();
+                        return buildProductCard(context);
                       },
                     ),
                   ),
@@ -111,7 +112,7 @@ class BikeShopUI extends StatelessWidget {
         backgroundColor: Colors.black87,
         selectedItemColor: Colors.blueAccent,
         unselectedItemColor: Colors.grey,
-        items: [
+        items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.directions_bike),
             label: '',
@@ -213,63 +214,72 @@ class BikeShopUI extends StatelessWidget {
     );
   }
 
-  Widget buildProductCard() {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(20),
-      child: Container(
-        decoration: BoxDecoration(
-          // color: Colors.black.withOpacity(0.5),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black26,
-              blurRadius: 10,
-              spreadRadius: 5,
-              offset: Offset(0, 5),
-            ),
-          ],
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Align(
-                alignment: Alignment.topRight,
-                child: Icon(
-                  Icons.favorite_border,
-                  color: Colors.white,
-                ),
-              ),
-              Center(
-                child: Image.asset(
-                  'assets/images/bicycl.png', // Placeholder image path
-                  height: 80,
-                ),
-              ),
-              Spacer(),
-              Text(
-                'Road Bike',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 16,
-                ),
-              ),
-              Text(
-                'PEUGEOT - LR01',
-                style: TextStyle(
-                  color: Colors.white70,
-                  fontSize: 14,
-                ),
-              ),
-              Text(
-                '\$1,999.99',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
+  Widget buildProductCard(context) {
+    return InkWell(
+      onTap: (){
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => const ProductDetails(),
+          ),
+        );
+      },
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(20),
+        child: Container(
+          decoration: BoxDecoration(
+            // color: Colors.black.withOpacity(0.5),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black26,
+                blurRadius: 10,
+                spreadRadius: 5,
+                offset: Offset(0, 5),
               ),
             ],
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Align(
+                  alignment: Alignment.topRight,
+                  child: Icon(
+                    Icons.favorite_border,
+                    color: Colors.white,
+                  ),
+                ),
+                Center(
+                  child: Image.asset(
+                    'assets/images/bicycl.png', // Placeholder image path
+                    height: 80,
+                  ),
+                ),
+                Spacer(),
+                Text(
+                  'Road Bike',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                  ),
+                ),
+                Text(
+                  'PEUGEOT - LR01',
+                  style: TextStyle(
+                    color: Colors.white70,
+                    fontSize: 14,
+                  ),
+                ),
+                Text(
+                  '\$1,999.99',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
