@@ -3,20 +3,37 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:online_bike_shopping_appuntitled/core/colors/colors.dart';
 import 'package:online_bike_shopping_appuntitled/core/colors/theme.dart';
+import 'package:online_bike_shopping_appuntitled/data/products/models/product_model.dart';
 import 'package:online_bike_shopping_appuntitled/presentation/products/widgets/product_details.dart';
 
-class BikeShopUI extends StatelessWidget {
+class BikeShopUI extends StatefulWidget {
+  const BikeShopUI({super.key, required this.products});
+
+  final List<BikeModel> products;
+
+  @override
+  State<BikeShopUI> createState() => _BikeShopUIState();
+}
+
+class _BikeShopUIState extends State<BikeShopUI> {
+  int _selectedIndex = 0;
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppConstants.ebonyClay,
       body: Stack(
         children: [
-          // Layered Background with Blue and Dark Sections
           Positioned(
-              bottom: 0,
-              right: 0,
-              child: Image.asset('assets/images/home_background.png')),
+            bottom: 0,
+            right: 0,
+            child: Image.asset('assets/images/home_background.png'),
+          ),
           SafeArea(
             child: Padding(
               padding: AppTheme.padding,
@@ -66,7 +83,7 @@ class BikeShopUI extends StatelessWidget {
                             size: 28.h,
                           ),
                         ),
-                      )
+                      ),
                     ],
                   ),
                   SizedBox(height: 20.h),
@@ -75,7 +92,7 @@ class BikeShopUI extends StatelessWidget {
                     height: 240.h,
                     child: buildDiscountCard(),
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   // Category Icons
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -86,19 +103,20 @@ class BikeShopUI extends StatelessWidget {
                       buildCategoryIcon(Icons.motorcycle),
                     ],
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   // Grid of Products
                   Expanded(
                     child: GridView.builder(
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
                         crossAxisSpacing: 10,
                         mainAxisSpacing: 10,
                         childAspectRatio: 0.75,
                       ),
-                      itemCount: 6,
+                      itemCount: widget.products.length,
                       itemBuilder: (context, index) {
-                        return buildProductCard(context);
+                        return buildProductCard(
+                            context, widget.products[index]);
                       },
                     ),
                   ),
@@ -110,30 +128,62 @@ class BikeShopUI extends StatelessWidget {
       ),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Colors.black87,
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
         selectedItemColor: Colors.blueAccent,
         unselectedItemColor: Colors.grey,
-        items: const [
+        selectedIconTheme: const IconThemeData(
+          size: 30,
+        ),
+        unselectedIconTheme: const IconThemeData(
+          size: 24,
+        ),
+        type: BottomNavigationBarType.fixed,
+        items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.directions_bike),
+            icon: _buildIcon(Icons.directions_bike, 0),
             label: '',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.bookmark_border),
+            icon: _buildIcon(Icons.bookmark_border, 1),
             label: '',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.shopping_cart_outlined),
+            icon: _buildIcon(Icons.shopping_cart_outlined, 2),
             label: '',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person_outline),
+            icon: _buildIcon(Icons.person_outline, 3),
             label: '',
           ),
         ],
       ),
     );
   }
-
+  Widget _buildIcon(IconData iconData, int index) {
+    bool isSelected = _selectedIndex == index;
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 300),
+      padding: EdgeInsets.all(isSelected ? 8 : 0),
+      decoration: isSelected
+          ? BoxDecoration(
+        color: Colors.blueAccent,
+        borderRadius: BorderRadius.circular(15),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.3),
+            spreadRadius: 2,
+            blurRadius: 10,
+          ),
+        ],
+      )
+          : null,
+      child: Icon(
+        iconData,
+        color: isSelected ? Colors.white : Colors.grey,
+      ),
+    );
+  }
   Widget buildDiscountCard() {
     return ClipPath(
       clipper: DiagonalBottomClipper(),
@@ -148,13 +198,13 @@ class BikeShopUI extends StatelessWidget {
               colors: [
                 AppConstants.ebonyClay,
                 AppConstants.oxfordBlue.withOpacity(.4),
-                 // AppConstants.ebonyClay.withOpacity(.6),
+                // AppConstants.ebonyClay.withOpacity(.6),
                 AppConstants.cornflowerBlueColor.withOpacity(.2)
               ],
               begin: Alignment.centerLeft,
               end: Alignment.centerRight,
             ),
-            boxShadow: [
+            boxShadow: const [
               BoxShadow(
                 color: Colors.black26,
                 blurRadius: 10,
@@ -197,7 +247,7 @@ class BikeShopUI extends StatelessWidget {
       decoration: BoxDecoration(
         color: isSelected ? Colors.blueAccent : Colors.black54,
         borderRadius: BorderRadius.circular(10),
-        boxShadow: [
+        boxShadow: const [
           BoxShadow(
             color: Colors.black26,
             blurRadius: 10,
@@ -214,20 +264,21 @@ class BikeShopUI extends StatelessWidget {
     );
   }
 
-  Widget buildProductCard(context) {
+  Widget buildProductCard(context, BikeModel bike) {
     return InkWell(
-      onTap: (){
+      onTap: () {
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) => const ProductDetails(),
+            builder: (context) => ProductDetails(
+              bike: bike,
+            ),
           ),
         );
       },
       child: ClipRRect(
         borderRadius: BorderRadius.circular(20),
         child: Container(
-          decoration: BoxDecoration(
-            // color: Colors.black.withOpacity(0.5),
+          decoration: const BoxDecoration(
             boxShadow: [
               BoxShadow(
                 color: Colors.black26,
@@ -257,21 +308,21 @@ class BikeShopUI extends StatelessWidget {
                 ),
                 Spacer(),
                 Text(
-                  'Road Bike',
+                  bike.categoryId ?? "",
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 16,
                   ),
                 ),
                 Text(
-                  'PEUGEOT - LR01',
+                  bike.name,
                   style: TextStyle(
                     color: Colors.white70,
                     fontSize: 14,
                   ),
                 ),
                 Text(
-                  '\$1,999.99',
+                  '\$${bike.price}',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 16,
@@ -372,18 +423,22 @@ class _GradientPainter extends CustomPainter {
   @override
   bool shouldRepaint(CustomPainter oldDelegate) => oldDelegate != this;
 }
+
 class DiagonalBottomClipper extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
     final path = Path()
       ..moveTo(20, 0) // Start from the top-left with rounded corner
       ..lineTo(size.width - 20, 0) // Top-right straight line
-      ..quadraticBezierTo(size.width, 0, size.width, 20) // Top-right rounded corner
+      ..quadraticBezierTo(
+          size.width, 0, size.width, 20) // Top-right rounded corner
       ..lineTo(size.width, size.height - 40.h) // Right side straight down
       ..lineTo(size.width, size.height - 60.h) // Right side straight down
-      ..quadraticBezierTo(size.width, size.height-40.h, size.width - 20.w, size.height-35.h) // Bottom-right rounded corner
-      ..lineTo(20.w, size.height ) // Diagonal bottom line
-      ..quadraticBezierTo(0, size.height, 0, size.height - 20.h) // Bottom-left outward rounded corner
+      ..quadraticBezierTo(size.width, size.height - 40.h, size.width - 20.w,
+          size.height - 35.h) // Bottom-right rounded corner
+      ..lineTo(20.w, size.height) // Diagonal bottom line
+      ..quadraticBezierTo(0, size.height, 0,
+          size.height - 20.h) // Bottom-left outward rounded corner
       ..lineTo(0, 20) // Left side straight up
       ..quadraticBezierTo(0, 0, 20, 0); // Top-left rounded corner
 
@@ -395,3 +450,10 @@ class DiagonalBottomClipper extends CustomClipper<Path> {
     return false;
   }
 }
+
+
+
+
+
+
+

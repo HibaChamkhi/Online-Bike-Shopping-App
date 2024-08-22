@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_swipe_button/flutter_swipe_button.dart';
 import '../../../core/colors/colors.dart';
+import 'custom_swipe_button.dart';
 import 'home_widget.dart';
 
 class ShoppingCart extends StatelessWidget {
+  const ShoppingCart({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -86,8 +89,8 @@ class ShoppingCart extends StatelessWidget {
               ),
               Divider(color: Colors.grey),
               SizedBox(height: 10),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8.0),
+              const Padding(
+                padding: EdgeInsets.symmetric(vertical: 8.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -202,45 +205,60 @@ class CartItem extends StatelessWidget {
 class CouponField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Row(
+    return Stack(
+      alignment: Alignment.centerRight,
       children: [
-        Expanded(
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            decoration: BoxDecoration(
-              border: Border(
-                left: BorderSide(color: Colors.white.withOpacity(0.1)),
-                top: BorderSide(color: Colors.white.withOpacity(0.1)),
-                bottom: BorderSide(color: Colors.white.withOpacity(0.1)),
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          decoration: BoxDecoration(
+            // border: Border(
+            //   left: BorderSide(color: Colors.white.withOpacity(0.1)),
+            //   top: BorderSide(color: Colors.white.withOpacity(0.1)),
+            //   bottom: BorderSide(color: Colors.white.withOpacity(0.1)),
+            // ),
+            color: const Color(0xFF242C3B),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.15),
+                blurRadius: 5,
+                offset: const Offset(-5, -3),
               ),
-              color: Color(0xFF242C3B),
-              borderRadius: BorderRadius.circular(16),
-            ),
-            child: TextField(
-              decoration: InputDecoration(
-                border: InputBorder.none,
-                hintText: 'Bike30',
-                hintStyle: TextStyle(color: Colors.grey),
+              BoxShadow(
+                color: Colors.black.withOpacity(0.3),
+                blurRadius: 10,
+                offset: const Offset(5, 5),
               ),
+            ],
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: const TextField(
+            decoration: InputDecoration(
+              border: InputBorder.none,
+              hintText: 'Bike30',
+              hintStyle: TextStyle(color: Colors.grey),
             ),
           ),
         ),
-        Container(
-          padding: EdgeInsets.symmetric(horizontal: 30, vertical: 14),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(8),
-            gradient: LinearGradient(
-              colors: [
-                AppConstants.pictonBlue,
-                AppConstants.royalBlue.withOpacity(.7)
-              ],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
+        Positioned(
+          right: 0.0,
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 14),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8),
+              gradient: LinearGradient(
+                colors: [
+                  AppConstants.pictonBlue,
+                  AppConstants.royalBlue.withOpacity(.7)
+                ],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
             ),
-          ),
-          child: Text(
-            'Apply',
-            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+            child: Text(
+              'Apply',
+              style:
+                  TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+            ),
           ),
         ),
       ],
@@ -295,39 +313,28 @@ class SummaryRow extends StatelessWidget {
 class CheckoutButton extends StatelessWidget {
   const CheckoutButton({super.key});
 
+  @override
   Widget build(BuildContext context) {
-    return const Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        SizedBox(
-          width: 200,
-          child: SwipeButton(
-            thumb: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Icon(
-                  Icons.arrow_forward_ios,
-                  color: Colors.white,
-                ),
-              ],
-            ),
-            activeTrackColor: Color(0xFF020C2A),
-            activeThumbColor: Color(0xFF4A8EFF),
-            elevationThumb: 2,
-            elevationTrack: 0,
-            child: Center(
-              child: Text(
-                'Checkout',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+    return Center(
+      child: CustomSwipeButton(
+        onSwipe: () {
+          print('Swiped');
+        },
+        child: Center(
+          child: Text(
+            'Checkout',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
             ),
           ),
         ),
-      ],
+      ),
     );
   }
 }
+
+
+
+

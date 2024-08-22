@@ -1,6 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:online_bike_shopping_appuntitled/data/products/models/product_model.dart';
 import 'package:online_bike_shopping_appuntitled/presentation/products/widgets/shopping_cart.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
@@ -8,7 +8,9 @@ import '../../../core/colors/colors.dart';
 import 'home_widget.dart';
 
 class ProductDetails extends StatefulWidget {
-  const ProductDetails({super.key});
+  const ProductDetails({super.key, required this.bike});
+
+  final BikeModel bike;
 
   @override
   State<ProductDetails> createState() => _ProductDetailsState();
@@ -25,7 +27,7 @@ class _ProductDetailsState extends State<ProductDetails> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFF1C1F2E),
+      backgroundColor: const Color(0xFF1C1F2E),
       body: Column(
         children: [
           Stack(
@@ -37,7 +39,6 @@ class _ProductDetailsState extends State<ProductDetails> {
                       BorderRadius.vertical(bottom: Radius.circular(16)),
                 ),
                 child: ClipRRect(
-                  // borderRadius: BorderRadius.vertical(bottom: Radius.circular(16)),
                   child: Stack(
                     alignment: Alignment.center,
                     children: [
@@ -55,9 +56,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                         child: Transform.rotate(
                           angle: -0.985398, // -45 degrees in radians
                           origin: const Offset(-150, 200),
-                          child: Container(
-                            color: Colors.black,
-                          ),
+                          child: Container(color: Colors.black),
                         ),
                       ),
                       PageView.builder(
@@ -66,8 +65,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                         itemBuilder: (context, index) {
                           return Image.asset(
                             images[index],
-                            fit: BoxFit
-                                .contain, // Fit the image within the container
+                            fit: BoxFit.contain,
                           );
                         },
                       ),
@@ -95,15 +93,13 @@ class _ProductDetailsState extends State<ProductDetails> {
                 child: Row(
                   children: [
                     UnicornOutlineButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
+                      onPressed: () => Navigator.pop(context),
                       strokeWidth: 2.w,
                       radius: 10.w,
                       gradient: LinearGradient(
                         colors: [
                           AppConstants.pictonBlue,
-                          AppConstants.royalBlue.withOpacity(.7)
+                          AppConstants.royalBlue.withOpacity(.7),
                         ],
                         begin: Alignment.topCenter,
                         end: Alignment.bottomCenter,
@@ -115,7 +111,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                           gradient: LinearGradient(
                             colors: [
                               AppConstants.pictonBlue,
-                              AppConstants.royalBlue.withOpacity(.7)
+                              AppConstants.royalBlue.withOpacity(.7),
                             ],
                             begin: Alignment.topLeft,
                             end: Alignment.bottomRight,
@@ -128,143 +124,67 @@ class _ProductDetailsState extends State<ProductDetails> {
                         ),
                       ),
                     ),
-                    const SizedBox(
-                      width: 45,
-                    ),
-                    const Text(
-                      'PEUGEOT - LR01',
+                    const SizedBox(width: 45),
+                    Text(
+                      widget.bike.name,
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
                       ),
-                    )
+                    ),
                   ],
                 ),
               ),
             ],
           ),
-          // SizedBox(height: 16),
           Expanded(
             child: Container(
               decoration: BoxDecoration(
-                color: Color(0xFF2B2F3A),
+                color: const Color(0xFF2B2F3A),
                 borderRadius: BorderRadius.circular(16),
               ),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 30.0),
+                    child: SpecificationDescriptionButtons(),
+                  ),
                   Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 30.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                          decoration: BoxDecoration(
-                            color:Color(0xFF323B4F),
-                            borderRadius: BorderRadius.circular(15), // Rounded corners
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.white.withOpacity(0.1), // Red shadow
-                                blurRadius: 5,
-                                offset: Offset(-5, -3), // Shadow on top-left
-                              ),
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.2), // Green shadow
-                                blurRadius: 10,
-                                offset: Offset(5, 5), // Shadow on bottom-right
-                              ),
-                            ],
-                          ),
-                          child: TextButton(
-                            onPressed: () {},
-                            child:  Text(
-                              'Description',
-                              style: TextStyle(color: Color(0xFF3D9CEA),fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 20,),
-                        Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(15), // Rounded corners
-                            color: Color(0xFF28303F), // Button background color
-                          ),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(15), // Match the outer container
-                            child: Stack(
-                              children: [
-                                // Inset shadow effect
-                                Positioned.fill(
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(15),
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: Colors.white.withOpacity(0.2),
-                                          blurRadius: 50,
-                                          offset: Offset(-55, -55),
-                                        ),
-                                        BoxShadow(
-                                          color: Colors.black.withOpacity(0.2),
-                                          blurRadius: 20,
-                                          offset: Offset(35, 40),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                TextButton(
-                                  onPressed: () {},
-                                  child: const Text(
-                                    'Specification',
-                                    style: TextStyle(color: Colors.grey),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  )
-
-
-
-
-
-                  ,
-                  Container(
-                    padding: EdgeInsets.only(left: 16),
-                    alignment: AlignmentDirectional.topStart,
-                    child: Text(
-                      'PEUGEOT-LR01',
-                      style: TextStyle(
+                    padding: const EdgeInsets.only(left: 16),
+                    child: Align(
+                      alignment: AlignmentDirectional.topStart,
+                      child: Text(
+                        widget.bike.name,
+                        style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
-                          fontSize: 20),
+                          fontSize: 20.sp,
+                        ),
+                      ),
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(16.0),
+                    padding: EdgeInsets.all(16.0),
                     child: Text(
-                      'The LR01 uses the same design as the most iconic bikes from PEUGEOT Cycles\' 130-year history and combines it with agile, dynamic performance that\'s perfectly suited to navigating today\'s cities. As well as a lugged steel frame and iconic PEUGEOT black-and-white chequer design, this city bike also features a 16-speed Shimano Claris drivetrain.',
+                      widget.bike.description ?? "",
                       style: TextStyle(color: Colors.white),
                     ),
                   ),
-                  Spacer(),
+                  const Spacer(),
                   Container(
                     decoration: BoxDecoration(
-                        color: AppConstants.ebonyClay2,
-                        borderRadius: BorderRadius.circular(35),
-                        border: Border.all(
-                          color: Color(0xFF444E65)
-                        )),
+                      color: AppConstants.ebonyClay2,
+                      borderRadius: BorderRadius.circular(35),
+                      border: Border.all(color: const Color(0xFF444E65)),
+                    ),
                     padding: const EdgeInsets.all(16.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        Text(
-                          '\$1,999.99',
+                         Text(
+                          '\$ ${widget.bike.price}',
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 24,
@@ -272,33 +192,34 @@ class _ProductDetailsState extends State<ProductDetails> {
                           ),
                         ),
                         InkWell(
-                          onTap: (){
+                          onTap: () {
                             Navigator.of(context).push(
                               MaterialPageRoute(
-                                builder: (context) =>  ShoppingCart(),
+                                builder: (context) => ShoppingCart(),
                               ),
                             );
                           },
                           child: Container(
-                              padding: EdgeInsets.symmetric(
-                                horizontal: 32,
-                                vertical: 16,
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 32,
+                              vertical: 16,
+                            ),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(16),
+                              gradient: LinearGradient(
+                                colors: [
+                                  AppConstants.pictonBlue,
+                                  AppConstants.royalBlue.withOpacity(.7),
+                                ],
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
                               ),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(16),
-                                gradient: LinearGradient(
-                                  colors: [
-                                    AppConstants.pictonBlue,
-                                    AppConstants.royalBlue.withOpacity(.7)
-                                  ],
-                                  begin: Alignment.topLeft,
-                                  end: Alignment.bottomRight,
-                                ),
-                              ),
-                              child: Text(
-                                'Add to Cart',
-                                style: TextStyle(color: Colors.white),
-                              )),
+                            ),
+                            child: const Text(
+                              'Add to Cart',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
                         ),
                       ],
                     ),
@@ -313,3 +234,152 @@ class _ProductDetailsState extends State<ProductDetails> {
   }
 }
 
+class SpecificationDescriptionButtons extends StatefulWidget {
+  const SpecificationDescriptionButtons({super.key});
+
+  @override
+  _SpecificationDescriptionButtonsState createState() =>
+      _SpecificationDescriptionButtonsState();
+}
+
+class _SpecificationDescriptionButtonsState
+    extends State<SpecificationDescriptionButtons> {
+  String _selectedButton = 'Specification';
+
+  void _toggleButton(String button) {
+    setState(() {
+      _selectedButton = button;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        CustomToggleButton(
+          isSelected: _selectedButton == 'Specification',
+          onPressed: () => _toggleButton('Specification'),
+          initialDecoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(15),
+            color: const Color(0xFF28303F),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.white.withOpacity(0.2),
+                blurRadius: 50,
+                offset: const Offset(-55, -55),
+              ),
+              BoxShadow(
+                color: Colors.black.withOpacity(0.2),
+                blurRadius: 20,
+                offset: const Offset(35, 40),
+              ),
+            ],
+          ),
+          clickedDecoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(15),
+            color: const Color(0xFF323B4F),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.white.withOpacity(0.1),
+                blurRadius: 5,
+                offset: const Offset(-5, -3),
+              ),
+              BoxShadow(
+                color: Colors.black.withOpacity(0.2),
+                blurRadius: 10,
+                offset: const Offset(5, 5),
+              ),
+            ],
+          ),
+          initialTextStyle: const TextStyle(color: Colors.grey),
+          clickedTextStyle: const TextStyle(
+            color: Color(0xFF3D9CEA),
+            fontWeight: FontWeight.bold,
+          ),
+          text: 'Specification',
+        ),
+        const SizedBox(width: 10),
+        CustomToggleButton(
+          isSelected: _selectedButton == 'Description',
+          onPressed: () => _toggleButton('Description'),
+          initialDecoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(15),
+            color: const Color(0xFF28303F),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.white.withOpacity(0.2),
+                blurRadius: 50,
+                offset: const Offset(-55, -55),
+              ),
+              BoxShadow(
+                color: Colors.black.withOpacity(0.2),
+                blurRadius: 20,
+                offset: const Offset(35, 40),
+              ),
+            ],
+          ),
+          clickedDecoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(15),
+            color: const Color(0xFF323B4F),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.white.withOpacity(0.1),
+                blurRadius: 5,
+                offset: const Offset(-5, -3),
+              ),
+              BoxShadow(
+                color: Colors.black.withOpacity(0.2),
+                blurRadius: 10,
+                offset: const Offset(5, 5),
+              ),
+            ],
+          ),
+          initialTextStyle: const TextStyle(color: Colors.grey),
+          clickedTextStyle: const TextStyle(
+            color: Color(0xFF3D9CEA),
+            fontWeight: FontWeight.bold,
+          ),
+          text: 'Description',
+        ),
+      ],
+    );
+  }
+}
+
+class CustomToggleButton extends StatelessWidget {
+  final bool isSelected;
+  final VoidCallback onPressed;
+  final BoxDecoration initialDecoration;
+  final BoxDecoration clickedDecoration;
+  final TextStyle initialTextStyle;
+  final TextStyle clickedTextStyle;
+  final String text;
+
+  const CustomToggleButton({
+    super.key,
+    required this.isSelected,
+    required this.onPressed,
+    required this.initialDecoration,
+    required this.clickedDecoration,
+    required this.initialTextStyle,
+    required this.clickedTextStyle,
+    required this.text,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onPressed,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+        decoration: isSelected ? clickedDecoration : initialDecoration,
+        child: Text(
+          text,
+          style: isSelected ? clickedTextStyle : initialTextStyle,
+        ),
+      ),
+    );
+  }
+}

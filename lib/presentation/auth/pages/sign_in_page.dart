@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:online_bike_shopping_appuntitled/core/colors/colors.dart';
 import 'package:online_bike_shopping_appuntitled/presentation/auth/widgets/login_widget.dart';
+import 'package:online_bike_shopping_appuntitled/presentation/products/pages/home_page.dart';
 import '../../../injection.dart';
 import '../bloc/login_bloc/login_bloc.dart';
 
@@ -53,7 +54,7 @@ class _SignInPageState extends State<SignInPage> {
             WidgetsBinding.instance.addPostFrameCallback((_) {
               Navigator.of(context).pushReplacement(
                 MaterialPageRoute(
-                  builder: (context) => const Text(''),
+                  builder: (context) => const HomePage(),
                 ));
             });
           }

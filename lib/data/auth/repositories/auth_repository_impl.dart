@@ -40,6 +40,7 @@ class AuthRepositoryImpl implements AuthRepository {
 
 
 
+  @override
   Future<Either<Failure, Unit>> signInUser(
       String email, String password) async {
     if (await networkInfo.isConnected) {

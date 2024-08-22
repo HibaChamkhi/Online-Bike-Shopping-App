@@ -20,12 +20,20 @@ import 'package:online_bike_shopping_appuntitled/data/auth/data_sources/auth_rem
     as _i979;
 import 'package:online_bike_shopping_appuntitled/data/auth/repositories/auth_repository_impl.dart'
     as _i616;
+import 'package:online_bike_shopping_appuntitled/data/products/data_sources/products_remote_data_source.dart'
+    as _i793;
+import 'package:online_bike_shopping_appuntitled/data/products/repositories/products_repository_impl.dart'
+    as _i128;
 import 'package:online_bike_shopping_appuntitled/domain/auth/repositories/auth_repository.dart'
     as _i222;
+import 'package:online_bike_shopping_appuntitled/domain/products/repositories/products_repository.dart'
+    as _i169;
 import 'package:online_bike_shopping_appuntitled/presentation/auth/bloc/login_bloc/login_bloc.dart'
     as _i727;
 import 'package:online_bike_shopping_appuntitled/presentation/auth/bloc/register_bloc/register_bloc.dart'
     as _i695;
+import 'package:online_bike_shopping_appuntitled/presentation/products/bloc/product_bloc.dart'
+    as _i194;
 import 'package:supabase_flutter/supabase_flutter.dart' as _i454;
 
 extension GetItInjectableX on _i174.GetIt {
@@ -45,12 +53,20 @@ extension GetItInjectableX on _i174.GetIt {
         () => coreModule.dataConnectionChecker);
     gh.factory<_i979.AuthRemoteDataSource>(
         () => _i979.AuthRemoteDataSourceImpl());
+    gh.factory<_i793.ProductsRemoteDataSource>(
+        () => _i793.ProductsRemoteDataSourceImpl());
     gh.factory<_i51.NetworkInfo>(
         () => _i51.NetworkInfoImpl(gh<_i973.InternetConnectionChecker>()));
+    gh.factory<_i169.ProductsRepository>(() => _i128.ProductsRepositoryImpl(
+          remoteDataSource: gh<_i793.ProductsRemoteDataSource>(),
+          networkInfo: gh<_i51.NetworkInfo>(),
+        ));
     gh.factory<_i222.AuthRepository>(() => _i616.AuthRepositoryImpl(
           remoteDataSource: gh<_i979.AuthRemoteDataSource>(),
           networkInfo: gh<_i51.NetworkInfo>(),
         ));
+    gh.factory<_i194.ProductBloc>(
+        () => _i194.ProductBloc(repository: gh<_i169.ProductsRepository>()));
     gh.factory<_i695.RegisterBloc>(
         () => _i695.RegisterBloc(gh<_i222.AuthRepository>()));
     gh.factory<_i727.LoginBloc>(
