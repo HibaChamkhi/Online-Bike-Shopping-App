@@ -37,7 +37,7 @@ class _BikeShopUIState extends State<BikeShopUI> {
           ),
           SafeArea(
             child: Padding(
-              padding: AppTheme.padding,
+              padding: AppTheme.noBottomPadding,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -88,61 +88,72 @@ class _BikeShopUIState extends State<BikeShopUI> {
                     ],
                   ),
                   SizedBox(height: 20.h),
-                  // Scrollable "30% Off" Card Section
-                  SizedBox(
-                    height: 200.h,
-                    child: buildDiscountCard(),
-                  ),
-                  SizedBox(height: 20.h),
-                  // Category Icons
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Transform.translate(
-                        offset: Offset(0, 0), // No offset for the first icon
-                        child: buildCategoryIcon(Icons.directions_bike, true),
-                      ),
-                      Transform.translate(
-                        offset: Offset(0, -10),
-                        // Move the second icon up by 10 pixels
-                        child: buildCategoryIcon(Icons.electric_bike),
-                      ),
-                      Transform.translate(
-                        offset: Offset(0, -20),
-                        // Move the third icon up by 20 pixels
-                        child: buildCategoryIcon(Icons.electric_bike),
-                      ),
-                      Transform.translate(
-                        offset: Offset(0, -30),
-                        // Move the fourth icon up by 30 pixels
-                        child: buildCategoryIcon(Icons.motorcycle),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 10.h),
-                  // Grid of Products
+                  // Scrollable Content
                   Expanded(
-                    child: GridView.builder(
-                      clipBehavior: Clip.none,
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        crossAxisSpacing: 10,
-                        mainAxisSpacing: 10,
-                        childAspectRatio: 0.75,
+                    child: SingleChildScrollView(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Scrollable "30% Off" Card Section
+                          SizedBox(
+                            height: 200.h,
+                            child: buildDiscountCard(),
+                          ),
+                          SizedBox(height: 20.h),
+                          // Category Icons
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              buildCategoryIcon(Icons.directions_bike, true),
+                              Transform.translate(
+                                offset: Offset(0, -10.h),
+                                // Move the second icon up by 10 pixels
+                                child: buildCategoryIcon(Icons.electric_bike),
+                              ),
+                              Transform.translate(
+                                offset: Offset(0, -20.h),
+                                // Move the third icon up by 20 pixels
+                                child: buildCategoryIcon(Icons.electric_bike),
+                              ),
+                              Transform.translate(
+                                offset: Offset(0, -30.h),
+                                // Move the fourth icon up by 30 pixels
+                                child: buildCategoryIcon(Icons.motorcycle),
+                              ),
+                              Transform.translate(
+                                offset: Offset(0, -40.h),
+                                // Move the fourth icon up by 30 pixels
+                                child: buildCategoryIcon(Icons.motorcycle),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 10.h),
+                          // Grid of Products
+                          GridView.builder(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            // clipBehavior: Clip.none,
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              crossAxisSpacing: 10,
+                              mainAxisSpacing: 10,
+                              childAspectRatio: 0.75,
+                            ),
+                            itemCount: widget.products.length,
+                            itemBuilder: (context, index) {
+                              if (index % 2 != 0) {
+                                return Transform.translate(
+                                    offset: const Offset(0, -25),
+                                    child: buildProductCard(
+                                        context, widget.products[index]));
+                              }
+                              return buildProductCard(
+                                  context, widget.products[index]);
+                            },
+                          ),
+                        ],
                       ),
-                      itemCount: widget.products.length,
-                      itemBuilder: (context, index) {
-                        if (index % 2 != 0) {
-                          return Transform.translate(
-                              offset: Offset(0, -25),
-                              // No offset for the first icon
-                              child: buildProductCard(
-                                  context, widget.products[index]));
-                        }
-                        return buildProductCard(
-                            context, widget.products[index]);
-                      },
                     ),
                   ),
                 ],
@@ -270,23 +281,39 @@ class _BikeShopUIState extends State<BikeShopUI> {
 
   Widget buildCategoryIcon(IconData icon, [bool isSelected = false]) {
     return Container(
-      padding: EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: isSelected ? Colors.blueAccent : Colors.black54,
+        color: AppConstants.oxfordBlue,
         borderRadius: BorderRadius.circular(10),
-        boxShadow: const [
-          BoxShadow(
-            color: Colors.black26,
-            blurRadius: 10,
-            spreadRadius: 2,
-            offset: Offset(0, 5),
-          ),
-        ],
       ),
-      child: Icon(
-        icon,
-        color: Colors.white,
-        size: 28,
+      child: Container(
+        padding: EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          color: isSelected ? Colors.blueAccent : Colors.black54,
+          borderRadius: BorderRadius.circular(10),
+          gradient: LinearGradient(
+            colors: [
+              isSelected
+                  ? AppConstants.pictonBlue
+                  : AppConstants.cornflowerBlueColor.withOpacity(.2),
+              isSelected ? AppConstants.royalBlue : AppConstants.ebonyClay
+            ],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+          boxShadow: const [
+            BoxShadow(
+              color: Colors.black26,
+              blurRadius: 10,
+              spreadRadius: 4,
+              offset: Offset(0, 5),
+            ),
+          ],
+        ),
+        child: Icon(
+          icon,
+          color: isSelected ? Colors.white : Colors.grey,
+          size: 28,
+        ),
       ),
     );
   }
@@ -306,57 +333,71 @@ class _BikeShopUIState extends State<BikeShopUI> {
         clipper: DiagonalClipper(),
         child: Container(
           decoration: const BoxDecoration(
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black26,
-                blurRadius: 10,
-                spreadRadius: 5,
-                offset: Offset(0, 5),
-              ),
-            ],
+            color: AppConstants.mirage,
           ),
-          child: Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Align(
-                  alignment: Alignment.topRight,
-                  child: Icon(
-                    Icons.favorite_border,
-                    color: Colors.white,
-                  ),
-                ),
-                Center(
-                  child: Image.asset(
-                    'assets/images/bicycl.png', // Placeholder image path
-                    height: 80,
-                  ),
-                ),
-                Spacer(),
-                Text(
-                  bike.categoryId ?? "",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                  ),
-                ),
-                Text(
-                  bike.name,
-                  style: TextStyle(
-                    color: Colors.white70,
-                    fontSize: 14,
-                  ),
-                ),
-                Text(
-                  '\$${bike.price}',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
+          child: Container(
+            decoration: BoxDecoration(
+              color: AppConstants.oxfordBlue.withOpacity(.8),
+              boxShadow: const [
+                BoxShadow(
+                  color: AppConstants.ebonyClay,
+                  blurRadius: 1,
+                  spreadRadius: 5,
+                  offset: Offset(0, 5),
                 ),
               ],
+              gradient: LinearGradient(
+                colors: [
+                  AppConstants.cornflowerBlueColor.withOpacity(.2),
+                  AppConstants.ebonyClay
+                ],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+              ),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Align(
+                    alignment: Alignment.topRight,
+                    child: Icon(
+                      Icons.favorite_border,
+                      color: Colors.white,
+                    ),
+                  ),
+                  Center(
+                    child: Image.asset(
+                      'assets/images/bicycl.png', // Placeholder image path
+                      height: 80,
+                    ),
+                  ),
+                  Spacer(),
+                  Text(
+                    bike.categoryId ?? "",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                    ),
+                  ),
+                  Text(
+                    bike.name,
+                    style: TextStyle(
+                      color: Colors.white70,
+                      fontSize: 14,
+                    ),
+                  ),
+                  Text(
+                    '\$${bike.price}',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),

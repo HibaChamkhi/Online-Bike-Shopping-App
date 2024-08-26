@@ -7,4 +7,5 @@ class AppConstants {
   static const Color pictonBlue = Color(0xFF34C8E8);
   static const Color royalBlue = Color(0xFF4E4AF2);
   static const Color oxfordBlue = Color(0xFF353F54);
+  static const Color mirage = Color(0xFF191E26);
 }
