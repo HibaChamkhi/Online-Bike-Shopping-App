@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:model_viewer_plus/model_viewer_plus.dart';
 import 'package:online_bike_shopping_appuntitled/data/products/models/product_model.dart';
 import 'package:online_bike_shopping_appuntitled/presentation/products/widgets/shopping_cart.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-
 import '../../../core/colors/colors.dart';
 import 'home_widget.dart';
 
@@ -63,9 +63,12 @@ class _ProductDetailsState extends State<ProductDetails> {
                         controller: _pageController,
                         itemCount: images.length,
                         itemBuilder: (context, index) {
-                          return Image.asset(
-                            images[index],
-                            fit: BoxFit.contain,
+                          return SizedBox(
+                            height: 200.h,
+                            width: 200.w,
+                            child: ModelViewer(
+                              src: 'assets/3d_model/scene.gltf',
+                            ),
                           );
                         },
                       ),

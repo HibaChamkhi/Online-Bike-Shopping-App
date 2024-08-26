@@ -23,6 +23,7 @@ class _BikeShopUIState extends State<BikeShopUI> {
       _selectedIndex = index;
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -89,25 +90,42 @@ class _BikeShopUIState extends State<BikeShopUI> {
                   SizedBox(height: 20.h),
                   // Scrollable "30% Off" Card Section
                   SizedBox(
-                    height: 240.h,
+                    height: 200.h,
                     child: buildDiscountCard(),
                   ),
-                  const SizedBox(height: 20),
+                  SizedBox(height: 20.h),
                   // Category Icons
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      buildCategoryIcon(Icons.directions_bike, true),
-                      buildCategoryIcon(Icons.electric_bike),
-                      buildCategoryIcon(Icons.electric_bike),
-                      buildCategoryIcon(Icons.motorcycle),
+                      Transform.translate(
+                        offset: Offset(0, 0), // No offset for the first icon
+                        child: buildCategoryIcon(Icons.directions_bike, true),
+                      ),
+                      Transform.translate(
+                        offset: Offset(0, -10),
+                        // Move the second icon up by 10 pixels
+                        child: buildCategoryIcon(Icons.electric_bike),
+                      ),
+                      Transform.translate(
+                        offset: Offset(0, -20),
+                        // Move the third icon up by 20 pixels
+                        child: buildCategoryIcon(Icons.electric_bike),
+                      ),
+                      Transform.translate(
+                        offset: Offset(0, -30),
+                        // Move the fourth icon up by 30 pixels
+                        child: buildCategoryIcon(Icons.motorcycle),
+                      ),
                     ],
                   ),
-                  const SizedBox(height: 20),
+                  SizedBox(height: 10.h),
                   // Grid of Products
                   Expanded(
                     child: GridView.builder(
-                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      clipBehavior: Clip.none,
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
                         crossAxisSpacing: 10,
                         mainAxisSpacing: 10,
@@ -115,6 +133,13 @@ class _BikeShopUIState extends State<BikeShopUI> {
                       ),
                       itemCount: widget.products.length,
                       itemBuilder: (context, index) {
+                        if (index % 2 != 0) {
+                          return Transform.translate(
+                              offset: Offset(0, -25),
+                              // No offset for the first icon
+                              child: buildProductCard(
+                                  context, widget.products[index]));
+                        }
                         return buildProductCard(
                             context, widget.products[index]);
                       },
@@ -160,6 +185,7 @@ class _BikeShopUIState extends State<BikeShopUI> {
       ),
     );
   }
+
   Widget _buildIcon(IconData iconData, int index) {
     bool isSelected = _selectedIndex == index;
     return AnimatedContainer(
@@ -167,16 +193,16 @@ class _BikeShopUIState extends State<BikeShopUI> {
       padding: EdgeInsets.all(isSelected ? 8 : 0),
       decoration: isSelected
           ? BoxDecoration(
-        color: Colors.blueAccent,
-        borderRadius: BorderRadius.circular(15),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.3),
-            spreadRadius: 2,
-            blurRadius: 10,
-          ),
-        ],
-      )
+              color: Colors.blueAccent,
+              borderRadius: BorderRadius.circular(15),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.3),
+                  spreadRadius: 2,
+                  blurRadius: 10,
+                ),
+              ],
+            )
           : null,
       child: Icon(
         iconData,
@@ -184,6 +210,7 @@ class _BikeShopUIState extends State<BikeShopUI> {
       ),
     );
   }
+
   Widget buildDiscountCard() {
     return ClipPath(
       clipper: DiagonalBottomClipper(),
@@ -214,7 +241,7 @@ class _BikeShopUIState extends State<BikeShopUI> {
             ],
           ),
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20.w),
+            padding: EdgeInsets.symmetric(horizontal: 40.w),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -275,8 +302,8 @@ class _BikeShopUIState extends State<BikeShopUI> {
           ),
         );
       },
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(20),
+      child: ClipPath(
+        clipper: DiagonalClipper(),
         child: Container(
           decoration: const BoxDecoration(
             boxShadow: [
@@ -451,9 +478,29 @@ class DiagonalBottomClipper extends CustomClipper<Path> {
   }
 }
 
+class DiagonalClipper extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    final path = Path()
+      ..moveTo(20, 20) // Start from the top-left with rounded corner
+      ..lineTo(size.width - 20, 0) // Top-right straight line
+      ..quadraticBezierTo(
+          size.width, 0, size.width, 20) // Top-right rounded corner
+      ..lineTo(size.width, size.height - 40.h) // Right side straight down
+      ..lineTo(size.width, size.height - 30.h) // Right side straight down
+      ..quadraticBezierTo(size.width, size.height - 20.h, size.width - 20.w,
+          size.height - 10.h) // Bottom-right rounded corner
+      ..lineTo(20.w, size.height + 10.h) // Diagonal bottom line
+      ..quadraticBezierTo(0, size.height + 10.h, 0,
+          size.height) // Bottom-left outward rounded corner
+      ..lineTo(0, 50) // Left side straight up
+      ..quadraticBezierTo(0, 30, 20, 20); // Top-left rounded corner
 
+    return path;
+  }
 
-
-
-
-
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) {
+    return false;
+  }
+}
