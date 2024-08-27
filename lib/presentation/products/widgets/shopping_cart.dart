@@ -1,20 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_swipe_button/flutter_swipe_button.dart';
+import 'package:online_bike_shopping_appuntitled/data/products/models/product_model.dart';
 import '../../../core/colors/colors.dart';
 import 'custom_swipe_button.dart';
 import 'home_widget.dart';
 
-class ShoppingCart extends StatelessWidget {
-  const ShoppingCart({super.key});
 
+class ShoppingCart extends StatefulWidget {
+  const ShoppingCart({super.key, required this.bike});
+final BikeModel bike ;
+  @override
+  State<ShoppingCart> createState() => _ShoppingCartState();
+}
+
+class _ShoppingCartState extends State<ShoppingCart> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppConstants.ebonyClay,
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding:  EdgeInsets.all(16.0.w),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -55,10 +62,10 @@ class ShoppingCart extends StatelessWidget {
                       ),
                     ),
                   ),
-                  const Text(
+                  Text(
                     'My Shopping Cart',
                     style: TextStyle(
-                        fontSize: 24,
+                        fontSize: 24.sp,
                         fontWeight: FontWeight.bold,
                         color: Colors.white),
                   ),
@@ -88,9 +95,9 @@ class ShoppingCart extends StatelessWidget {
                 ),
               ),
               Divider(color: Colors.grey),
-              SizedBox(height: 10),
-              const Padding(
-                padding: EdgeInsets.symmetric(vertical: 8.0),
+              SizedBox(height: 10.h),
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 8.0.h),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -101,11 +108,11 @@ class ShoppingCart extends StatelessWidget {
                   ],
                 ),
               ),
-              SizedBox(height: 10),
+              SizedBox(height: 10.h),
               CouponField(),
-              SizedBox(height: 10),
+              SizedBox(height: 10.h),
               CartSummary(),
-              SizedBox(height: 20),
+              SizedBox(height: 20.h),
               CheckoutButton(),
             ],
           ),
@@ -114,6 +121,8 @@ class ShoppingCart extends StatelessWidget {
     );
   }
 }
+
+
 
 class CartItem extends StatelessWidget {
   final String itemName;
@@ -127,22 +136,22 @@ class CartItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       // margin: const EdgeInsets.symmetric(vertical: 10),
-      padding: const EdgeInsets.all(8.0),
+      padding:  EdgeInsets.all(8.0.w),
       child: Row(
         children: [
           Container(
-              padding: const EdgeInsets.all(8.0),
+              padding:  EdgeInsets.all(8.0.w),
               decoration: BoxDecoration(
                 color: Colors.white.withOpacity(0.15),
-                borderRadius: BorderRadius.circular(16),
+                borderRadius: BorderRadius.circular(16.r),
               ),
               child: Image.asset(
                 imageUrl,
-                height: 90,
-                width: 100,
+                height: 90.h,
+                width: 100.w,
               )),
           // Replace with your asset
-          const SizedBox(width: 20),
+           SizedBox(width: 20.w),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -152,7 +161,7 @@ class CartItem extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   SizedBox(
-                      width: 100,
+                      width: 100.w,
                       child: Text('\$$price',
                           style: TextStyle(color: Colors.blue))),
                   Row(
@@ -209,7 +218,7 @@ class CouponField extends StatelessWidget {
       alignment: Alignment.centerRight,
       children: [
         Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          padding:  EdgeInsets.symmetric(horizontal: 16.0.w),
           decoration: BoxDecoration(
             // border: Border(
             //   left: BorderSide(color: Colors.white.withOpacity(0.1)),
@@ -229,7 +238,7 @@ class CouponField extends StatelessWidget {
                 offset: const Offset(5, 5),
               ),
             ],
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(12.sp),
           ),
           child: const TextField(
             decoration: InputDecoration(
@@ -242,9 +251,9 @@ class CouponField extends StatelessWidget {
         Positioned(
           right: 0.0,
           child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 14),
+            padding:  EdgeInsets.symmetric(horizontal: 30.w, vertical: 14.h),
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(8.sp),
               gradient: LinearGradient(
                 colors: [
                   AppConstants.pictonBlue,
@@ -290,18 +299,18 @@ class SummaryRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4.0),
+      padding:  EdgeInsets.symmetric(vertical: 4.0.h),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(label,
               style:
-                  TextStyle(fontSize: isTotal ? 20 : 16, color: Colors.white)),
+                  TextStyle(fontSize: isTotal ? 20.sp : 16.sp, color: Colors.white)),
           Text(
             value,
             style: TextStyle(
               color: isTotal ? Colors.blue : Colors.white,
-              fontSize: isTotal ? 24 : 16,
+              fontSize: isTotal ? 24.sp : 16.sp,
             ),
           ),
         ],
@@ -325,7 +334,7 @@ class CheckoutButton extends StatelessWidget {
             'Checkout',
             style: TextStyle(
               color: Colors.white,
-              fontSize: 16,
+              fontSize: 16.sp,
               fontWeight: FontWeight.bold,
             ),
           ),

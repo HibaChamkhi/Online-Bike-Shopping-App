@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../injection.dart';
 import '../bloc/product_bloc.dart';
+import '../widgets/bottom_navigation_bar_widget.dart';
 import '../widgets/home_widget.dart';
 
 
@@ -49,7 +50,7 @@ class _HomePageState extends State<HomePage> {
         },
         builder: (context, state) {
           print(state.products);
-          return   BikeShopUI(products:state.products);
+          return   BottomNavigationBarWidget(products:state.products);
         });
   }
 
