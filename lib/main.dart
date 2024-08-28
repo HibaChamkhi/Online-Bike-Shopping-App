@@ -2,12 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:online_bike_shopping_appuntitled/presentation/auth/widgets/discover_widget.dart';
 import 'package:online_bike_shopping_appuntitled/presentation/products/pages/home_page.dart';
-import 'package:online_bike_shopping_appuntitled/presentation/products/widgets/home_widget.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'injection.dart';
 
 
-
+var supabase = Supabase.instance.client;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await configureDependencies();
@@ -21,15 +20,13 @@ void main() async {
     },
   ));
 }
-
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
   @override
   Widget build(BuildContext context) {
-    return  MaterialApp(
+    return   MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: HomePage(),
+      home:  (supabase.auth.currentSession != null) ? const HomePage()  : const DiscoverWidget(),
     );
   }
 }

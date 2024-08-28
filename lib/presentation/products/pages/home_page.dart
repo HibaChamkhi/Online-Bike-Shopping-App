@@ -50,7 +50,7 @@ class _HomePageState extends State<HomePage> {
         },
         builder: (context, state) {
           print(state.products);
-          return   BottomNavigationBarWidget(products:state.products);
+          return   BottomNavigationBarWidget(products:state.products, loading: state.productStatus,);
         });
   }
 

@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:online_bike_shopping_appuntitled/presentation/auth/widgets/discover_widget.dart';
 
 import '../../../core/colors/colors.dart';
+import '../../../main.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -17,19 +19,19 @@ class _SettingsScreenState extends State<SettingsScreen> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const CircleAvatar(
-          radius: 50,
-          backgroundImage: NetworkImage(
-              'https://via.placeholder.com/150'), // Replace with actual image
-          child: Align(
-            alignment: Alignment.bottomRight,
-            child: CircleAvatar(
-              backgroundColor: Colors.white,
-              radius: 15,
-              child: Icon(Icons.camera_alt, size: 15, color: Colors.black),
-            ),
-          ),
-        ),
+        // const CircleAvatar(
+        //   radius: 50,
+        //   backgroundImage: NetworkImage(
+        //       'https://via.placeholder.com/150'), // Replace with actual image
+        //   child: Align(
+        //     alignment: Alignment.bottomRight,
+        //     child: CircleAvatar(
+        //       backgroundColor: Colors.white,
+        //       radius: 15,
+        //       child: Icon(Icons.camera_alt, size: 15, color: Colors.black),
+        //     ),
+        //   ),
+        // ),
         SizedBox(height: 20.h),
         Container(
           padding: EdgeInsets.symmetric(
@@ -48,7 +50,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
               buildInfoRow('Address', '123 Royal Street, New York'),
               SizedBox(height: 40.h),
               InkWell(
-                onTap: () {},
+                onTap: () async {
+                  await supabase.auth.signOut();
+                  Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(
+                        builder: (context) => const DiscoverWidget(),
+                      ));
+                },
                 child: Container(
                   padding: EdgeInsets.symmetric(
                     horizontal: 130.w,

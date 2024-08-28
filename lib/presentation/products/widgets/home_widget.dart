@@ -5,20 +5,24 @@ import 'package:online_bike_shopping_appuntitled/core/colors/colors.dart';
 import 'package:online_bike_shopping_appuntitled/data/products/models/product_model.dart';
 import 'package:online_bike_shopping_appuntitled/presentation/products/widgets/product_details.dart';
 
+import '../bloc/product_bloc.dart';
+
+
 class HomeScreen extends StatefulWidget {
   const HomeScreen({
     super.key,
     required this.products,
+    required this.loading,
   });
 
   final List<BikeModel> products;
+  final ProductStatus loading;
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  @override
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -91,50 +95,25 @@ class _HomeScreenState extends State<HomeScreen> {
                       buildCategoryIcon(Icons.directions_bike, true),
                       Transform.translate(
                         offset: Offset(0, -10.h),
-                        // Move the second icon up by 10 pixels
                         child: buildCategoryIcon(Icons.electric_bike),
                       ),
                       Transform.translate(
                         offset: Offset(0, -20.h),
-                        // Move the third icon up by 20 pixels
                         child: buildCategoryIcon(Icons.electric_bike),
                       ),
                       Transform.translate(
                         offset: Offset(0, -30.h),
-                        // Move the fourth icon up by 30 pixels
                         child: buildCategoryIcon(Icons.motorcycle),
                       ),
                       Transform.translate(
                         offset: Offset(0, -40.h),
-                        // Move the fourth icon up by 30 pixels
                         child: buildCategoryIcon(Icons.motorcycle),
                       ),
                     ],
                   ),
                   SizedBox(height: 10.h),
-                  // Grid of Products
-                  GridView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    // clipBehavior: Clip.none,
-                    gridDelegate:
-                    const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      crossAxisSpacing: 10,
-                      mainAxisSpacing: 10,
-                      childAspectRatio: 0.75,
-                    ),
-                    itemCount: widget.products.length,
-                    itemBuilder: (context, index) {
-                      if (index % 2 != 0) {
-                        return Transform.translate(
-                            offset: const Offset(0, -25),
-                            child: buildProductCard(
-                                context, widget.products[index]));
-                      }
-                      return buildProductCard(context, widget.products[index]);
-                    },
-                  ),
+                  // Grid of Products or Loading Placeholders
+                  widget.loading == ProductStatus.loading ? buildLoadingGrid() : buildProductGrid(),
                 ],
               ),
             ),
@@ -143,7 +122,54 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
+
+  Widget buildLoadingGrid() {
+    return GridView.builder(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        crossAxisSpacing: 10,
+        mainAxisSpacing: 10,
+        childAspectRatio: 0.75,
+      ),
+      itemCount: 6, // Number of loading placeholders
+      itemBuilder: (context, index) {
+        return Container(
+          decoration: BoxDecoration(
+            color: AppConstants.ebonyClay.withOpacity(0.3),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          margin: EdgeInsets.all(10),
+        );
+      },
+    );
+  }
+
+  Widget buildProductGrid() {
+    return GridView.builder(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        crossAxisSpacing: 10,
+        mainAxisSpacing: 10,
+        childAspectRatio: 0.75,
+      ),
+      itemCount: widget.products.length,
+      itemBuilder: (context, index) {
+        if (index % 2 != 0) {
+          return Transform.translate(
+              offset: const Offset(0, -25),
+              child: buildProductCard(context, widget.products[index]));
+        }
+        return buildProductCard(context, widget.products[index]);
+      },
+    );
+  }
 }
+
+
 
 Widget buildDiscountCard() {
   return ClipPath(

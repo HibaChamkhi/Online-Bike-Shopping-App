@@ -220,11 +220,11 @@ class CouponField extends StatelessWidget {
         Container(
           padding:  EdgeInsets.symmetric(horizontal: 16.0.w),
           decoration: BoxDecoration(
-            // border: Border(
-            //   left: BorderSide(color: Colors.white.withOpacity(0.1)),
-            //   top: BorderSide(color: Colors.white.withOpacity(0.1)),
-            //   bottom: BorderSide(color: Colors.white.withOpacity(0.1)),
-            // ),
+            border: Border(
+              left: BorderSide(color: Colors.white.withOpacity(0.1)),
+              top: BorderSide(color: Colors.white.withOpacity(0.1)),
+              bottom: BorderSide(color: Colors.white.withOpacity(0.1)),
+            ),
             color: const Color(0xFF242C3B),
             boxShadow: [
               BoxShadow(
