@@ -80,7 +80,8 @@ class _ProductDetailsState extends State<ProductDetails> {
               Container(
                 height: 400.h,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.vertical(bottom: Radius.circular(16.r)),
+                  borderRadius:
+                      BorderRadius.vertical(bottom: Radius.circular(16.r)),
                 ),
                 child: ClipRRect(
                   child: Stack(
@@ -107,7 +108,9 @@ class _ProductDetailsState extends State<ProductDetails> {
                         height: 400.h,
                         width: 400.w,
                         child: const Flutter3DViewer(
-                          src: 'assets/3d_model/bicycle.glb',
+                          src:
+                              'https://zxpobryrmbyvwahngxko.supabase.co/storage/v1/object/public/images/bike1.glb?t=2024-08-28T13%3A40%3A47.889Z',
+                          progressBarColor: Colors.white,
                         ),
                       ),
                     ],
