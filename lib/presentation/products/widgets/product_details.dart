@@ -107,9 +107,8 @@ class _ProductDetailsState extends State<ProductDetails> {
                       SizedBox(
                         height: 400.h,
                         width: 400.w,
-                        child: const Flutter3DViewer(
-                          src:
-                              'https://zxpobryrmbyvwahngxko.supabase.co/storage/v1/object/public/images/bike1.glb?t=2024-08-28T13%3A40%3A47.889Z',
+                        child:  Flutter3DViewer(
+                          src: widget.bike.image ?? "",
                           progressBarColor: Colors.white,
                         ),
                       ),
