@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_swipe_button/flutter_swipe_button.dart';
-import 'package:online_bike_shopping_appuntitled/data/products/models/product_model.dart';
-import '../../../core/colors/colors.dart';
+import '../../../core/ui/styles/colors.dart';
+import '../../../domain/products/models/product.dart';
 import 'custom_swipe_button.dart';
 import 'home_widget.dart';
 

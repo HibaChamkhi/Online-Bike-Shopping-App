@@ -1,7 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
-import '../../../../core/utils/used_functions.dart';
+import '../../../../core/utils/map_exception_to_message.dart';
+import '../../../../core/utils/show_snack_bar.dart';
 import '../../../../domain/auth/repositories/auth_repository.dart';
 
 part 'register_event.dart';
@@ -28,7 +29,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
 
     emit(failureOrSuccess.fold(
       (failure) => state.copyWith(
-          message: mapFailureToMessage(failure),
+          message: mapExceptionToMessage(failure),
           registerStatus: RegisterStatus.error),
       (_) =>
           state.copyWith(registerStatus: RegisterStatus.success),

@@ -1,17 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../presentation/auth/pages/sign_in_page.dart';
-import '../error/failures.dart';
-
-String? mapFailureToMessage(Failure failure) {
-  switch (failure.runtimeType) {
-    case ServerFailure _:
-      return failure.message;
-    default:
-      return 'Unexpected Error, please try again later';
-  }
-}
-
 void showSnackBar(
     BuildContext context, String message, Color snackBarBackgroundColor,
     {int height = 0, void Function()? onSnackBarCompleted}) async {

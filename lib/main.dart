@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:online_bike_shopping_appuntitled/presentation/auth/widgets/discover_widget.dart';
 import 'package:online_bike_shopping_appuntitled/presentation/products/pages/home_page.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'injection.dart';
+import 'core/di/injection.dart';
 
 
 var supabase = Supabase.instance.client;

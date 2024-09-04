@@ -1,9 +1,8 @@
-import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
-import 'package:online_bike_shopping_appuntitled/core/error/failures.dart';
-import 'package:online_bike_shopping_appuntitled/data/products/models/product_model.dart';
+import 'package:dartz/dartz.dart';
 import '../../../../core/network/network_info.dart';
-import '../../../core/error/exception.dart';
+import '../../../core/error/error_utils.dart';
+import '../../../domain/products/models/product.dart';
 import '../../../domain/products/repositories/products_repository.dart';
 import '../data_sources/products_remote_data_source.dart';
 
@@ -16,17 +15,10 @@ class ProductsRepositoryImpl implements ProductsRepository {
       {required this.remoteDataSource, required this.networkInfo});
 
   @override
-  Future<Either<Failure, List<BikeModel>>> getAllProducts() async {
-    if (await networkInfo.isConnected) {
-      try {
-        final remoteResponse =
-        await remoteDataSource.getAllProducts();
-        return Right(remoteResponse);
-      } on ServerException catch (e) {
-        return Left(ServerFailure(message: e.message));
-      }
-    } else {
-      return Left(OfflineFailure());
-    }
+  Future<Either<Exception, List<BikeModel>>> getAllProducts() async {
+    return performNetworkRequest(
+      () => remoteDataSource.getAllProducts(),
+      networkInfo,
+    );
   }
 }

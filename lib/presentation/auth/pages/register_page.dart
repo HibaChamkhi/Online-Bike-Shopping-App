@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:online_bike_shopping_appuntitled/core/colors/colors.dart';
-import 'package:online_bike_shopping_appuntitled/presentation/auth/pages/sign_in_page.dart';
-import '../../../core/utils/used_functions.dart';
-import '../../../injection.dart';
+import '../../../core/ui/styles/colors.dart';
+import '../../../core/utils/show_snack_bar.dart';
+import '../../../core/di/injection.dart';
 import '../bloc/register_bloc/register_bloc.dart';
 import '../widgets/register_widget.dart';
 

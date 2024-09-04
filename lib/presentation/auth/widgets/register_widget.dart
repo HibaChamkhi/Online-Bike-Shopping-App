@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:online_bike_shopping_appuntitled/core/colors/colors.dart';
-import 'package:online_bike_shopping_appuntitled/core/colors/theme.dart';
-import 'package:online_bike_shopping_appuntitled/core/widgets/input_field.dart';
-import '../../../core/utils/input_validation.dart';
-import '../../../core/utils/used_functions.dart';
-import '../../../core/widgets/main_button.dart';
+import '../../../core/input_validation/validate_email.dart';
+import '../../../core/input_validation/validate_field.dart';
+import '../../../core/input_validation/validate_number.dart';
+import '../../../core/input_validation/validate_password.dart';
+
+import '../../../core/ui/styles/colors.dart';
+import '../../../core/ui/styles/theme.dart';
+import '../../../core/ui/widgets/input_field.dart';
+import '../../../core/ui/widgets/main_button.dart';
+import '../../../core/utils/show_snack_bar.dart';
 
 class RegisterWidget extends StatefulWidget {
   final bool isLoading;

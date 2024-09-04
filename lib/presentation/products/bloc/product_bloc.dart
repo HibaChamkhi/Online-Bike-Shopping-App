@@ -1,8 +1,10 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
-import 'package:online_bike_shopping_appuntitled/data/products/models/product_model.dart';
-import '../../../core/utils/used_functions.dart';
+import '../../../core/utils/map_exception_to_message.dart';
+import '../../../core/utils/show_snack_bar.dart';
+import '../../../data/products/dtos/product_dto.dart';
+import '../../../domain/products/models/product.dart';
 import '../../../domain/products/repositories/products_repository.dart';
 
 part 'product_event.dart';
@@ -23,7 +25,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
         final failureOrSuggestedProducts = await repository.getAllProducts();
         failureOrSuggestedProducts.fold(
             (suggestedOrFailure) => emit(state.copyWith(
-                  messages: mapFailureToMessage(suggestedOrFailure),
+                  messages: mapExceptionToMessage(suggestedOrFailure),
                   productStatus: ProductStatus.error,
                 )),
             (newsValue) => emit(state.copyWith(

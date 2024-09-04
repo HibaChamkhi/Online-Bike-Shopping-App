@@ -1,35 +1,23 @@
 import 'package:dartz/dartz.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import '../../../core/error/error_utils.dart';
 import '../../../core/error/exception.dart';
 import 'package:injectable/injectable.dart';
 
-abstract class AuthRemoteDataSource {
-  Future<Unit> signUp(
-      {
-        required String userName,
-        required String number,
-        required String email,
-        required String password,
-      });
+@injectable
+class AuthRemoteDataSource {
+  final SupabaseClient _supabaseClient;
 
-  Future<Unit> signInUser(String email, String password);
+  AuthRemoteDataSource(this._supabaseClient);
 
-}
-@Injectable(as: AuthRemoteDataSource)
-class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
-  AuthRemoteDataSourceImpl();
-  final supabase = Supabase.instance.client;
-
-  @override
-  Future<Unit> signUp(
-      {
-        required String userName,
-        required String number,
-        required String email,
-        required String password,
-      }) async {
-    try {
-      await supabase.auth.signUp(
+  Future<Unit> signUp({
+    required String userName,
+    required String number,
+    required String email,
+    required String password,
+  }) async {
+    return handleError(() async {
+      await _supabaseClient.auth.signUp(
         email: email,
         password: password,
         data: {
@@ -37,39 +25,26 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
           'phone_number': number,
         },
       );
-      return Future.value(unit);
-    } on AuthException catch (e) {
-      throw ServerException(message: e.message);
-    }
+      return unit;
+    });
   }
 
-
-  @override
   Future<Unit> signInUser(String email, String password) async {
-
-    print('email ${email}');
-    print(password);
-
-    try {
-      final AuthResponse res = await supabase.auth.signInWithPassword(
+    return handleError(() async {
+      final AuthResponse res = await _supabaseClient.auth.signInWithPassword(
         email: email,
         password: password,
       );
       final User? user = res.user;
-      print(res.session);
-
 
       if (user == null) {
-        return Future.error('Error signing in: user is null');
+        throw Exception('Error signing in: user is null');
       } else {
-        return Future.value(unit);
+        return unit;
       }
-    } catch (e) {
-      print('e ${e.toString()}');
-      throw ServerException(message: e.toString());
-    }
+    });
   }
-
 }
+
 
 

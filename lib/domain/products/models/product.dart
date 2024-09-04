@@ -1,21 +1,21 @@
 import 'package:equatable/equatable.dart';
 
-class Bike extends Equatable {
+class BikeModel extends Equatable {
   final int id;
   final String name;
-  final String? description;
-  final dynamic? price;
-  final String? categoryId;
-  final String? image;
-  final dynamic? discount;
+  final String description;
+  final dynamic price;
+  final String categoryId;
+  final String image;
+  final dynamic discount;
 
-  const Bike({
+  const BikeModel({
     required this.id,
     required this.name,
-    this.description,
+    required this.description,
     this.price,
-    this.categoryId,
-    this.image,
+    required this.categoryId,
+    required this.image,
     this.discount,
   });
 

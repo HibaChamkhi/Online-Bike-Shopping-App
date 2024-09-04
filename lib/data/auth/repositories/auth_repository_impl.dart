@@ -1,11 +1,10 @@
-import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
+import 'package:dartz/dartz.dart';
 import '../../../../core/error/exception.dart';
-import '../../../../core/error/failures.dart';
 import '../../../../core/network/network_info.dart';
+import '../../../core/error/error_utils.dart';
 import '../../../domain/auth/repositories/auth_repository.dart';
 import '../data_sources/auth_remote_data_source.dart';
-
 
 @Injectable(as: AuthRepository)
 class AuthRepositoryImpl implements AuthRepository {
@@ -16,44 +15,28 @@ class AuthRepositoryImpl implements AuthRepository {
       {required this.remoteDataSource, required this.networkInfo});
 
   @override
-  Future<Either<Failure, Unit>> register({
+  Future<Either<Exception, Unit>> register({
     required String userName,
     required String email,
     required String phoneNumber,
     required String password,
   }) async {
-    if (await networkInfo.isConnected) {
-      try {
-        final remoteResponse = await remoteDataSource.signUp(
-            userName: userName,
-            email: email,
-            number: phoneNumber,
-            password: password);
-        return Right(remoteResponse);
-      } on ServerException catch (e) {
-        return Left(ServerFailure(message: e.message));
-      }
-    } else {
-      return Left(OfflineFailure());
-    }
+    return performNetworkRequest(
+          () => remoteDataSource.signUp(
+          userName: userName,
+          email: email,
+          number: phoneNumber,
+          password: password),
+      networkInfo,
+    );
   }
-
-
 
   @override
-  Future<Either<Failure, Unit>> signInUser(
+  Future<Either<Exception, Unit>> signInUser(
       String email, String password) async {
-    if (await networkInfo.isConnected) {
-      try {
-        final remoteResponse =
-        await remoteDataSource.signInUser(email, password);
-        return Right(remoteResponse);
-      } on ServerException catch (e) {
-        return Left(ServerFailure(message: e.message));
-      }
-    } else {
-      return Left(OfflineFailure());
-    }
+    return performNetworkRequest(
+          () => remoteDataSource.signInUser(email, password),
+      networkInfo,
+    );
   }
-
 }

@@ -4,13 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:online_bike_shopping_appuntitled/presentation/auth/pages/sign_in_page.dart';
-import 'package:online_bike_shopping_appuntitled/presentation/auth/widgets/register_widget.dart';
-
-import '../../../core/colors/colors.dart';
-import '../../../core/colors/theme.dart';
-import '../../../core/utils/input_validation.dart';
-import '../../../core/widgets/input_field.dart';
-import '../../../core/widgets/main_button.dart';
+import '../../../core/input_validation/validate_email.dart';
+import '../../../core/input_validation/validate_password.dart';
+import '../../../core/ui/styles/colors.dart';
+import '../../../core/ui/styles/theme.dart';
+import '../../../core/ui/widgets/input_field.dart';
+import '../../../core/ui/widgets/main_button.dart';
 import '../bloc/login_bloc/login_bloc.dart';
 
 class LoginWidget extends StatefulWidget {

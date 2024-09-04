@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:online_bike_shopping_appuntitled/core/colors/colors.dart';
+
+import '../styles/colors.dart';
 
 class MainButton extends StatefulWidget {
   final String text;

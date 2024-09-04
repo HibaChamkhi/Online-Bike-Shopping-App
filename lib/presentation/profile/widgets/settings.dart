@@ -2,8 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:online_bike_shopping_appuntitled/presentation/auth/widgets/discover_widget.dart';
-
-import '../../../core/colors/colors.dart';
+import '../../../core/ui/styles/colors.dart';
 import '../../../main.dart';
 
 class SettingsScreen extends StatefulWidget {

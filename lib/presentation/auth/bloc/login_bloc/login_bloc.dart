@@ -2,7 +2,8 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
-import '../../../../core/utils/used_functions.dart';
+import '../../../../core/utils/map_exception_to_message.dart';
+import '../../../../core/utils/show_snack_bar.dart';
 import '../../../../domain/auth/repositories/auth_repository.dart';
 
 part 'login_event.dart';
@@ -26,7 +27,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
     emit(failureOrSuccess.fold(
       (failure) => state.copyWith(
-          message: mapFailureToMessage(failure),
+          message: mapExceptionToMessage(failure),
           loginStatus: LoginStatus.error),
       (_) => state.copyWith(message: '', loginStatus: LoginStatus.success),
     ));

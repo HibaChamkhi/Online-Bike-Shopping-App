@@ -2,9 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:online_bike_shopping_appuntitled/core/colors/colors.dart';
-import 'package:online_bike_shopping_appuntitled/core/colors/colors.dart';
-import 'package:online_bike_shopping_appuntitled/core/colors/colors.dart';
+import '../styles/colors.dart';
+
 
 class InputField extends StatefulWidget {
   final TextEditingController controller;

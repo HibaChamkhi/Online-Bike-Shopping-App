@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:online_bike_shopping_appuntitled/presentation/auth/pages/register_page.dart';
-import '../../../core/colors/colors.dart';
+import '../../../core/ui/styles/colors.dart';
 import '../pages/sign_in_page.dart';
 
 class DiscoverWidget extends StatefulWidget {

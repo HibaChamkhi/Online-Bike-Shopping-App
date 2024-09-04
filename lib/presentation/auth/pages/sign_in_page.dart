@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:online_bike_shopping_appuntitled/core/colors/colors.dart';
 import 'package:online_bike_shopping_appuntitled/presentation/auth/widgets/login_widget.dart';
 import 'package:online_bike_shopping_appuntitled/presentation/products/pages/home_page.dart';
-import '../../../injection.dart';
+import '../../../core/di/injection.dart';
+import '../../../core/ui/styles/colors.dart';
 import '../bloc/login_bloc/login_bloc.dart';
 
 class SignInPage extends StatefulWidget {

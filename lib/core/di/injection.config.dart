@@ -48,13 +48,13 @@ extension GetItInjectableX on _i174.GetIt {
       environmentFilter,
     );
     final coreModule = _$CoreModule();
+    gh.factory<_i793.ProductsRemoteDataSource>(
+        () => _i793.ProductsRemoteDataSource());
     gh.lazySingleton<_i454.SupabaseClient>(() => coreModule.supabaseClient);
     gh.lazySingleton<_i973.InternetConnectionChecker>(
         () => coreModule.dataConnectionChecker);
     gh.factory<_i979.AuthRemoteDataSource>(
-        () => _i979.AuthRemoteDataSourceImpl());
-    gh.factory<_i793.ProductsRemoteDataSource>(
-        () => _i793.ProductsRemoteDataSourceImpl());
+        () => _i979.AuthRemoteDataSource(gh<_i454.SupabaseClient>()));
     gh.factory<_i51.NetworkInfo>(
         () => _i51.NetworkInfoImpl(gh<_i973.InternetConnectionChecker>()));
     gh.factory<_i169.ProductsRepository>(() => _i128.ProductsRepositoryImpl(

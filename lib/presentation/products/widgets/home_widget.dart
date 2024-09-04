@@ -1,10 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:online_bike_shopping_appuntitled/core/colors/colors.dart';
-import 'package:online_bike_shopping_appuntitled/data/products/models/product_model.dart';
 import 'package:online_bike_shopping_appuntitled/presentation/products/widgets/product_details.dart';
 
+import '../../../core/ui/styles/colors.dart';
+import '../../../data/products/dtos/product_dto.dart';
+import '../../../domain/products/models/product.dart';
 import '../bloc/product_bloc.dart';
 
 
@@ -324,7 +325,7 @@ Widget buildProductCard(context, BikeModel bike) {
                 ),
                 Spacer(),
                 Text(
-                  bike.categoryId ?? "",
+                  bike.categoryId ,
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 16,
