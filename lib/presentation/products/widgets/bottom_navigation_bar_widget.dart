@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:online_bike_shopping_appuntitled/presentation/profile/widgets/settings.dart';
 import '../../../core/ui/styles/colors.dart';
 import '../../../core/ui/styles/theme.dart';
-import '../../../data/products/dtos/product_dto.dart';
 import '../../../domain/products/models/product.dart';
 import '../bloc/product_bloc.dart';
 import 'home_widget.dart';
@@ -56,7 +55,7 @@ class _BottomNavigationBarWidgetState extends State<BottomNavigationBarWidget> {
         backgroundColor: Colors.black87,
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
-        selectedItemColor: Colors.blueAccent,
+        selectedItemColor: AppConstants.cornflowerBlueColor,
         unselectedItemColor: Colors.grey,
         selectedIconTheme: const IconThemeData(
           size: 30,
@@ -93,7 +92,7 @@ class _BottomNavigationBarWidgetState extends State<BottomNavigationBarWidget> {
       padding: EdgeInsets.all(isSelected ? 8 : 0),
       decoration: isSelected
           ? BoxDecoration(
-        color: Colors.blueAccent,
+        color: AppConstants.cornflowerBlueColor,
         borderRadius: BorderRadius.circular(15),
         boxShadow: [
           BoxShadow(

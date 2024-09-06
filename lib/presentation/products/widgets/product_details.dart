@@ -93,7 +93,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                             begin: Alignment.topLeft,
                             end: Alignment.bottomRight,
                             colors: [
-                              Color(0xFF4B4CED),
+                            AppConstants.royalBlue2,
                               Colors.blue,
                             ],
                           ),
@@ -274,7 +274,7 @@ class _SpecificationDescriptionButtonsState
           ),
           initialTextStyle: const TextStyle(color: Colors.grey),
           clickedTextStyle: const TextStyle(
-            color: Color(0xFF3D9CEA),
+            color: AppConstants.cornflowerBlueColor3,
             fontWeight: FontWeight.bold,
           ),
           text: 'Specification',

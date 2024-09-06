@@ -238,7 +238,7 @@ Widget buildCategoryIcon(IconData icon, [bool isSelected = false]) {
     child: Container(
       padding: EdgeInsets.all(12.w),
       decoration: BoxDecoration(
-        color: isSelected ? Colors.blueAccent : Colors.black54,
+        color: isSelected ? AppConstants.cornflowerBlueColor: Colors.black54,
         borderRadius: BorderRadius.circular(10),
         gradient: LinearGradient(
           colors: [

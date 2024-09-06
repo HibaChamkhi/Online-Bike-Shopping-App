@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:online_bike_shopping_appuntitled/core/ui/styles/colors.dart';
 
 class CustomSwipeButton extends StatefulWidget {
   final Widget child;
@@ -8,8 +9,8 @@ class CustomSwipeButton extends StatefulWidget {
   const CustomSwipeButton({
     required this.child,
     required this.onSwipe,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   _CustomSwipeButtonState createState() => _CustomSwipeButtonState();
@@ -17,8 +18,8 @@ class CustomSwipeButton extends StatefulWidget {
 
 class _CustomSwipeButtonState extends State<CustomSwipeButton> {
   double _dragValue = 0;
-  double _buttonWidth = 200;
-  double _thumbWidth = 50;
+  final double _buttonWidth = 200;
+  final double _thumbWidth = 50;
   Color _backgroundColor = const Color(0xFF242C3B);
 
   @override
@@ -26,10 +27,11 @@ class _CustomSwipeButtonState extends State<CustomSwipeButton> {
     return GestureDetector(
       onHorizontalDragUpdate: (details) {
         setState(() {
-          _dragValue = (details.localPosition.dx).clamp(0.0, _buttonWidth - _thumbWidth);
+          _dragValue =
+              (details.localPosition.dx).clamp(0.0, _buttonWidth - _thumbWidth);
           _backgroundColor = Color.lerp(
             const Color(0xFF020C2A),
-            Color(0xFF4A8EFF),
+            AppConstants.cornflowerBlueColor2,
             _dragValue / (_buttonWidth - _thumbWidth),
           )!;
         });
@@ -76,7 +78,7 @@ class _CustomSwipeButtonState extends State<CustomSwipeButton> {
                 width: _thumbWidth,
                 height: 50,
                 decoration: BoxDecoration(
-                  color: Color(0xFF4A8EFF),
+                  color: AppConstants.cornflowerBlueColor2,
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: const Center(
