@@ -11,13 +11,39 @@ class ProductsRepositoryImpl implements ProductsRepository {
   final ProductsRemoteDataSource remoteDataSource;
   final NetworkInfo networkInfo;
 
-  ProductsRepositoryImpl(
-      {required this.remoteDataSource, required this.networkInfo});
+  ProductsRepositoryImpl({
+    required this.remoteDataSource,
+    required this.networkInfo,
+  });
 
   @override
   Future<Either<Exception, List<BikeModel>>> getAllProducts() async {
     return performNetworkRequest(
-      () => remoteDataSource.getAllProducts(),
+          () => remoteDataSource.getAllProducts(),
+      networkInfo,
+    );
+  }
+
+  @override
+  Future<Either<Exception, List<String>>> getAllFavoriteProductsByMe() async {
+    return performNetworkRequest(
+          () => remoteDataSource.getAllFavoriteProductsByMe(),
+      networkInfo,
+    );
+  }
+
+  @override
+  Future<Either<Exception, Unit>> addProductToFavorite(String productId) async {
+    return performNetworkRequest(
+          () => remoteDataSource.addProductToFavorite(productId),
+      networkInfo,
+    );
+  }
+
+  @override
+  Future<Either<Exception, Unit>> removeProductFromFavorite(String productId) async {
+    return performNetworkRequest(
+          () => remoteDataSource.removeProductFromFavorite(productId),
       networkInfo,
     );
   }

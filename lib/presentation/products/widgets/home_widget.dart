@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:online_bike_shopping_appuntitled/presentation/products/widgets/product_details.dart';
 
@@ -14,9 +15,11 @@ class HomeScreen extends StatefulWidget {
     super.key,
     required this.products,
     required this.loading,
+    required this.favoriteProductsByMe
   });
 
   final List<BikeModel> products;
+  final List<String> favoriteProductsByMe;
   final ProductStatus loading;
 
   @override
@@ -162,9 +165,9 @@ class _HomeScreenState extends State<HomeScreen> {
         if (index % 2 != 0) {
           return Transform.translate(
               offset: const Offset(0, -25),
-              child: buildProductCard(context, widget.products[index]));
+              child: BuildProductCard(bike: widget.products[index], favoriteProductIds: widget.favoriteProductsByMe,));
         }
-        return buildProductCard(context, widget.products[index]);
+        return BuildProductCard(bike: widget.products[index], favoriteProductIds:  widget.favoriteProductsByMe,);
       },
     );
   }
@@ -268,92 +271,141 @@ Widget buildCategoryIcon(IconData icon, [bool isSelected = false]) {
   );
 }
 
-Widget buildProductCard(context, BikeModel bike) {
-  return InkWell(
-    onTap: () {
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => ProductDetails(
-            bike: bike,
-          ),
-        ),
-      );
-    },
-    child: ClipPath(
-      clipper: DiagonalClipper(),
-      child: Container(
-        decoration: const BoxDecoration(
-          color: AppConstants.mirage,
-        ),
-        child: Container(
-          decoration: BoxDecoration(
-            color: AppConstants.oxfordBlue.withOpacity(.8),
-            boxShadow: const [
-              BoxShadow(
-                color: AppConstants.ebonyClay,
-                blurRadius: 1,
-                spreadRadius: 5,
-                offset: Offset(0, 5),
-              ),
-            ],
-            gradient: LinearGradient(
-              colors: [
-                AppConstants.cornflowerBlueColor.withOpacity(.2),
-                AppConstants.ebonyClay
-              ],
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
+class BuildProductCard extends StatefulWidget {
+  final BikeModel bike;
+  final List<String> favoriteProductIds; // Add this to hold the list of liked products
+
+  const BuildProductCard({
+    Key? key,
+    required this.bike,
+    required this.favoriteProductIds, // Include this parameter
+  }) : super(key: key);
+
+  @override
+  _ProductCardState createState() => _ProductCardState();
+}
+
+class _ProductCardState extends State<BuildProductCard> {
+  late bool _isFavorited;
+
+  @override
+  void initState() {
+    super.initState();
+    _isFavorited = widget.favoriteProductIds.contains(widget.bike.id.toString()); // Initialize based on whether the product is in the favorites list
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => ProductDetails(
+              bike: widget.bike,
             ),
           ),
-          child: Padding(
-            padding: EdgeInsets.all(12.0.w),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Align(
-                  alignment: Alignment.topRight,
-                  child: Icon(
-                    Icons.favorite_border,
-                    color: Colors.white,
-                  ),
-                ),
-                Center(
-                  child: Image.asset(
-                    'assets/images/bicycl.png', // Placeholder image path
-                    height: 80.h,
-                  ),
-                ),
-                Spacer(),
-                Text(
-                  bike.categoryId ,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                  ),
-                ),
-                Text(
-                  bike.name,
-                  style: TextStyle(
-                    color: Colors.white70,
-                    fontSize: 14,
-                  ),
-                ),
-                Text(
-                  '\$${bike.price}',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
+        );
+      },
+      child: ClipPath(
+        clipper: DiagonalClipper(),
+        child: Container(
+          decoration: const BoxDecoration(
+            color: AppConstants.mirage,
+          ),
+          child: Container(
+            decoration: BoxDecoration(
+              color: AppConstants.oxfordBlue.withOpacity(.8),
+              boxShadow: const [
+                BoxShadow(
+                  color: AppConstants.ebonyClay,
+                  blurRadius: 1,
+                  spreadRadius: 5,
+                  offset: Offset(0, 5),
                 ),
               ],
+              gradient: LinearGradient(
+                colors: [
+                  AppConstants.cornflowerBlueColor.withOpacity(.2),
+                  AppConstants.ebonyClay,
+                ],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+              ),
+            ),
+            child: Padding(
+              padding: EdgeInsets.all(9.0.w),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Align(
+                    alignment: Alignment.topRight,
+                    child: IconButton(
+                      icon: Icon(
+                        _isFavorited
+                            ? Icons.favorite // Filled red heart
+                            : Icons.favorite_border, // Border heart
+                        color: _isFavorited ? Colors.red : Colors.white,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          _isFavorited = !_isFavorited;
+                          if (_isFavorited) {
+                            _onAddProductToFavoriteEvent();
+                          } else {
+                            _onRemoveProductFromFavoriteEvent();
+                          }
+                        });
+                      },
+                    ),
+                  ),
+                  Center(
+                    child: Image.asset(
+                      'assets/images/bicycl.png', // Placeholder image path
+                      height: 70.h,
+                    ),
+                  ),
+                  Spacer(),
+                  Text(
+                    widget.bike.categoryId,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                    ),
+                  ),
+                  Text(
+                    widget.bike.name,
+                    style: TextStyle(
+                      color: Colors.white70,
+                      fontSize: 14,
+                    ),
+                  ),
+                  Text(
+                    '\$${widget.bike.price}',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
       ),
-    ),
-  );
+    );
+  }
+
+  void _onAddProductToFavoriteEvent() {
+    BlocProvider.of<ProductBloc>(context).add(AddProductToFavoriteEvent(widget.bike.id.toString()));
+  }
+
+  void _onRemoveProductFromFavoriteEvent() {
+    BlocProvider.of<ProductBloc>(context).add(RemoveProductFromFavoriteEvent(widget.bike.id.toString()));
+  }
 }
+
+
 
 
 

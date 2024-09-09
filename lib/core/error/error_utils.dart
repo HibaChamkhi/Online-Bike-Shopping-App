@@ -6,6 +6,7 @@ import 'package:dartz/dartz.dart';
 
 
 
+// Example of the handleError function
 Future<T> handleError<T>(Future<T> Function() operation) async {
   try {
     return await operation();

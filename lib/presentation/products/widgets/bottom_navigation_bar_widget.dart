@@ -7,14 +7,20 @@ import '../../../domain/products/models/product.dart';
 import '../bloc/product_bloc.dart';
 import 'home_widget.dart';
 
-
 class BottomNavigationBarWidget extends StatefulWidget {
-  const BottomNavigationBarWidget({super.key, required this.products, required this.loading});
+  const BottomNavigationBarWidget(
+      {super.key,
+      required this.products,
+      required this.loading,
+      required this.favoriteProductsByMe});
 
   final List<BikeModel> products;
+  final List<String> favoriteProductsByMe;
   final ProductStatus loading;
+
   @override
-  State<BottomNavigationBarWidget> createState() => _BottomNavigationBarWidgetState();
+  State<BottomNavigationBarWidget> createState() =>
+      _BottomNavigationBarWidgetState();
 }
 
 class _BottomNavigationBarWidgetState extends State<BottomNavigationBarWidget> {
@@ -29,10 +35,17 @@ class _BottomNavigationBarWidgetState extends State<BottomNavigationBarWidget> {
   @override
   Widget build(BuildContext context) {
     final List<Widget> screens = [
-      HomeScreen(products:widget.products, loading: widget.loading,),    // 0: Home Screen
-      RegisterScreen(), // 1: Register Screen
-      ShoppingScreen(), // 2: Shopping Screen
-      const SettingsScreen(), // 3: Settings Screen
+      HomeScreen(
+        products: widget.products,
+        loading: widget.loading, favoriteProductsByMe: widget.favoriteProductsByMe,
+      ),
+      // 0: Home Screen
+      RegisterScreen(),
+      // 1: Register Screen
+      ShoppingScreen(),
+      // 2: Shopping Screen
+      const SettingsScreen(),
+      // 3: Settings Screen
     ];
     return Scaffold(
       backgroundColor: AppConstants.ebonyClay,
@@ -85,6 +98,7 @@ class _BottomNavigationBarWidgetState extends State<BottomNavigationBarWidget> {
       ),
     );
   }
+
   Widget _buildIcon(IconData iconData, int index) {
     bool isSelected = _selectedIndex == index;
     return AnimatedContainer(
@@ -92,16 +106,16 @@ class _BottomNavigationBarWidgetState extends State<BottomNavigationBarWidget> {
       padding: EdgeInsets.all(isSelected ? 8 : 0),
       decoration: isSelected
           ? BoxDecoration(
-        color: AppConstants.cornflowerBlueColor,
-        borderRadius: BorderRadius.circular(15),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.3),
-            spreadRadius: 2,
-            blurRadius: 10,
-          ),
-        ],
-      )
+              color: AppConstants.cornflowerBlueColor,
+              borderRadius: BorderRadius.circular(15),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.3),
+                  spreadRadius: 2,
+                  blurRadius: 10,
+                ),
+              ],
+            )
           : null,
       child: Icon(
         iconData,
@@ -109,7 +123,4 @@ class _BottomNavigationBarWidgetState extends State<BottomNavigationBarWidget> {
       ),
     );
   }
-
 }
-
-

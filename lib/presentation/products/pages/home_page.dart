@@ -20,7 +20,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => getIt<ProductBloc>()..add(GetProductsEvent()),
+      create: (_) => getIt<ProductBloc>()..add(GetProductsEvent())..add(GetAllFavoriteProductsByMeEvent()),
       child: _buildBody(),
     );
   }
@@ -50,7 +50,7 @@ class _HomePageState extends State<HomePage> {
         },
         builder: (context, state) {
           print(state.products);
-          return   BottomNavigationBarWidget(products:state.products, loading: state.productStatus,);
+          return   BottomNavigationBarWidget(products:state.products, favoriteProductsByMe:state.favoriteProductsByMe,loading: state.productStatus,);
         });
   }
 

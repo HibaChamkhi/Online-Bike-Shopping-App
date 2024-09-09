@@ -8,3 +8,16 @@ abstract class ProductEvent extends Equatable {
 }
 
 class GetProductsEvent extends ProductEvent {}
+class GetAllFavoriteProductsByMeEvent extends ProductEvent {}
+
+class AddProductToFavoriteEvent extends ProductEvent {
+  final String productId;
+
+  const AddProductToFavoriteEvent(this.productId);
+}
+
+class RemoveProductFromFavoriteEvent extends ProductEvent {
+  final String productId;
+
+  const RemoveProductFromFavoriteEvent(this.productId);
+}
