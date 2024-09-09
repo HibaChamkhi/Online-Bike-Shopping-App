@@ -72,57 +72,53 @@ class ProductsRemoteDataSource {
   }
 
 
-
   @override
-  Future<List<String>> getAllFavoriteProductsByMe() async {
+  Future<List<BikeModel>> getAllFavoriteProductsByMe() async {
     final userId = getCurrentUserId();
 
     return handleError(() async {
-      // Step 1: Fetch products liked by me
+      // Step 1: Fetch favorite product IDs for the current user
       List<Map<String, dynamic>> myFavoritesResponse =
       await supabase.from('favorite').select('id').eq('userId', userId);
 
-
+      // Step 2: Extract the list of favorite product IDs
       List<String> myFavoriteProductIds =
       myFavoritesResponse.map((favorite) => favorite['id'].toString()).toList();
-      print("myFavoriteProductIds $myFavoriteProductIds");
 
-      return myFavoriteProductIds;
+      // Step 3: Fetch the bike details using the favorite product IDs
+      if (myFavoriteProductIds.isNotEmpty) {
+        List<Map<String, dynamic>> favoriteBikesResponse =
+        await supabase.from('products').select('*').inFilter('id', myFavoriteProductIds); // 'id' is from the products table
+
+        // Step 4: Convert the response into a list of BikeModel
+        List<BikeModel> favoriteBikes = favoriteBikesResponse
+            .map((bikeData) => BikeDto.fromJson(bikeData).toModel())
+            .toList();
+print("dataaa : $favoriteBikes");
+        return favoriteBikes;
+      } else {
+        return [];
+      }
     });
   }
 
 
-
-
-
-
-// Function to get all favorite products of the current user
-  // Future<List<BikeModel>> getUserFavoriteProducts(String userId) async {
+  // @override
+  // Future<List<String>> getAllFavoriteProductsByMe() async {
+  //   final userId = getCurrentUserId();
+  //
   //   return handleError(() async {
-  //     // Get the list of product IDs from the favorite table
-  //     List<Map<String, dynamic>> favoriteResponse = await supabase
-  //         .from('favorite')
-  //         .select('product_id')
-  //         .eq('user_id', userId);
+  //     // Step 1: Fetch products liked by me
+  //     List<Map<String, dynamic>> myFavoritesResponse =
+  //     await supabase.from('favorite').select('id').eq('userId', userId);
   //
-  //     // Extract product IDs
-  //     var productIds = favoriteResponse.map((e) => e['product_id']).toList();
   //
-  //     if (productIds.isEmpty) {
-  //       return [];
-  //     }
+  //     List<String> myFavoriteProductIds =
+  //     myFavoritesResponse.map((favorite) => favorite['id'].toString()).toList();
+  //     print("myFavoriteProductIds $myFavoriteProductIds");
   //
-  //     // Fetch the products using the product IDs
-  //     List<Map<String, dynamic>> productResponse = await supabase
-  //         .from('products')
-  //         .select('*')
-  //         .contains('id', productIds);
-  //
-  //     var products = productResponse
-  //         .map((productData) => BikeDto.fromJson(productData).toModel())
-  //         .toList();
-  //
-  //     return products;
+  //     return myFavoriteProductIds;
   //   });
   // }
+
 }

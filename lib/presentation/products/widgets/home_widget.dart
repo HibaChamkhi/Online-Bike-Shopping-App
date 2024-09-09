@@ -9,18 +9,13 @@ import '../../../data/products/dtos/product_dto.dart';
 import '../../../domain/products/models/product.dart';
 import '../bloc/product_bloc.dart';
 
-
 class HomeScreen extends StatefulWidget {
   const HomeScreen({
     super.key,
-    required this.products,
-    required this.loading,
-    required this.favoriteProductsByMe
+    required this.state,
   });
 
-  final List<BikeModel> products;
-  final List<String> favoriteProductsByMe;
-  final ProductStatus loading;
+  final ProductState state;
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -117,7 +112,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   SizedBox(height: 10.h),
                   // Grid of Products or Loading Placeholders
-                  widget.loading == ProductStatus.loading ? buildLoadingGrid() : buildProductGrid(),
+                  (widget.state.productStatus == ProductStatus.loading ||
+                          widget.state.favoriteProductStatus ==
+                              FavoriteProductStatus.loading)
+                      ? buildLoadingGrid()
+                      : buildProductGrid(),
                 ],
               ),
             ),
@@ -137,7 +136,8 @@ class _HomeScreenState extends State<HomeScreen> {
         mainAxisSpacing: 10,
         childAspectRatio: 0.75,
       ),
-      itemCount: 6, // Number of loading placeholders
+      itemCount: 6,
+      // Number of loading placeholders
       itemBuilder: (context, index) {
         return Container(
           decoration: BoxDecoration(
@@ -160,20 +160,24 @@ class _HomeScreenState extends State<HomeScreen> {
         mainAxisSpacing: 10,
         childAspectRatio: 0.75,
       ),
-      itemCount: widget.products.length,
+      itemCount: widget.state.products.length,
       itemBuilder: (context, index) {
         if (index % 2 != 0) {
           return Transform.translate(
               offset: const Offset(0, -25),
-              child: BuildProductCard(bike: widget.products[index], favoriteProductIds: widget.favoriteProductsByMe,));
+              child: BuildProductCard(
+                bike: widget.state.products[index],
+                favoriteBikes: widget.state.favoriteProductsByMe,
+              ));
         }
-        return BuildProductCard(bike: widget.products[index], favoriteProductIds:  widget.favoriteProductsByMe,);
+        return BuildProductCard(
+          bike: widget.state.products[index],
+          favoriteBikes: widget.state.favoriteProductsByMe,
+        );
       },
     );
   }
 }
-
-
 
 Widget buildDiscountCard() {
   return ClipPath(
@@ -241,7 +245,7 @@ Widget buildCategoryIcon(IconData icon, [bool isSelected = false]) {
     child: Container(
       padding: EdgeInsets.all(12.w),
       decoration: BoxDecoration(
-        color: isSelected ? AppConstants.cornflowerBlueColor: Colors.black54,
+        color: isSelected ? AppConstants.cornflowerBlueColor : Colors.black54,
         borderRadius: BorderRadius.circular(10),
         gradient: LinearGradient(
           colors: [
@@ -273,13 +277,14 @@ Widget buildCategoryIcon(IconData icon, [bool isSelected = false]) {
 
 class BuildProductCard extends StatefulWidget {
   final BikeModel bike;
-  final List<String> favoriteProductIds; // Add this to hold the list of liked products
+  final List<BikeModel>
+      favoriteBikes; // Change the parameter to hold BikeModel list instead of just product IDs
 
   const BuildProductCard({
-    Key? key,
+    super.key,
     required this.bike,
-    required this.favoriteProductIds, // Include this parameter
-  }) : super(key: key);
+    required this.favoriteBikes, // Use favoriteBikes instead of favoriteProductIds
+  });
 
   @override
   _ProductCardState createState() => _ProductCardState();
@@ -291,7 +296,9 @@ class _ProductCardState extends State<BuildProductCard> {
   @override
   void initState() {
     super.initState();
-    _isFavorited = widget.favoriteProductIds.contains(widget.bike.id.toString()); // Initialize based on whether the product is in the favorites list
+    // Initialize based on whether the bike is in the favorites list (comparing entire objects instead of just IDs)
+    _isFavorited =
+        widget.favoriteBikes.any((bike) => bike.id == widget.bike.id);
   }
 
   @override
@@ -397,24 +404,13 @@ class _ProductCardState extends State<BuildProductCard> {
   }
 
   void _onAddProductToFavoriteEvent() {
-    BlocProvider.of<ProductBloc>(context).add(AddProductToFavoriteEvent(widget.bike.id.toString()));
+    BlocProvider.of<ProductBloc>(context)
+        .add(AddProductToFavoriteEvent(widget.bike.id.toString()));
   }
 
   void _onRemoveProductFromFavoriteEvent() {
-    BlocProvider.of<ProductBloc>(context).add(RemoveProductFromFavoriteEvent(widget.bike.id.toString()));
-  }
-}
-
-
-
-
-
-class RegisterScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-        child: Text('Register Screen',
-            style: TextStyle(color: Colors.white, fontSize: 24)));
+    BlocProvider.of<ProductBloc>(context)
+        .add(RemoveProductFromFavoriteEvent(widget.bike.id.toString()));
   }
 }
 
@@ -426,8 +422,6 @@ class ShoppingScreen extends StatelessWidget {
             style: TextStyle(color: Colors.white, fontSize: 24)));
   }
 }
-
-
 
 class UnicornOutlineButton extends StatelessWidget {
   final _GradientPainter _painter;

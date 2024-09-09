@@ -42,7 +42,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                 Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context) => ShoppingCart(
-                      bike: widget.bike,
+                      bike: widget.bike, inBottomNav: false,
                     ),
                   ),
                 );

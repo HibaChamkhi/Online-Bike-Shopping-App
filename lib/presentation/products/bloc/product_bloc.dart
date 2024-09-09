@@ -51,24 +51,23 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
   Future<void> _onGetAllFavoriteProductsByMeEvent(
     GetAllFavoriteProductsByMeEvent event, Emitter<ProductState> emit) async {
     final result = await repository.getAllFavoriteProductsByMe();
-      print("result $result");
-    handleLoadResult<List<String>, ProductState, ProductStatus>(
+    handleLoadResult<List<BikeModel>, ProductState, FavoriteProductStatus>(
       result: result,
       emit: emit,
       state: state,
       copyWith: ({
-        List<String>? data,
+        List<BikeModel>? data,
         String? message,
-        ProductStatus? status,
+        FavoriteProductStatus? status,
       }) =>
           state.copyWith(
             favoriteProductsByMe: data ?? [],
             messages: message,
-            productStatus: status,
+            favoriteProductStatus: status,
           ),
-      loadingStatus: ProductStatus.loading,
-      successStatus: ProductStatus.success,
-      errorStatus: ProductStatus.error,
+      loadingStatus: FavoriteProductStatus.loading,
+      successStatus: FavoriteProductStatus.success,
+      errorStatus: FavoriteProductStatus.error,
     );
   }
 
@@ -119,35 +118,5 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
   }
 }
 
-
-  // Future<void> _onGetProductsEvent(
-  //     GetProductsEvent event,
-  //     Emitter<ProductState> emit,
-  //     ) async {
-  //   emit(state.copyWith(productStatus: ProductStatus.loading, products: []));
-  //   final result = await repository.getAllProducts();
-  //   _handleProductLoadResult(result, emit);
-  // }
-
-  // void _handleProductLoadResult(
-  //     Either<Exception, List<BikeModel>> result,
-  //     Emitter<ProductState> emit,
-  //     ) {
-  //   result.fold(
-  //         (failure) {
-  //       final errorMessage = mapExceptionToMessage(failure);
-  //       emit(state.copyWith(
-  //         productStatus: ProductStatus.error,
-  //         messages: errorMessage,
-  //       ));
-  //     },
-  //         (products) {
-  //       emit(state.copyWith(
-  //         productStatus: ProductStatus.success,
-  //         products: products,
-  //       ));
-  //     },
-  //   );
-  // }
 
 

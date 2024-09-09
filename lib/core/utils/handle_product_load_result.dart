@@ -15,15 +15,16 @@ void handleLoadResult<T, S, E>({
   required E successStatus,
   required E errorStatus,
 }) {
+
   // Emit loading state
   emit(copyWith(
     status: loadingStatus,
   ));
-
   // Handle the result
   result.fold(
         (failure) {
-      final errorMessage = mapExceptionToMessage(failure);
+          print(failure);
+          final errorMessage = mapExceptionToMessage(failure);
       emit(copyWith(
         message: errorMessage,
         status: errorStatus,

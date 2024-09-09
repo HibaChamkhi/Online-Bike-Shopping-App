@@ -25,7 +25,7 @@ class ProductsRepositoryImpl implements ProductsRepository {
   }
 
   @override
-  Future<Either<Exception, List<String>>> getAllFavoriteProductsByMe() async {
+  Future<Either<Exception, List<BikeModel>>> getAllFavoriteProductsByMe() async {
     return performNetworkRequest(
           () => remoteDataSource.getAllFavoriteProductsByMe(),
       networkInfo,

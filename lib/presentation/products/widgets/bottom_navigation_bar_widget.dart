@@ -1,22 +1,22 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:online_bike_shopping_appuntitled/presentation/products/widgets/shopping_cart.dart';
 import 'package:online_bike_shopping_appuntitled/presentation/profile/widgets/settings.dart';
 import '../../../core/ui/styles/colors.dart';
 import '../../../core/ui/styles/theme.dart';
 import '../../../domain/products/models/product.dart';
+import '../../registered_products/pages/registered_products_page.dart';
+import '../../registered_products/widgets/registered_products_widget.dart';
 import '../bloc/product_bloc.dart';
 import 'home_widget.dart';
 
 class BottomNavigationBarWidget extends StatefulWidget {
-  const BottomNavigationBarWidget(
-      {super.key,
-      required this.products,
-      required this.loading,
-      required this.favoriteProductsByMe});
+  const BottomNavigationBarWidget({
+    super.key,
+    required this.state,
+  });
 
-  final List<BikeModel> products;
-  final List<String> favoriteProductsByMe;
-  final ProductStatus loading;
+  final ProductState state;
 
   @override
   State<BottomNavigationBarWidget> createState() =>
@@ -36,13 +36,19 @@ class _BottomNavigationBarWidgetState extends State<BottomNavigationBarWidget> {
   Widget build(BuildContext context) {
     final List<Widget> screens = [
       HomeScreen(
-        products: widget.products,
-        loading: widget.loading, favoriteProductsByMe: widget.favoriteProductsByMe,
+        state: widget.state,
       ),
       // 0: Home Screen
-      RegisterScreen(),
+      const RegisteredProductPage(),
       // 1: Register Screen
-      ShoppingScreen(),
+      const ShoppingCart(
+        bike: BikeModel(
+            id: 3,
+            name: "name",
+            description: "description",
+            categoryId: "categoryId",
+            image: "image"), inBottomNav: true,
+      ),
       // 2: Shopping Screen
       const SettingsScreen(),
       // 3: Settings Screen
