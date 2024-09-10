@@ -7,9 +7,8 @@ import '../../../domain/products/models/product.dart';
 import '../../../domain/products/repositories/products_repository.dart';
 
 part 'product_event.dart';
+
 part 'product_state.dart';
-
-
 
 @injectable
 class ProductBloc extends Bloc<ProductEvent, ProductState> {
@@ -38,10 +37,10 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
         ProductStatus? status,
       }) =>
           state.copyWith(
-            products: data ?? [],
-            messages: message,
-            productStatus: status,
-          ),
+        products: data ?? [],
+        messages: message,
+        productStatus: status,
+      ),
       loadingStatus: ProductStatus.loading,
       successStatus: ProductStatus.success,
       errorStatus: ProductStatus.error,
@@ -49,7 +48,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
   }
 
   Future<void> _onGetAllFavoriteProductsByMeEvent(
-    GetAllFavoriteProductsByMeEvent event, Emitter<ProductState> emit) async {
+      GetAllFavoriteProductsByMeEvent event, Emitter<ProductState> emit) async {
     final result = await repository.getAllFavoriteProductsByMe();
     handleLoadResult<List<BikeModel>, ProductState, FavoriteProductStatus>(
       result: result,
@@ -61,10 +60,10 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
         FavoriteProductStatus? status,
       }) =>
           state.copyWith(
-            favoriteProductsByMe: data ?? [],
-            messages: message,
-            favoriteProductStatus: status,
-          ),
+        favoriteProductsByMe: data ?? [],
+        messages: message,
+        favoriteProductStatus: status,
+      ),
       loadingStatus: FavoriteProductStatus.loading,
       successStatus: FavoriteProductStatus.success,
       errorStatus: FavoriteProductStatus.error,
@@ -85,9 +84,9 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
         ProductStatus? status,
       }) =>
           state.copyWith(
-            messages: message,
-            productStatus: status,
-          ),
+        messages: message,
+        productStatus: status,
+      ),
       loadingStatus: ProductStatus.loading,
       successStatus: ProductStatus.success,
       errorStatus: ProductStatus.error,
@@ -108,15 +107,12 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
         ProductStatus? status,
       }) =>
           state.copyWith(
-            messages: message,
-            productStatus: status,
-          ),
+        messages: message,
+        productStatus: status,
+      ),
       loadingStatus: ProductStatus.loading,
       successStatus: ProductStatus.success,
       errorStatus: ProductStatus.error,
     );
   }
 }
-
-
-

@@ -1,43 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
+import 'package:online_bike_shopping_appuntitled/presentation/profile/widgets/settings.dart';
 import '../../../core/di/injection.dart';
-import '../../../data/products/data_sources/product_prefUtils.dart';
-import '../bloc/product_bloc.dart';
-import '../widgets/bottom_navigation_bar_widget.dart';
+import '../bloc/profile_bloc.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({
+class SettingsPage extends StatefulWidget {
+  const SettingsPage({
     super.key,
   });
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<SettingsPage> createState() => _SettingsPageState();
 }
 
-class _HomePageState extends State<HomePage> {
-  final PrefUtils prefs = getIt<PrefUtils>();
+class _SettingsPageState extends State<SettingsPage> {
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => getIt<ProductBloc>()
-        ..add(GetProductsEvent())
-        ..add(GetAllFavoriteProductsByMeEvent()),
+      create: (_) => getIt<ProfileBloc>()
+        ..add(GetCurrentUserEvent()),
       child: _buildBody(),
     );
   }
 
   Widget _buildBody() {
-    return BlocConsumer<ProductBloc, ProductState>(listener: (context, state) {
-      if (state.productStatus == ProductStatus.error) {
+    return BlocConsumer<ProfileBloc, ProfileState>(listener: (context, state) {
+      if (state.profileStatus == ProfileStatus.error) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(state.messages),
           ),
         );
-      } else if (state.productStatus == ProductStatus.loading) {
+      } else if (state.profileStatus == ProfileStatus.loading) {
         Center(
           child: SizedBox(
             height: 60.h,
@@ -50,15 +46,14 @@ class _HomePageState extends State<HomePage> {
         );
       }
     }, builder: (context, state) {
-      print("prefUtils.getBikeModel() ${prefs.getBikeModelList()}");
-      return BottomNavigationBarWidget(
+      return SettingsScreen(
         state: state,
       );
     });
   }
 
 // Future<void> _onRefresh(BuildContext context) async {
-//   BlocProvider.of<ProductBloc>(context)
-//       .add(const GetAllProductsEvent());
+//   BlocProvider.of<ProfileBloc>(context)
+//       .add(const GetAllProfilesEvent());
 // }
 }

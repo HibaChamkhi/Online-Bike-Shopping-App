@@ -2,11 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:online_bike_shopping_appuntitled/presentation/auth/widgets/discover_widget.dart';
+import 'package:online_bike_shopping_appuntitled/presentation/profile/bloc/profile_bloc.dart';
 import '../../../core/ui/styles/colors.dart';
 import '../../../main.dart';
 
 class SettingsScreen extends StatefulWidget {
-  const SettingsScreen({super.key});
+  const SettingsScreen({super.key, required this.state});
+  final ProfileState state;
 
   @override
   State<SettingsScreen> createState() => _SettingsScreenState();
@@ -15,22 +17,17 @@ class SettingsScreen extends StatefulWidget {
 class _SettingsScreenState extends State<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
+    // If profile status is 'loading', show a loader
+    if (widget.state.profileStatus == ProfileStatus.loading) {
+      return const Center(
+        child: CircularProgressIndicator(),
+      );
+    }
+
+    // If user data is loaded, display the settings screen
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        // const CircleAvatar(
-        //   radius: 50,
-        //   backgroundImage: NetworkImage(
-        //       'https://via.placeholder.com/150'), // Replace with actual image
-        //   child: Align(
-        //     alignment: Alignment.bottomRight,
-        //     child: CircleAvatar(
-        //       backgroundColor: Colors.white,
-        //       radius: 15,
-        //       child: Icon(Icons.camera_alt, size: 15, color: Colors.black),
-        //     ),
-        //   ),
-        // ),
         SizedBox(height: 20.h),
         Container(
           padding: EdgeInsets.symmetric(
@@ -42,9 +39,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
           child: Column(
             children: [
-              buildInfoRow('Username', 'Amanda Jane'),
-              buildInfoRow('Email', 'amanda@gmail.com'),
-              buildInfoRow('Phone', '+65 2311 333'),
+              buildInfoRow('Username', widget.state.user!.userMetadata?["full_name"] ?? 'N/A'),
+              buildInfoRow('Email', widget.state.user!.userMetadata?["email"] ?? 'N/A'),
+              buildInfoRow('Phone', widget.state.user!.userMetadata?["phone_number"] ?? 'N/A'),
               buildInfoRow('Date of birth', '20/05/1990'),
               buildInfoRow('Address', '123 Royal Street, New York'),
               SizedBox(height: 40.h),
@@ -52,9 +49,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 onTap: () async {
                   await supabase.auth.signOut();
                   Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(
-                        builder: (context) => const DiscoverWidget(),
-                      ));
+                    MaterialPageRoute(
+                      builder: (context) => const DiscoverWidget(),
+                    ),
+                  );
                 },
                 child: Container(
                   padding: EdgeInsets.symmetric(
@@ -75,7 +73,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   child: const Text(
                     'Logout',
                     style: TextStyle(
-                        color: Colors.white, fontWeight: FontWeight.bold),
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
               ),
@@ -88,18 +88,24 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   Widget buildInfoRow(String title, String value) {
     return Padding(
-      padding:  EdgeInsets.symmetric(vertical: 10.h, horizontal: 20.w),
+      padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 20.w),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
             title,
-            style:  TextStyle(
-                fontSize: 16.sp, fontWeight: FontWeight.w500, color: Colors.white),
+            style: TextStyle(
+              fontSize: 16.sp,
+              fontWeight: FontWeight.w500,
+              color: Colors.white,
+            ),
           ),
           Text(
             value,
-            style:  TextStyle(fontSize: 16.sp, color: Colors.white),
+            style: TextStyle(
+              fontSize: 16.sp,
+              color: Colors.white,
+            ),
           ),
         ],
       ),

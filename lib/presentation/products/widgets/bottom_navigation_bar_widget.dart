@@ -5,6 +5,7 @@ import 'package:online_bike_shopping_appuntitled/presentation/profile/widgets/se
 import '../../../core/ui/styles/colors.dart';
 import '../../../core/ui/styles/theme.dart';
 import '../../../domain/products/models/product.dart';
+import '../../profile/pages/settings_page.dart';
 import '../../registered_products/pages/registered_products_page.dart';
 import '../../registered_products/widgets/registered_products_widget.dart';
 import '../bloc/product_bloc.dart';
@@ -50,7 +51,7 @@ class _BottomNavigationBarWidgetState extends State<BottomNavigationBarWidget> {
             image: "image"), inBottomNav: true,
       ),
       // 2: Shopping Screen
-      const SettingsScreen(),
+      const SettingsPage(),
       // 3: Settings Screen
     ];
     return Scaffold(

@@ -20,17 +20,29 @@ Future<T> handleError<T>(Future<T> Function() operation) async {
 }
 
 Future<Either<Exception, T>> performNetworkRequest<T>(
-    Future<T> Function() operation,
-    NetworkInfo networkInfo,
-    ) async {
+    Future<T> Function() networkOperation,
+    NetworkInfo networkInfo, {
+      Future<T> Function()? localOperation,
+    }) async {
   if (await networkInfo.isConnected) {
     try {
-      final result = await operation();
+      final result = await networkOperation();
       return Right(result);
     } catch (e) {
       return Left(e as Exception);
     }
   } else {
-    return Left(Exception('Offline Failure'));
+    if (localOperation != null) {
+      try {
+        final result = await localOperation();
+        return Right(result);
+      } catch (e) {
+        return Left(Exception('Offline Failure: ${e.toString()}'));
+      }
+    } else {
+      return Left(Exception('No internet connection and no local data available'));
+    }
   }
 }
+
+

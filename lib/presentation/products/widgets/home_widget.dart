@@ -4,7 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:online_bike_shopping_appuntitled/presentation/products/widgets/product_details.dart';
 
+import '../../../core/di/injection.dart';
 import '../../../core/ui/styles/colors.dart';
+import '../../../data/products/data_sources/products_local_data_source.dart';
 import '../../../data/products/dtos/product_dto.dart';
 import '../../../domain/products/models/product.dart';
 import '../bloc/product_bloc.dart';
@@ -291,8 +293,7 @@ class BuildProductCard extends StatefulWidget {
 }
 
 class _ProductCardState extends State<BuildProductCard> {
-  late bool _isFavorited;
-
+  late bool _isFavorited ;
   @override
   void initState() {
     super.initState();
@@ -358,6 +359,7 @@ class _ProductCardState extends State<BuildProductCard> {
                           _isFavorited = !_isFavorited;
                           if (_isFavorited) {
                             _onAddProductToFavoriteEvent();
+                            // prefs.saveBikeModel(widget.bike);
                           } else {
                             _onRemoveProductFromFavoriteEvent();
                           }

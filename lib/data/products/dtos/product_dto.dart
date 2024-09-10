@@ -43,7 +43,17 @@ class BikeDto {
       'discount': discount,
     };
   }
-
+  factory BikeDto.fromModel(BikeModel model) {
+    return BikeDto(
+      id: model.id,
+      name: model.name,
+      description: model.description,
+      price: model.price,
+      categoryId: model.categoryId,
+      image: model.image,
+      discount: model.discount,
+    );
+  }
   BikeModel toModel() {
     return BikeModel(
       id: id,
