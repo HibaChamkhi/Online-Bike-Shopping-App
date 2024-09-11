@@ -1,10 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:online_bike_shopping_appuntitled/presentation/products/widgets/shopping_cart.dart';
+import 'package:online_bike_shopping_appuntitled/presentation/basket/widgets/shopping_cart.dart';
 import 'package:online_bike_shopping_appuntitled/presentation/profile/widgets/settings.dart';
 import '../../../core/ui/styles/colors.dart';
 import '../../../core/ui/styles/theme.dart';
 import '../../../domain/products/models/product.dart';
+import '../../basket/pages/basket_page.dart';
 import '../../profile/pages/settings_page.dart';
 import '../../registered_products/pages/registered_products_page.dart';
 import '../../registered_products/widgets/registered_products_widget.dart';
@@ -42,14 +43,7 @@ class _BottomNavigationBarWidgetState extends State<BottomNavigationBarWidget> {
       // 0: Home Screen
       const RegisteredProductPage(),
       // 1: Register Screen
-      const ShoppingCart(
-        bike: BikeModel(
-            id: 3,
-            name: "name",
-            description: "description",
-            categoryId: "categoryId",
-            image: "image"), inBottomNav: true,
-      ),
+      const BasketPage(),
       // 2: Shopping Screen
       const SettingsPage(),
       // 3: Settings Screen

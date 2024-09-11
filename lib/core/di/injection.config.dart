@@ -20,6 +20,14 @@ import 'package:online_bike_shopping_appuntitled/data/auth/data_sources/auth_rem
     as _i979;
 import 'package:online_bike_shopping_appuntitled/data/auth/repositories/auth_repository_impl.dart'
     as _i616;
+import 'package:online_bike_shopping_appuntitled/data/basket/data_sources/basket_local_data_source.dart'
+    as _i166;
+import 'package:online_bike_shopping_appuntitled/data/basket/data_sources/basket_prefUtils.dart'
+    as _i896;
+import 'package:online_bike_shopping_appuntitled/data/basket/data_sources/basket_remote_data_source.dart'
+    as _i448;
+import 'package:online_bike_shopping_appuntitled/data/basket/repositories/basket_repository_impl.dart'
+    as _i839;
 import 'package:online_bike_shopping_appuntitled/data/products/data_sources/product_prefUtils.dart'
     as _i39;
 import 'package:online_bike_shopping_appuntitled/data/products/data_sources/products_local_data_source.dart'
@@ -38,6 +46,8 @@ import 'package:online_bike_shopping_appuntitled/data/profile/repositories/profi
     as _i275;
 import 'package:online_bike_shopping_appuntitled/domain/auth/repositories/auth_repository.dart'
     as _i222;
+import 'package:online_bike_shopping_appuntitled/domain/basket/repositories/basket_repository.dart'
+    as _i498;
 import 'package:online_bike_shopping_appuntitled/domain/products/repositories/products_repository.dart'
     as _i169;
 import 'package:online_bike_shopping_appuntitled/domain/profile/repositories/profile_repository.dart'
@@ -46,6 +56,8 @@ import 'package:online_bike_shopping_appuntitled/presentation/auth/bloc/login_bl
     as _i727;
 import 'package:online_bike_shopping_appuntitled/presentation/auth/bloc/register_bloc/register_bloc.dart'
     as _i695;
+import 'package:online_bike_shopping_appuntitled/presentation/basket/bloc/basket_bloc.dart'
+    as _i263;
 import 'package:online_bike_shopping_appuntitled/presentation/products/bloc/product_bloc.dart'
     as _i194;
 import 'package:online_bike_shopping_appuntitled/presentation/profile/bloc/profile_bloc.dart'
@@ -74,6 +86,8 @@ extension GetItInjectableX on _i174.GetIt {
         () => coreModule.dataConnectionChecker);
     gh.factory<_i979.AuthRemoteDataSource>(
         () => _i979.AuthRemoteDataSource(gh<_i454.SupabaseClient>()));
+    gh.factory<_i896.BasketPrefUtils>(() =>
+        _i896.PrefUtilsImpl(sharedPreferences: gh<_i460.SharedPreferences>()));
     gh.factory<_i620.ProfilePrefUtils>(() => _i620.ProfilePrefUtilsImpl(
         sharedPreferences: gh<_i460.SharedPreferences>()));
     gh.factory<_i39.PrefUtils>(() =>
@@ -98,6 +112,14 @@ extension GetItInjectableX on _i174.GetIt {
               prefUtils: gh<_i39.PrefUtils>(),
               networkInfo: gh<_i51.NetworkInfo>(),
             ));
+    gh.factory<_i448.BasketRemoteDataSource>(() => _i448.BasketRemoteDataSource(
+          prefUtils: gh<_i896.BasketPrefUtils>(),
+          networkInfo: gh<_i51.NetworkInfo>(),
+        ));
+    gh.factory<_i166.BasketLocalDataSource>(() => _i166.BasketLocalDataSource(
+          prefUtils: gh<_i896.BasketPrefUtils>(),
+          networkInfo: gh<_i51.NetworkInfo>(),
+        ));
     gh.factory<_i695.RegisterBloc>(
         () => _i695.RegisterBloc(gh<_i222.AuthRepository>()));
     gh.factory<_i506.ProfileRemoteDataSource>(
@@ -114,11 +136,18 @@ extension GetItInjectableX on _i174.GetIt {
         ));
     gh.factory<_i194.ProductBloc>(
         () => _i194.ProductBloc(repository: gh<_i169.ProductsRepository>()));
+    gh.factory<_i498.BasketRepository>(() => _i839.BasketRepositoryImpl(
+          remoteDataSource: gh<_i448.BasketRemoteDataSource>(),
+          networkInfo: gh<_i51.NetworkInfo>(),
+          localDataSource: gh<_i166.BasketLocalDataSource>(),
+        ));
     gh.factory<_i338.ProfileRepository>(() => _i275.ProfileRepositoryImpl(
           remoteDataSource: gh<_i506.ProfileRemoteDataSource>(),
           networkInfo: gh<_i51.NetworkInfo>(),
           localDataSource: gh<_i175.ProfileLocalDataSource>(),
         ));
+    gh.factory<_i263.BasketBloc>(
+        () => _i263.BasketBloc(repository: gh<_i498.BasketRepository>()));
     gh.factory<_i958.ProfileBloc>(
         () => _i958.ProfileBloc(repository: gh<_i338.ProfileRepository>()));
     return this;

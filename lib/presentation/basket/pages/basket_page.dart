@@ -1,42 +1,39 @@
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:online_bike_shopping_appuntitled/presentation/basket/bloc/basket_bloc.dart';
 
 import '../../../core/di/injection.dart';
-import '../../../data/products/data_sources/product_prefUtils.dart';
-import '../bloc/product_bloc.dart';
-import '../widgets/bottom_navigation_bar_widget.dart';
+import '../widgets/shopping_cart.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({
-    super.key,
-  });
+class BasketPage extends StatefulWidget {
+  const BasketPage({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<BasketPage> createState() => _BasketPageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _BasketPageState extends State<BasketPage> {
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => getIt<ProductBloc>()
-        ..add(GetProductsEvent())
-        ..add(GetAllFavoriteProductsByMeEvent()),
+      create: (_) => getIt<BasketBloc>(),
       child: _buildBody(),
     );
   }
 
   Widget _buildBody() {
-    return BlocConsumer<ProductBloc, ProductState>(listener: (context, state) {
-      if (state.productStatus == ProductStatus.error) {
+    return BlocConsumer<BasketBloc, BasketState>(listener: (context, state) {
+      if (state.basketStatus == BasketStatus.error) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(state.messages),
           ),
         );
-      } else if (state.productStatus == ProductStatus.loading) {
+      } else if (state.basketStatus == BasketStatus.loading) {
         Center(
           child: SizedBox(
             height: 60.h,
@@ -49,11 +46,11 @@ class _HomePageState extends State<HomePage> {
         );
       }
     }, builder: (context, state) {
-      return BottomNavigationBarWidget(
+
+      return ShoppingCart(
         state: state,
+        inBottomNav: true,
       );
     });
   }
-
-
 }

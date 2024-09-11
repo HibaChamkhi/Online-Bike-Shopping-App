@@ -47,12 +47,52 @@ class _SettingsScreenState extends State<SettingsScreen> {
               SizedBox(height: 40.h),
               InkWell(
                 onTap: () async {
-                  await supabase.auth.signOut();
-                  Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(
-                      builder: (context) => const DiscoverWidget(),
-                    ),
+                  bool? confirmLogout = await showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        backgroundColor: Colors.black, // Set the background color to black
+                        title: const Text(
+                          'Confirm Logout',
+                          style: TextStyle(color: Colors.white), // Set title text color to white
+                        ),
+                        content: const Text(
+                          'Are you sure you want to logout?',
+                          style: TextStyle(color: Colors.white), // Set content text color to white
+                        ),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop(false); // User pressed cancel
+                            },
+                            child: const Text(
+                              'Cancel',
+                              style: TextStyle(color: Colors.white), // Set button text color to white
+                            ),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop(true); // User pressed logout
+                            },
+                            child: const Text(
+                              'Logout',
+                              style: TextStyle(color: Colors.white), // Set button text color to white
+                            ),
+                          ),
+                        ],
+                      );
+                    },
                   );
+
+                  // If user confirmed, proceed with logout
+                  if (confirmLogout == true) {
+                    await supabase.auth.signOut();
+                    Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(
+                        builder: (context) => const DiscoverWidget(),
+                      ),
+                    );
+                  }
                 },
                 child: Container(
                   padding: EdgeInsets.symmetric(
@@ -79,6 +119,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   ),
                 ),
               ),
+
             ],
           ),
         )

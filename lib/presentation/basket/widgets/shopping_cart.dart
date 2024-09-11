@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:online_bike_shopping_appuntitled/presentation/basket/bloc/basket_bloc.dart';
 import '../../../core/ui/styles/colors.dart';
 import '../../../domain/products/models/product.dart';
-import 'custom_swipe_button.dart';
-import 'home_widget.dart';
+import '../../products/widgets/custom_swipe_button.dart';
+import '../../products/widgets/home_widget.dart';
 
 class ShoppingCart extends StatefulWidget {
-  const ShoppingCart(
-      {super.key, required this.bike, required this.inBottomNav});
+  const ShoppingCart({
+    super.key,
+    required this.inBottomNav,
+    required this.state,
+  });
 
-  final BikeModel bike;
-
+  final BasketState? state;
   final bool inBottomNav;
 
   @override
@@ -19,9 +23,25 @@ class ShoppingCart extends StatefulWidget {
 
 class _ShoppingCartState extends State<ShoppingCart> {
   @override
+  void initState() {
+    BlocProvider.of<BasketBloc>(context).add(const AddToBasketEvent(BikeModel(
+      id: 1,
+      name: 'aaa',
+      description: "peed Shimano Claris drivetrain., 1999.99, road bike",
+      categoryId: '1',
+      price:200,
+      discount: 30,
+      image:
+          "https://zxpobryrmbyvwahngxko.supabase.co/storage/v1/object/public/images/bike1.glb?t=2024-08-28T13%3A40%3A47.889Z",
+    )));
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor:widget.inBottomNav ? Colors.transparent: AppConstants.ebonyClay,
+      backgroundColor:
+          widget.inBottomNav ? Colors.transparent : AppConstants.ebonyClay,
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.all(16.0.w),
@@ -31,40 +51,42 @@ class _ShoppingCartState extends State<ShoppingCart> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  widget.inBottomNav ? Container() :  UnicornOutlineButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    strokeWidth: 2.w,
-                    radius: 10.w,
-                    gradient: LinearGradient(
-                      colors: [
-                        AppConstants.pictonBlue,
-                        AppConstants.royalBlue.withOpacity(.7)
-                      ],
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                    ),
-                    child: Container(
-                      padding: EdgeInsets.all(6.w),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10.r),
-                        gradient: LinearGradient(
-                          colors: [
-                            AppConstants.pictonBlue,
-                            AppConstants.royalBlue.withOpacity(.7)
-                          ],
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
+                  widget.inBottomNav
+                      ? Container()
+                      : UnicornOutlineButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          strokeWidth: 2.w,
+                          radius: 10.w,
+                          gradient: LinearGradient(
+                            colors: [
+                              AppConstants.pictonBlue,
+                              AppConstants.royalBlue.withOpacity(.7)
+                            ],
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                          ),
+                          child: Container(
+                            padding: EdgeInsets.all(6.w),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10.r),
+                              gradient: LinearGradient(
+                                colors: [
+                                  AppConstants.pictonBlue,
+                                  AppConstants.royalBlue.withOpacity(.7)
+                                ],
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                              ),
+                            ),
+                            child: Icon(
+                              Icons.arrow_back_ios_outlined,
+                              color: Colors.white,
+                              size: 28.h,
+                            ),
+                          ),
                         ),
-                      ),
-                      child: Icon(
-                        Icons.arrow_back_ios_outlined,
-                        color: Colors.white,
-                        size: 28.h,
-                      ),
-                    ),
-                  ) ,
                   Text(
                     'My Shopping Cart',
                     style: TextStyle(
@@ -85,23 +107,23 @@ class _ShoppingCartState extends State<ShoppingCart> {
                       price: 1999.99,
                       imageUrl: 'assets/images/bicycl.png',
                     ),
-                    CartItem(
-                      itemName: 'PILOT - CHROMOLY 520',
-                      price: 3999.99,
-                      imageUrl: 'assets/images/bicycl.png',
-                    ),
-                    CartItem(
-                        itemName: 'SMITH - Trade',
-                        price: 120,
-                        imageUrl: 'assets/images/bicycl.png'),
+                    // CartItem(
+                    //   itemName: 'PILOT - CHROMOLY 520',
+                    //   price: 3999.99,
+                    //   imageUrl: 'assets/images/bicycl.png',
+                    // ),
+                    // CartItem(
+                    //     itemName: 'SMITH - Trade',
+                    //     price: 120,
+                    //     imageUrl: 'assets/images/bicycl.png'),
                   ],
                 ),
               ),
-              Divider(color: Colors.grey),
+              const Divider(color: Colors.grey),
               SizedBox(height: 10.h),
               Padding(
                 padding: EdgeInsets.symmetric(vertical: 8.0.h),
-                child: Row(
+                child: const Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
@@ -112,11 +134,11 @@ class _ShoppingCartState extends State<ShoppingCart> {
                 ),
               ),
               SizedBox(height: 10.h),
-              CouponField(),
+              const CouponField(),
               SizedBox(height: 10.h),
-              CartSummary(),
+              const CartSummary(),
               SizedBox(height: 20.h),
-              CheckoutButton(),
+              const CheckoutButton(),
             ],
           ),
         ),
@@ -213,6 +235,8 @@ class CartItem extends StatelessWidget {
 }
 
 class CouponField extends StatelessWidget {
+  const CouponField({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -277,6 +301,8 @@ class CouponField extends StatelessWidget {
 }
 
 class CartSummary extends StatelessWidget {
+  const CartSummary({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -295,7 +321,11 @@ class SummaryRow extends StatelessWidget {
   final String value;
   final bool isTotal;
 
-  SummaryRow({required this.label, required this.value, this.isTotal = false});
+  const SummaryRow(
+      {super.key,
+      required this.label,
+      required this.value,
+      this.isTotal = false});
 
   @override
   Widget build(BuildContext context) {

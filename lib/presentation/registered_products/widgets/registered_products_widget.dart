@@ -36,6 +36,13 @@ class _RegisteredProductWidgetsState extends State<RegisteredProductWidgets> {
         ),
       );
     }
+    if (widget.state.favoriteProductsByMe.isEmpty) {
+      return const Center(
+          child: Text(
+        "There is no data yet...",
+        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+      ));
+    }
     return ListView.builder(
       itemCount: widget.state.favoriteProductsByMe.length,
       itemBuilder: (context, index) {
@@ -46,11 +53,12 @@ class _RegisteredProductWidgetsState extends State<RegisteredProductWidgets> {
           imageUrl: 'assets/images/bicycl.png',
           isFavorited: true,
           id: product.id.toString(),
-            onFavoriteToggle: () {
-              setState(() {
-                widget.state.favoriteProductsByMe.removeAt(index); // Remove from list
-              });
-            },
+          onFavoriteToggle: () {
+            setState(() {
+              widget.state.favoriteProductsByMe
+                  .removeAt(index); // Remove from list
+            });
+          },
         );
       },
     );
@@ -79,7 +87,8 @@ class CartItem extends StatefulWidget {
   State<CartItem> createState() => _CartItemState();
 }
 
-class _CartItemState extends State<CartItem> with SingleTickerProviderStateMixin {
+class _CartItemState extends State<CartItem>
+    with SingleTickerProviderStateMixin {
   bool _isRemoving = false;
   late AnimationController _controller;
   late Animation<Offset> _offsetAnimation;
@@ -202,6 +211,7 @@ class _CartItemState extends State<CartItem> with SingleTickerProviderStateMixin
   }
 
   void _onRemoveProductFromFavoriteEvent(String id) {
-    BlocProvider.of<ProductBloc>(context).add(RemoveProductFromFavoriteEvent(id));
+    BlocProvider.of<ProductBloc>(context)
+        .add(RemoveProductFromFavoriteEvent(id));
   }
 }

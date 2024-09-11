@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_3d_controller/flutter_3d_controller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:online_bike_shopping_appuntitled/presentation/products/widgets/shopping_cart.dart';
+import 'package:online_bike_shopping_appuntitled/presentation/basket/widgets/shopping_cart.dart';
 import '../../../core/ui/styles/colors.dart';
 import '../../../domain/products/models/product.dart';
 import 'home_widget.dart';
@@ -39,13 +39,12 @@ class _ProductDetailsState extends State<ProductDetails> {
             ),
             InkWell(
               onTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => ShoppingCart(
-                      bike: widget.bike, inBottomNav: false,
-                    ),
-                  ),
-                );
+                // Navigator.of(context).push(
+                //   MaterialPageRoute(
+                //     builder: (context) => ShoppingCart(inBottomNav: false,
+                //     ),
+                //   ),
+                // );
               },
               child: Container(
                 padding: EdgeInsets.symmetric(
