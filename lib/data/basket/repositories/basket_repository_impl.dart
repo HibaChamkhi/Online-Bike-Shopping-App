@@ -32,9 +32,27 @@ class BasketRepositoryImpl implements BasketRepository {
   }
 
   @override
-  Future<Either<Exception,Unit>> addToBasket(BikeModel bikeModel) async {
-    return performNetworkRequest<Unit>(
+  Future<Either<Exception,String>> addToBasket(BikeModel bikeModel) async {
+    return performNetworkRequest<String>(
           () => remoteDataSource.addToBasket(bikeModel: bikeModel),
+      networkInfo,
+    );
+  }
+
+  @override
+  Future<Either<Exception,Unit>> removeFromBasket(String bikeId) async {
+    return performNetworkRequest<Unit>(
+          () => remoteDataSource.removeFromBasket(bikeId: bikeId),
+      networkInfo,
+    );
+  }
+  
+  @override
+  Future<Either<Exception,Unit>> updateQuantity(
+  String bikeId,
+  bool increase,) async {
+    return performNetworkRequest<Unit>(
+          () => remoteDataSource.updateQuantity(bikeId: bikeId, increase: increase),
       networkInfo,
     );
   }

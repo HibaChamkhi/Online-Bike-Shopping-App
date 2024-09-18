@@ -3,14 +3,13 @@ import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
+import '../../../../core/model/ui_state.dart';
 import '../../../../core/utils/handle_product_load_result.dart';
-import '../../../../core/utils/map_exception_to_message.dart';
-import '../../../../core/utils/show_snack_bar.dart';
 import '../../../../domain/auth/repositories/auth_repository.dart';
+import 'login_state.dart';
 
 part 'login_event.dart';
 
-part 'login_state.dart';
 
 @injectable
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
@@ -24,24 +23,25 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
     final result = await authRepository.signInUser(event.email, event.password);
 
-    handleLoadResult<Unit, LoginState, LoginStatus>(
+    handleLoadResult<Unit, LoginState, UIStatus>(
       result: result,
       emit: emit,
       state: state,
       copyWith: ({
         Unit? data,
         String? message,
-        LoginStatus? status,
+        UIStatus? status, // Correct type here
       }) =>
           state.copyWith(
-            loginStatus: status,
+            status: status, // Pass UIStatus, not UIState
             message: message,
           ),
-      loadingStatus: LoginStatus.loading,
-      successStatus: LoginStatus.success,
-      errorStatus: LoginStatus.error,
+      loadingStatus: UIStatus.loading,
+      successStatus: UIStatus.success,
+      errorStatus: UIStatus.error,
     );
   }
+
 
 
   // Future<void> _onLoginUserEvent(

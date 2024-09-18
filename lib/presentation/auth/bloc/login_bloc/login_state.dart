@@ -1,32 +1,20 @@
-part of 'login_bloc.dart';
+import '../../../../core/model/ui_state.dart';
 
-class LoginState extends Equatable {
-  final LoginStatus loginStatus;
-  final String message;
+class LoginState extends UIState<void> {
+  const LoginState({
+    super.status,
+    super.message,
+  });
 
-
-  const LoginState(
-      {
-        this.message = "",
-        this.loginStatus = LoginStatus.loading
-      });
-
+  @override
   LoginState copyWith({
-    LoginStatus? loginStatus,
+    UIStatus? status, // Use UIStatus here
     String? message,
-
+    void data,
   }) {
     return LoginState(
-      loginStatus: loginStatus ?? this.loginStatus,
+      status: status ?? this.status,
       message: message ?? this.message,
     );
   }
-
-  @override
-  List<Object?> get props => [
-    loginStatus,
-    message,
-  ];
 }
-
-enum LoginStatus {loading, success, error}

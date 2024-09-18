@@ -32,7 +32,6 @@ class ProductsRemoteDataSource {
   }
 
 
-
   Future<List<BikeModel>> getAllFaivriteProductsByMe() async {
     return handleError(() async {
       List<Map<String, dynamic>> response =
@@ -43,8 +42,6 @@ class ProductsRemoteDataSource {
       return products;
     });
   }
-
-
 
 // Function to add a product to the favorite table
   @override

@@ -7,7 +7,9 @@ class BikeModel extends Equatable {
   final dynamic price;
   final String categoryId;
   final String image;
+  final String image3d;
   final dynamic discount;
+  final dynamic quantity;
 
   const BikeModel({
     required this.id,
@@ -16,11 +18,13 @@ class BikeModel extends Equatable {
     this.price,
     required this.categoryId,
     required this.image,
+    required this.image3d,
     this.discount,
+    this.quantity,
   });
 
   @override
   List<Object?> get props => [id, name,
-    description, price, categoryId, image, discount
+    description, price, categoryId, image, image3d,discount,quantity
   ];
 }

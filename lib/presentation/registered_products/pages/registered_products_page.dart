@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../core/di/injection.dart';
+import '../../../core/model/ui_state.dart';
 import '../../products/bloc/product_bloc.dart';
 import '../widgets/registered_products_widget.dart';
 
@@ -27,14 +28,14 @@ class _RegisteredProductPageState extends State<RegisteredProductPage> {
   Widget _buildBody() {
     return BlocConsumer<ProductBloc, ProductState>(
         listener: (context, state) {
-      if (state.productStatus == ProductStatus.error) {
+      if (state.status == UIStatus.error) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(state.messages),
+            content: Text(state.message),
           ),
         );
-      } else if (state.productStatus ==
-        ProductStatus.loading) {
+      } else if (state.status ==
+          UIStatus.loading) {
         Center(
           child: SizedBox(
             height: 60.h,

@@ -1,47 +1,40 @@
 part of 'product_bloc.dart';
 
-class ProductState extends Equatable {
-  final List<BikeModel> products;
+class ProductState extends UIState<List<BikeModel>> {
   final List<BikeModel> favoriteProductsByMe;
-  final ProductStatus productStatus;
-  final FavoriteProductStatus favoriteProductStatus;
-  final String messages;
+  final UIStatus favoriteProductStatus;
 
   const ProductState({
-    this.products = const [],
+    super.status = UIStatus.loading,
+    super.message = '',
+    super.data = const [],
     this.favoriteProductsByMe = const [],
-    this.messages = "",
-    this.productStatus = ProductStatus.loading,
-    this.favoriteProductStatus = FavoriteProductStatus.loading,
+    this.favoriteProductStatus = UIStatus.loading,
   });
 
+  @override
   ProductState copyWith({
-    List<BikeModel>? products,
+    List<BikeModel>? data,
     List<BikeModel>? favoriteProductsByMe,
-    ProductStatus? productStatus,
-    FavoriteProductStatus? favoriteProductStatus,
-    String? messages,
+    UIStatus? status,
+    UIStatus? favoriteProductStatus,
+    String? message,
   }) {
     return ProductState(
-      products: products ?? this.products,
-      favoriteProductStatus:
-          favoriteProductStatus ?? this.favoriteProductStatus,
+      data: data ?? this.data,
       favoriteProductsByMe: favoriteProductsByMe ?? this.favoriteProductsByMe,
-      messages: messages ?? this.messages,
-      productStatus: productStatus ?? this.productStatus,
+      status: status ?? this.status,
+      favoriteProductStatus: favoriteProductStatus ?? this.favoriteProductStatus,
+      message: message ?? this.message,
     );
   }
 
   @override
   List<Object> get props => [
-        products,
-        favoriteProductsByMe,
-        favoriteProductStatus,
-        productStatus,
-        messages,
-      ];
+    // data,
+    favoriteProductsByMe,
+    status,
+    favoriteProductStatus,
+    message,
+  ];
 }
-
-enum ProductStatus { loading, success, error }
-
-enum FavoriteProductStatus { loading, success, error }

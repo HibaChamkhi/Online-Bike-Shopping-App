@@ -1,27 +1,20 @@
 part of 'register_bloc.dart';
 
-class RegisterState extends Equatable {
-  final RegisterStatus registerStatus;
-  final String message;
+class RegisterState extends UIState<void> {
+  const RegisterState({
+    super.status,
+    super.message,
+  });
 
-  const RegisterState(
-      {this.message = "", this.registerStatus = RegisterStatus.loading});
-
+  @override
   RegisterState copyWith({
-    RegisterStatus? registerStatus,
+    UIStatus? status,
     String? message,
+    void data, // This is void because it's not returning specific data here
   }) {
     return RegisterState(
-      registerStatus: registerStatus ?? this.registerStatus,
+      status: status ?? this.status,
       message: message ?? this.message,
     );
   }
-
-  @override
-  List<Object?> get props => [
-        registerStatus,
-        message,
-      ];
 }
-
-enum RegisterStatus { loading, success, error }

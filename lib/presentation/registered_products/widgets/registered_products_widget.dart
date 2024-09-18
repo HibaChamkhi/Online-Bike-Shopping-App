@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../../core/model/ui_state.dart';
 import '../../../core/ui/styles/colors.dart';
 import '../../products/bloc/product_bloc.dart';
 
@@ -18,7 +19,7 @@ class RegisteredProductWidgets extends StatefulWidget {
 class _RegisteredProductWidgetsState extends State<RegisteredProductWidgets> {
   @override
   Widget build(BuildContext context) {
-    if (widget.state.favoriteProductStatus == FavoriteProductStatus.loading) {
+    if (widget.state.favoriteProductStatus == UIStatus.loading) {
       return Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

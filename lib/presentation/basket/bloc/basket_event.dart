@@ -12,3 +12,17 @@ class AddToBasketEvent extends BasketEvent {
 
   const AddToBasketEvent(this.bikeModel);
 }
+
+class RemoveFromBasketEvent extends BasketEvent {
+  final String bikeId;
+
+  const RemoveFromBasketEvent(this.bikeId);
+}
+
+class UpdateQuantityEvent extends BasketEvent {
+  final String bikeId;
+  final bool increase;
+  const UpdateQuantityEvent(this.bikeId, this.increase);
+}
+
+class GetBasketEvent extends BasketEvent {}

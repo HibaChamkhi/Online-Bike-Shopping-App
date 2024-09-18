@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_3d_controller/flutter_3d_controller.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:online_bike_shopping_appuntitled/presentation/basket/widgets/shopping_cart.dart';
 import '../../../core/ui/styles/colors.dart';
 import '../../../domain/products/models/product.dart';
+import '../../basket/pages/add_to_cart.dart';
+import '../../basket/pages/basket_page.dart';
+import '../bloc/product_bloc.dart';
 import 'home_widget.dart';
 
 class ProductDetails extends StatefulWidget {
-  const ProductDetails({super.key, required this.bike});
+  const ProductDetails(
+      {super.key, required this.bike, });
 
   final BikeModel bike;
 
@@ -37,37 +42,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            InkWell(
-              onTap: () {
-                // Navigator.of(context).push(
-                //   MaterialPageRoute(
-                //     builder: (context) => ShoppingCart(inBottomNav: false,
-                //     ),
-                //   ),
-                // );
-              },
-              child: Container(
-                padding: EdgeInsets.symmetric(
-                  horizontal: 32.w,
-                  vertical: 16.h,
-                ),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16.r),
-                  gradient: LinearGradient(
-                    colors: [
-                      AppConstants.pictonBlue,
-                      AppConstants.royalBlue.withOpacity(.7),
-                    ],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
-                ),
-                child: const Text(
-                  'Add to Cart',
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
-            ),
+            AddToCartPage(bike: widget.bike,)
           ],
         ),
       ),
@@ -92,7 +67,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                             begin: Alignment.topLeft,
                             end: Alignment.bottomRight,
                             colors: [
-                            AppConstants.royalBlue2,
+                              AppConstants.royalBlue2,
                               Colors.blue,
                             ],
                           ),
@@ -106,8 +81,8 @@ class _ProductDetailsState extends State<ProductDetails> {
                       SizedBox(
                         height: 400.h,
                         width: 400.w,
-                        child:  Flutter3DViewer(
-                          src: widget.bike.image ?? "",
+                        child: Flutter3DViewer(
+                          src: widget.bike.image3d ?? "",
                           progressBarColor: Colors.white,
                         ),
                       ),

@@ -8,7 +8,9 @@ class BikeDto {
   final dynamic price;
   final String categoryId;
   final String image;
+  final String image3d;
   final dynamic discount;
+  final dynamic? quantity;
 
   BikeDto({
     required this.id,
@@ -17,7 +19,9 @@ class BikeDto {
     required this.price,
     required this.categoryId,
     required this.image,
+    required this.image3d,
     required this.discount,
+     this.quantity,
   });
 
   factory BikeDto.fromJson(Map<String, dynamic> json) {
@@ -28,7 +32,9 @@ class BikeDto {
       price: (json['price'] as num).toDouble(),
       categoryId: json['category'] as String,
       image: json['image'] as String,
+      image3d: json['3dImage'] as String,
       discount: (json['discount'] as num).toDouble(),
+      quantity: json['quantity'],
     );
   }
 
@@ -40,7 +46,9 @@ class BikeDto {
       'price': price,
       'category': categoryId,
       'image': image,
+      '3dImage': image3d,
       'discount': discount,
+      'quantity': quantity,
     };
   }
   factory BikeDto.fromModel(BikeModel model) {
@@ -51,7 +59,9 @@ class BikeDto {
       price: model.price,
       categoryId: model.categoryId,
       image: model.image,
+      image3d: model.image3d,
       discount: model.discount,
+      quantity: model.quantity,
     );
   }
   BikeModel toModel() {
@@ -62,7 +72,9 @@ class BikeDto {
       price: price,
       categoryId: categoryId,
       image: image,
+      image3d: image3d,
       discount: discount,
+      quantity: quantity,
     );
   }
 }

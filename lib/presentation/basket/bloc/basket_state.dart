@@ -1,29 +1,22 @@
 part of 'basket_bloc.dart';
 
-class BasketState extends Equatable {
-  final BasketStatus basketStatus;
-  final String messages;
-
+class BasketState extends UIState<List<BikeModel>> {
   const BasketState({
-    this.messages = "",
-    this.basketStatus = BasketStatus.loading,
+    super.status,
+    super.message,
+    super.data = const [],
   });
 
+  @override
   BasketState copyWith({
-    BasketStatus? basketStatus,
-    String? messages,
+    UIStatus? status,
+    String? message,
+    List<BikeModel>? data,
   }) {
     return BasketState(
-      messages: messages ?? this.messages,
-      basketStatus: basketStatus ?? this.basketStatus,
+      status: status ?? this.status,
+      message: message ?? this.message,
+      data: data ?? this.data,
     );
   }
-
-  @override
-  List<Object> get props => [
-        basketStatus,
-        messages,
-      ];
 }
-
-enum BasketStatus { loading, success, error }

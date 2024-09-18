@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:online_bike_shopping_appuntitled/core/model/ui_state.dart';
 import 'package:online_bike_shopping_appuntitled/presentation/products/widgets/product_details.dart';
 
 import '../../../core/di/injection.dart';
@@ -114,9 +115,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   SizedBox(height: 10.h),
                   // Grid of Products or Loading Placeholders
-                  (widget.state.productStatus == ProductStatus.loading ||
+                  (widget.state.status == UIStatus.loading ||
                           widget.state.favoriteProductStatus ==
-                              FavoriteProductStatus.loading)
+                              UIStatus.loading)
                       ? buildLoadingGrid()
                       : buildProductGrid(),
                 ],
@@ -162,18 +163,19 @@ class _HomeScreenState extends State<HomeScreen> {
         mainAxisSpacing: 10,
         childAspectRatio: 0.75,
       ),
-      itemCount: widget.state.products.length,
+      itemCount: widget.state.data?.length,
       itemBuilder: (context, index) {
         if (index % 2 != 0) {
           return Transform.translate(
               offset: const Offset(0, -25),
               child: BuildProductCard(
-                bike: widget.state.products[index],
+                bike: widget.state.data![index],
                 favoriteBikes: widget.state.favoriteProductsByMe,
+
               ));
         }
         return BuildProductCard(
-          bike: widget.state.products[index],
+          bike: widget.state.data![index],
           favoriteBikes: widget.state.favoriteProductsByMe,
         );
       },
@@ -285,7 +287,7 @@ class BuildProductCard extends StatefulWidget {
   const BuildProductCard({
     super.key,
     required this.bike,
-    required this.favoriteBikes, // Use favoriteBikes instead of favoriteProductIds
+    required this.favoriteBikes,
   });
 
   @override
@@ -293,7 +295,8 @@ class BuildProductCard extends StatefulWidget {
 }
 
 class _ProductCardState extends State<BuildProductCard> {
-  late bool _isFavorited ;
+  late bool _isFavorited;
+
   @override
   void initState() {
     super.initState();
@@ -368,8 +371,8 @@ class _ProductCardState extends State<BuildProductCard> {
                     ),
                   ),
                   Center(
-                    child: Image.asset(
-                      'assets/images/bicycl.png', // Placeholder image path
+                    child: Image.network(
+                      widget.bike.image, // Placeholder image path
                       height: 70.h,
                     ),
                   ),

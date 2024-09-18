@@ -14,6 +14,7 @@ Future<T> handleError<T>(Future<T> Function() operation) async {
     if (e is AuthException) {
       throw ServerException(message: e.message);
     } else {
+      print(e.toString());
       throw ServerException(message: e.toString());
     }
   }

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:online_bike_shopping_appuntitled/core/model/ui_state.dart';
 import 'package:online_bike_shopping_appuntitled/presentation/auth/widgets/discover_widget.dart';
 import 'package:online_bike_shopping_appuntitled/presentation/profile/bloc/profile_bloc.dart';
 import '../../../core/ui/styles/colors.dart';
@@ -18,7 +19,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
     // If profile status is 'loading', show a loader
-    if (widget.state.profileStatus == ProfileStatus.loading) {
+    if (widget.state.status == UIStatus.loading) {
       return const Center(
         child: CircularProgressIndicator(),
       );
@@ -39,9 +40,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
           child: Column(
             children: [
-              buildInfoRow('Username', widget.state.user!.userMetadata?["full_name"] ?? 'N/A'),
-              buildInfoRow('Email', widget.state.user!.userMetadata?["email"] ?? 'N/A'),
-              buildInfoRow('Phone', widget.state.user!.userMetadata?["phone_number"] ?? 'N/A'),
+              buildInfoRow('Username', widget.state.data!.userMetadata?["full_name"] ?? 'N/A'),
+              buildInfoRow('Email', widget.state.data!.userMetadata?["email"] ?? 'N/A'),
+              buildInfoRow('Phone', widget.state.data!.userMetadata?["phone_number"] ?? 'N/A'),
               buildInfoRow('Date of birth', '20/05/1990'),
               buildInfoRow('Address', '123 Royal Street, New York'),
               SizedBox(height: 40.h),

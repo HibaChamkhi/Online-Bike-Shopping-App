@@ -1,34 +1,25 @@
 part of 'profile_bloc.dart';
 
- class ProfileState extends Equatable {
-  final User? user;
-  final ProfileStatus profileStatus;
-  final String messages;
-
+class ProfileState extends UIState<User> {
   const ProfileState({
-    this.user ,
-    this.messages = "",
-    this.profileStatus = ProfileStatus.loading,
+    super.data,
+    super.message = '',
+    super.status = UIStatus.loading,
   });
 
+  @override
   ProfileState copyWith({
-   User? user,
-    ProfileStatus? profileStatus,
-    String? messages,
+    User? data,
+    UIStatus? status,
+    String? message,
   }) {
     return ProfileState(
-      user: user ?? this.user,
-      messages: messages ?? this.messages,
-      profileStatus: profileStatus ?? this.profileStatus,
+      data: data ?? this.data,
+      status: status ?? this.status,
+      message: message ?? this.message,
     );
   }
 
   @override
-  List<Object> get props => [
-    //user
-    profileStatus,
-    messages,
-  ];
+  List<Object?> get props => [data, status, message];
 }
-
-enum ProfileStatus { loading, success, error }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:online_bike_shopping_appuntitled/core/model/ui_state.dart';
 import 'package:online_bike_shopping_appuntitled/presentation/basket/bloc/basket_bloc.dart';
 import '../../../core/ui/styles/colors.dart';
 import '../../../domain/products/models/product.dart';
@@ -22,103 +23,93 @@ class ShoppingCart extends StatefulWidget {
 }
 
 class _ShoppingCartState extends State<ShoppingCart> {
-  @override
-  void initState() {
-    BlocProvider.of<BasketBloc>(context).add(const AddToBasketEvent(BikeModel(
-      id: 1,
-      name: 'aaa',
-      description: "peed Shimano Claris drivetrain., 1999.99, road bike",
-      categoryId: '1',
-      price:200,
-      discount: 30,
-      image:
-          "https://zxpobryrmbyvwahngxko.supabase.co/storage/v1/object/public/images/bike1.glb?t=2024-08-28T13%3A40%3A47.889Z",
-    )));
-    super.initState();
+  double getSubtotal() {
+    if (widget.state?.data == null) {
+      return 0.0;
+    }
+
+    return widget.state!.data!.fold(0.0, (sum, item) {
+      final itemPrice = item.price ?? 0.0; // Default to 0 if null
+      final itemQuantity = item.quantity ?? 1; // Default to 1 if null
+      return sum + (itemPrice * itemQuantity);
+    });
+  }
+
+
+  double getDiscount(double subtotal) {
+    // Example: 30% discount
+    return subtotal * 0.30;
+  }
+
+  double getDeliveryFee() {
+    // Example: Free delivery for simplicity
+    return 0.0;
   }
 
   @override
   Widget build(BuildContext context) {
+    final subtotal = getSubtotal();
+    final discount = getDiscount(subtotal);
+    final deliveryFee = getDeliveryFee();
+    final total = subtotal - discount + deliveryFee;
+
     return Scaffold(
       backgroundColor:
-          widget.inBottomNav ? Colors.transparent : AppConstants.ebonyClay,
+      widget.inBottomNav ? Colors.transparent : AppConstants.ebonyClay,
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.all(16.0.w),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  widget.inBottomNav
-                      ? Container()
-                      : UnicornOutlineButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          strokeWidth: 2.w,
-                          radius: 10.w,
-                          gradient: LinearGradient(
-                            colors: [
-                              AppConstants.pictonBlue,
-                              AppConstants.royalBlue.withOpacity(.7)
-                            ],
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                          ),
-                          child: Container(
-                            padding: EdgeInsets.all(6.w),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10.r),
-                              gradient: LinearGradient(
-                                colors: [
-                                  AppConstants.pictonBlue,
-                                  AppConstants.royalBlue.withOpacity(.7)
-                                ],
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight,
-                              ),
-                            ),
-                            child: Icon(
-                              Icons.arrow_back_ios_outlined,
-                              color: Colors.white,
-                              size: 28.h,
-                            ),
-                          ),
-                        ),
-                  Text(
-                    'My Shopping Cart',
-                    style: TextStyle(
-                        fontSize: 24.sp,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white),
-                  ),
-                  Container()
-                ],
-              ),
+              // ... (existing widgets)
 
-              // SizedBox(height: 20),
               Expanded(
-                child: ListView(
-                  children: [
-                    CartItem(
-                      itemName: 'PEUGEOT- LR01',
-                      price: 1999.99,
-                      imageUrl: 'assets/images/bicycl.png',
-                    ),
-                    // CartItem(
-                    //   itemName: 'PILOT - CHROMOLY 520',
-                    //   price: 3999.99,
-                    //   imageUrl: 'assets/images/bicycl.png',
-                    // ),
-                    // CartItem(
-                    //     itemName: 'SMITH - Trade',
-                    //     price: 120,
-                    //     imageUrl: 'assets/images/bicycl.png'),
-                  ],
+                child: widget.state?.status == UIStatus.loading && widget.state?.data != null
+                    ? const Center(child: CircularProgressIndicator(color: Colors.white,)) // Loading indicator
+                    : widget.state?.data?.isEmpty ?? true
+                    ? const Center(child: Text("No data available",style: TextStyle(color: Colors.white),)) // No data message
+                    : ListView.builder(
+                  itemCount: widget.state?.data?.length,
+                  itemBuilder: (context, index) {
+                    final product = widget.state?.data?[index];
+                    return Dismissible(
+                      key: ValueKey(product?.id),
+                      direction: DismissDirection.endToStart,
+                      background: Container(
+                        alignment: Alignment.centerRight,
+                        padding: EdgeInsets.symmetric(horizontal: 20.w),
+                        color: Colors.red,
+                        child: Icon(
+                          Icons.delete,
+                          color: Colors.white,
+                          size: 30.h,
+                        ),
+                      ),
+                      onDismissed: (direction) {
+                        setState(() {
+                          widget.state?.data?.removeAt(index);
+                          BlocProvider.of<BasketBloc>(context)
+                              .add(RemoveFromBasketEvent(product?.id.toString() ?? ""));
+                        });
+
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('${product?.name} removed from cart')),
+                        );
+                      },
+                      child: CartItem(
+                        quantity: product?.quantity,
+                        itemName: product?.name ?? "",
+                        price: product?.price ?? 0,
+                        imageUrl: product?.image ?? "",
+                        bikeId: product?.id.toString() ?? "",
+                      ),
+                    );
+                  },
                 ),
               ),
+
+
               const Divider(color: Colors.grey),
               SizedBox(height: 10.h),
               Padding(
@@ -136,7 +127,12 @@ class _ShoppingCartState extends State<ShoppingCart> {
               SizedBox(height: 10.h),
               const CouponField(),
               SizedBox(height: 10.h),
-              const CartSummary(),
+              CartSummary(
+                subtotal: subtotal,
+                deliveryFee: deliveryFee,
+                discount: discount,
+                total: total,
+              ),
               SizedBox(height: 20.h),
               const CheckoutButton(),
             ],
@@ -147,50 +143,91 @@ class _ShoppingCartState extends State<ShoppingCart> {
   }
 }
 
-class CartItem extends StatelessWidget {
+
+class CartItem extends StatefulWidget {
   final String itemName;
   final double price;
   final String imageUrl;
+  final int quantity;
+  final String bikeId;
+  CartItem({
+    required this.itemName,
+    required this.price,
+    required this.imageUrl,
+    required this.quantity,
+    required this.bikeId,
+  });
 
-  CartItem(
-      {required this.itemName, required this.price, required this.imageUrl});
+  @override
+  _CartItemState createState() => _CartItemState();
+}
+
+class _CartItemState extends State<CartItem> {
+  late int quantity; // Initial quantity
+
+  @override
+  void initState() {
+    quantity = widget.quantity ?? 1; // Default to 1 if null
+    super.initState();
+  }
+
+  // Function to increase quantity
+  void increaseQuantity() {
+    setState(() {
+      quantity++;
+      BlocProvider.of<BasketBloc>(context).add(UpdateQuantityEvent(widget.bikeId, true));
+    });
+  }
+
+  // Function to decrease quantity
+  void decreaseQuantity() {
+    if (quantity > 1) {
+      setState(() {
+        quantity--;
+        BlocProvider.of<BasketBloc>(context).add(UpdateQuantityEvent(widget.bikeId, false));
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    final itemPrice = widget.price ?? 0.0; // Default to 0 if null
+
     return Container(
-      // margin: const EdgeInsets.symmetric(vertical: 10),
       padding: EdgeInsets.all(8.0.w),
       child: Row(
         children: [
           Container(
-              padding: EdgeInsets.all(8.0.w),
-              decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.15),
-                borderRadius: BorderRadius.circular(16.r),
-              ),
-              child: Image.asset(
-                imageUrl,
-                height: 70.h,
-                width: 80.w,
-              )),
-          // Replace with your asset
+            padding: EdgeInsets.all(8.0.w),
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(0.15),
+              borderRadius: BorderRadius.circular(16.r),
+            ),
+            child: Image.network(
+              widget.imageUrl,
+              height: 70.h,
+              width: 80.w,
+            ),
+          ),
           SizedBox(width: 20.w),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(itemName,
+              Text(widget.itemName,
                   style: TextStyle(fontSize: 15, color: Colors.white)),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   SizedBox(
                       width: 100.w,
-                      child: Text('\$$price',
+                      child: Text('\$${(itemPrice * quantity).toStringAsFixed(2)}',
                           style: TextStyle(color: Colors.blue))),
                   Row(
                     children: [
-                      IconButton(
-                        icon: Container(
+                      InkWell(
+                        onTap: increaseQuantity,
+                        child: Container(
+                            padding: EdgeInsets.all(4),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10.r),
                               gradient: LinearGradient(
@@ -203,11 +240,18 @@ class CartItem extends StatelessWidget {
                               ),
                             ),
                             child: Icon(Icons.add, color: Colors.white)),
-                        onPressed: () {},
                       ),
-                      Text('1', style: TextStyle(color: Colors.white)),
-                      IconButton(
-                        icon: Container(
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        child: Text(
+                          quantity.toString(),
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+                      InkWell(
+                        onTap: decreaseQuantity,
+                        child: Container(
+                            padding: EdgeInsets.all(4),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10.r),
                               gradient: LinearGradient(
@@ -220,10 +264,9 @@ class CartItem extends StatelessWidget {
                               ),
                             ),
                             child: Icon(Icons.remove, color: Colors.white)),
-                        onPressed: () {},
                       ),
                     ],
-                  )
+                  ),
                 ],
               ),
             ],
@@ -233,6 +276,8 @@ class CartItem extends StatelessWidget {
     );
   }
 }
+
+
 
 class CouponField extends StatelessWidget {
   const CouponField({super.key});
@@ -301,20 +346,33 @@ class CouponField extends StatelessWidget {
 }
 
 class CartSummary extends StatelessWidget {
-  const CartSummary({super.key});
+  final double subtotal;
+  final double deliveryFee;
+  final double discount;
+  final double total;
+
+  const CartSummary({
+    super.key,
+    required this.subtotal,
+    required this.deliveryFee,
+    required this.discount,
+    required this.total,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        SummaryRow(label: 'Subtotal:', value: '\$6119.99'),
-        SummaryRow(label: 'Delivery Fee:', value: '\$0'),
-        SummaryRow(label: 'Discount:', value: '30%'),
-        SummaryRow(label: 'Total:', value: '\$4,283.99', isTotal: true),
+        SummaryRow(label: 'Subtotal:', value: '\$${subtotal.toStringAsFixed(2)}'),
+        SummaryRow(label: 'Delivery Fee:', value: '\$${deliveryFee.toStringAsFixed(2)}'),
+        SummaryRow(label: 'Discount:', value: '-\$${discount.toStringAsFixed(2)}'),
+        SummaryRow(label: 'Total:', value: '\$${total.toStringAsFixed(2)}', isTotal: true),
       ],
     );
   }
 }
+
+
 
 class SummaryRow extends StatelessWidget {
   final String label;

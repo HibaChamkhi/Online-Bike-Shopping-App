@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:online_bike_shopping_appuntitled/presentation/profile/widgets/settings.dart';
 import '../../../core/di/injection.dart';
+import '../../../core/model/ui_state.dart';
 import '../bloc/profile_bloc.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -27,13 +28,13 @@ class _SettingsPageState extends State<SettingsPage> {
 
   Widget _buildBody() {
     return BlocConsumer<ProfileBloc, ProfileState>(listener: (context, state) {
-      if (state.profileStatus == ProfileStatus.error) {
+      if (state.status == UIStatus.error) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(state.messages),
+            content: Text(state.message),
           ),
         );
-      } else if (state.profileStatus == ProfileStatus.loading) {
+      } else if (state.status == UIStatus.loading) {
         Center(
           child: SizedBox(
             height: 60.h,

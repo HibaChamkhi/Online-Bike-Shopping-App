@@ -43,7 +43,7 @@ class _BottomNavigationBarWidgetState extends State<BottomNavigationBarWidget> {
       // 0: Home Screen
       const RegisteredProductPage(),
       // 1: Register Screen
-      const BasketPage(),
+      const BasketPage(inBottomNav: true,),
       // 2: Shopping Screen
       const SettingsPage(),
       // 3: Settings Screen

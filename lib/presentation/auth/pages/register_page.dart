@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../core/model/ui_state.dart';
 import '../../../core/ui/styles/colors.dart';
 import '../../../core/utils/show_snack_bar.dart';
 import '../../../core/di/injection.dart';
@@ -27,14 +28,14 @@ class _RegisterPageState extends State<RegisterPage> {
           BlocConsumer<RegisterBloc, RegisterState>(listener: (context, state) {
         if (state.message.isNotEmpty) {
           showSnackBar(context, state.message, Colors.red);
-        } else if (state.registerStatus == RegisterStatus.success) {
+        } else if (state.status == UIStatus.success) {
           navigateToLoginScreen(context);
           showSnackBar(context, 'User registered successfully.',
               AppConstants.cornflowerBlueColor.withOpacity(0.8));
         }
       }, builder: (context, state) {
         return RegisterWidget(
-            isLoading: state.registerStatus == RegisterStatus.loading,
+            isLoading: state.status == UIStatus.loading,
             registerFunction: (name, email, number, password) {
               BlocProvider.of<RegisterBloc>(context).add(RegisterUserEvent(
                 userName: name,

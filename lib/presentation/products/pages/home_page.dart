@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../core/di/injection.dart';
+import '../../../core/model/ui_state.dart';
 import '../../../data/products/data_sources/product_prefUtils.dart';
 import '../bloc/product_bloc.dart';
 import '../widgets/bottom_navigation_bar_widget.dart';
@@ -17,7 +18,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -30,13 +30,13 @@ class _HomePageState extends State<HomePage> {
 
   Widget _buildBody() {
     return BlocConsumer<ProductBloc, ProductState>(listener: (context, state) {
-      if (state.productStatus == ProductStatus.error) {
+      if (state.status == UIStatus.error) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(state.messages),
+            content: Text(state.message),
           ),
         );
-      } else if (state.productStatus == ProductStatus.loading) {
+      } else if (state.status == UIStatus.loading) {
         Center(
           child: SizedBox(
             height: 60.h,
@@ -54,6 +54,4 @@ class _HomePageState extends State<HomePage> {
       );
     });
   }
-
-
 }

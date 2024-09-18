@@ -4,8 +4,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:online_bike_shopping_appuntitled/presentation/auth/widgets/login_widget.dart';
 import 'package:online_bike_shopping_appuntitled/presentation/products/pages/home_page.dart';
 import '../../../core/di/injection.dart';
+import '../../../core/model/ui_state.dart';
 import '../../../core/ui/styles/colors.dart';
 import '../bloc/login_bloc/login_bloc.dart';
+import '../bloc/login_bloc/login_state.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({super.key});
@@ -32,14 +34,14 @@ class _SignInPageState extends State<SignInPage> {
     return Center(
       child: BlocConsumer<LoginBloc, LoginState>(
         listener: (context, state) {
-          if (state.loginStatus == LoginStatus.error) {
+          if (state.status == UIStatus.error) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(state.message),
               ),
             );
           }
-          else if (state.loginStatus == LoginStatus.loading) {
+          else if (state.status == UIStatus.loading) {
             Center(
               child: SizedBox(
                 height: 60.h,
@@ -50,7 +52,7 @@ class _SignInPageState extends State<SignInPage> {
                 ),
               ),
             );
-          } else if (state.loginStatus == LoginStatus.success) {
+          } else if (state.status == UIStatus.success) {
             WidgetsBinding.instance.addPostFrameCallback((_) {
               Navigator.of(context).pushReplacement(
                 MaterialPageRoute(
