@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:online_bike_shopping_appuntitled/presentation/basket/widgets/shopping_cart.dart';
+import 'package:online_bike_shopping_appuntitled/presentation/products/pages/home_page.dart';
 import 'package:online_bike_shopping_appuntitled/presentation/profile/widgets/settings.dart';
 import '../../../core/ui/styles/colors.dart';
 import '../../../core/ui/styles/theme.dart';
@@ -10,22 +11,20 @@ import '../../profile/pages/settings_page.dart';
 import '../../registered_products/pages/registered_products_page.dart';
 import '../../registered_products/widgets/registered_products_widget.dart';
 import '../bloc/product_bloc.dart';
-import 'home_widget.dart';
+import '../widgets/home_widget.dart';
 
-class BottomNavigationBarWidget extends StatefulWidget {
-  const BottomNavigationBarWidget({
+class BottomNavigationBarPage extends StatefulWidget {
+  const BottomNavigationBarPage({
     super.key,
-    required this.state,
   });
 
-  final ProductState state;
 
   @override
-  State<BottomNavigationBarWidget> createState() =>
-      _BottomNavigationBarWidgetState();
+  State<BottomNavigationBarPage> createState() =>
+      _BottomNavigationBarPageState();
 }
 
-class _BottomNavigationBarWidgetState extends State<BottomNavigationBarWidget> {
+class _BottomNavigationBarPageState extends State<BottomNavigationBarPage> {
   int _selectedIndex = 0;
 
   void _onItemTapped(int index) {
@@ -37,9 +36,7 @@ class _BottomNavigationBarWidgetState extends State<BottomNavigationBarWidget> {
   @override
   Widget build(BuildContext context) {
     final List<Widget> screens = [
-      HomeScreen(
-        state: widget.state,
-      ),
+      const HomePage(),
       // 0: Home Screen
       const RegisteredProductPage(),
       // 1: Register Screen

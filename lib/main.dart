@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:online_bike_shopping_appuntitled/presentation/auth/widgets/discover_widget.dart';
+import 'package:online_bike_shopping_appuntitled/presentation/products/pages/bottom_navigation_bar_widget.dart';
 import 'package:online_bike_shopping_appuntitled/presentation/products/pages/home_page.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'core/di/injection.dart';
@@ -26,7 +27,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return   MaterialApp(
       debugShowCheckedModeBanner: false,
-      home:  (supabase.auth.currentSession != null) ? const HomePage()  : const DiscoverWidget(),
+      home:  (supabase.auth.currentSession != null) ? const BottomNavigationBarPage()  : const DiscoverWidget(),
     );
   }
 }

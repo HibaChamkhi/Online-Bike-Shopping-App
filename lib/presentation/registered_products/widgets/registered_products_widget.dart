@@ -49,15 +49,15 @@ class _RegisteredProductWidgetsState extends State<RegisteredProductWidgets> {
       itemBuilder: (context, index) {
         final product = widget.state.favoriteProductsByMe[index];
         return CartItem(
+          key: ValueKey(product.id),
           itemName: product.name,
           price: product.price,
-          imageUrl: 'assets/images/bicycl.png',
+          imageUrl: product.image,
           isFavorited: true,
           id: product.id.toString(),
           onFavoriteToggle: () {
             setState(() {
-              widget.state.favoriteProductsByMe
-                  .removeAt(index); // Remove from list
+              widget.state.favoriteProductsByMe.removeAt(index);
             });
           },
         );
@@ -142,7 +142,7 @@ class _CartItemState extends State<CartItem>
                       color: Colors.white.withOpacity(0.15),
                       borderRadius: BorderRadius.circular(16.r),
                     ),
-                    child: Image.asset(
+                    child: Image.network(
                       widget.imageUrl,
                       height: 90.h,
                       width: 100.w,

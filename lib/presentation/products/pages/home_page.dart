@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:online_bike_shopping_appuntitled/presentation/products/widgets/home_widget.dart';
 
 import '../../../core/di/injection.dart';
 import '../../../core/model/ui_state.dart';
 import '../../../data/products/data_sources/product_prefUtils.dart';
 import '../bloc/product_bloc.dart';
-import '../widgets/bottom_navigation_bar_widget.dart';
+import 'bottom_navigation_bar_widget.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({
@@ -49,9 +50,8 @@ class _HomePageState extends State<HomePage> {
         );
       }
     }, builder: (context, state) {
-      return BottomNavigationBarWidget(
-        state: state,
-      );
+      print("state ${state.favoriteProductsByMe}");
+      return HomeScreen(state: state);
     });
   }
 }

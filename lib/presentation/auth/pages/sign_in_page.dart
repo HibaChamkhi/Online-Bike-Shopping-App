@@ -6,6 +6,7 @@ import 'package:online_bike_shopping_appuntitled/presentation/products/pages/hom
 import '../../../core/di/injection.dart';
 import '../../../core/model/ui_state.dart';
 import '../../../core/ui/styles/colors.dart';
+import '../../products/pages/bottom_navigation_bar_widget.dart';
 import '../bloc/login_bloc/login_bloc.dart';
 import '../bloc/login_bloc/login_state.dart';
 
@@ -56,7 +57,7 @@ class _SignInPageState extends State<SignInPage> {
             WidgetsBinding.instance.addPostFrameCallback((_) {
               Navigator.of(context).pushReplacement(
                 MaterialPageRoute(
-                  builder: (context) => const HomePage(),
+                  builder: (context) => const BottomNavigationBarPage(),
                 ));
             });
           }

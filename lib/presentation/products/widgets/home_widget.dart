@@ -1,15 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:online_bike_shopping_appuntitled/core/model/ui_state.dart';
-import 'package:online_bike_shopping_appuntitled/presentation/products/widgets/product_details.dart';
-
-import '../../../core/di/injection.dart';
+import 'package:online_bike_shopping_appuntitled/presentation/products/widgets/product_card.dart';
+import 'package:online_bike_shopping_appuntitled/presentation/products/widgets/unicorn_outline_button.dart';
 import '../../../core/ui/styles/colors.dart';
-import '../../../data/products/data_sources/products_local_data_source.dart';
-import '../../../data/products/dtos/product_dto.dart';
-import '../../../domain/products/models/product.dart';
 import '../bloc/product_bloc.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -168,13 +163,14 @@ class _HomeScreenState extends State<HomeScreen> {
         if (index % 2 != 0) {
           return Transform.translate(
               offset: const Offset(0, -25),
-              child: BuildProductCard(
+              child: ProductCard(
                 bike: widget.state.data![index],
                 favoriteBikes: widget.state.favoriteProductsByMe,
 
               ));
         }
-        return BuildProductCard(
+        print("favoriteProductsByMe ${widget.state.favoriteProductsByMe}");
+        return ProductCard(
           bike: widget.state.data![index],
           favoriteBikes: widget.state.favoriteProductsByMe,
         );
@@ -279,241 +275,6 @@ Widget buildCategoryIcon(IconData icon, [bool isSelected = false]) {
   );
 }
 
-class BuildProductCard extends StatefulWidget {
-  final BikeModel bike;
-  final List<BikeModel>
-      favoriteBikes; // Change the parameter to hold BikeModel list instead of just product IDs
-
-  const BuildProductCard({
-    super.key,
-    required this.bike,
-    required this.favoriteBikes,
-  });
-
-  @override
-  _ProductCardState createState() => _ProductCardState();
-}
-
-class _ProductCardState extends State<BuildProductCard> {
-  late bool _isFavorited;
-
-  @override
-  void initState() {
-    super.initState();
-    // Initialize based on whether the bike is in the favorites list (comparing entire objects instead of just IDs)
-    _isFavorited =
-        widget.favoriteBikes.any((bike) => bike.id == widget.bike.id);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => ProductDetails(
-              bike: widget.bike,
-            ),
-          ),
-        );
-      },
-      child: ClipPath(
-        clipper: DiagonalClipper(),
-        child: Container(
-          decoration: const BoxDecoration(
-            color: AppConstants.mirage,
-          ),
-          child: Container(
-            decoration: BoxDecoration(
-              color: AppConstants.oxfordBlue.withOpacity(.8),
-              boxShadow: const [
-                BoxShadow(
-                  color: AppConstants.ebonyClay,
-                  blurRadius: 1,
-                  spreadRadius: 5,
-                  offset: Offset(0, 5),
-                ),
-              ],
-              gradient: LinearGradient(
-                colors: [
-                  AppConstants.cornflowerBlueColor.withOpacity(.2),
-                  AppConstants.ebonyClay,
-                ],
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-              ),
-            ),
-            child: Padding(
-              padding: EdgeInsets.all(9.0.w),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Align(
-                    alignment: Alignment.topRight,
-                    child: IconButton(
-                      icon: Icon(
-                        _isFavorited
-                            ? Icons.favorite // Filled red heart
-                            : Icons.favorite_border, // Border heart
-                        color: _isFavorited ? Colors.red : Colors.white,
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          _isFavorited = !_isFavorited;
-                          if (_isFavorited) {
-                            _onAddProductToFavoriteEvent();
-                            // prefs.saveBikeModel(widget.bike);
-                          } else {
-                            _onRemoveProductFromFavoriteEvent();
-                          }
-                        });
-                      },
-                    ),
-                  ),
-                  Center(
-                    child: Image.network(
-                      widget.bike.image, // Placeholder image path
-                      height: 70.h,
-                    ),
-                  ),
-                  Spacer(),
-                  Text(
-                    widget.bike.categoryId,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                    ),
-                  ),
-                  Text(
-                    widget.bike.name,
-                    style: TextStyle(
-                      color: Colors.white70,
-                      fontSize: 14,
-                    ),
-                  ),
-                  Text(
-                    '\$${widget.bike.price}',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  void _onAddProductToFavoriteEvent() {
-    BlocProvider.of<ProductBloc>(context)
-        .add(AddProductToFavoriteEvent(widget.bike.id.toString()));
-  }
-
-  void _onRemoveProductFromFavoriteEvent() {
-    BlocProvider.of<ProductBloc>(context)
-        .add(RemoveProductFromFavoriteEvent(widget.bike.id.toString()));
-  }
-}
-
-class ShoppingScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-        child: Text('Shopping Screen',
-            style: TextStyle(color: Colors.white, fontSize: 24)));
-  }
-}
-
-class UnicornOutlineButton extends StatelessWidget {
-  final _GradientPainter _painter;
-  final Widget _child;
-  final VoidCallback _callback;
-  final double _radius;
-
-  UnicornOutlineButton({
-    required double strokeWidth,
-    required double radius,
-    required Gradient gradient,
-    required Widget child,
-    required VoidCallback onPressed,
-  })  : this._painter = _GradientPainter(
-            strokeWidth: strokeWidth, radius: radius, gradient: gradient),
-        this._child = child,
-        this._callback = onPressed,
-        this._radius = radius;
-
-  @override
-  Widget build(BuildContext context) {
-    return CustomPaint(
-      painter: _painter,
-      child: GestureDetector(
-        behavior: HitTestBehavior.translucent,
-        onTap: _callback,
-        child: InkWell(
-          borderRadius: BorderRadius.circular(_radius),
-          onTap: _callback,
-          child: Container(
-            padding: EdgeInsets.all(1.w),
-            // constraints: BoxConstraints(minWidth: 88, minHeight: 48),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                _child,
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _GradientPainter extends CustomPainter {
-  final Paint _paint = Paint();
-  final double radius;
-  final double strokeWidth;
-  final Gradient gradient;
-
-  _GradientPainter(
-      {required double strokeWidth,
-      required double radius,
-      required Gradient gradient})
-      : this.strokeWidth = strokeWidth,
-        this.radius = radius,
-        this.gradient = gradient;
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    // create outer rectangle equals size
-    Rect outerRect = Offset.zero & size;
-    var outerRRect =
-        RRect.fromRectAndRadius(outerRect, Radius.circular(radius));
-
-    // create inner rectangle smaller by strokeWidth
-    Rect innerRect = Rect.fromLTWH(strokeWidth, strokeWidth,
-        size.width - strokeWidth * 2, size.height - strokeWidth * 2);
-    var innerRRect = RRect.fromRectAndRadius(
-        innerRect, Radius.circular(radius - strokeWidth));
-
-    // apply gradient shader
-    _paint.shader = gradient.createShader(outerRect);
-
-    // create difference between outer and inner paths and draw it
-    Path path1 = Path()..addRRect(outerRRect);
-    Path path2 = Path()..addRRect(innerRRect);
-    var path = Path.combine(PathOperation.difference, path1, path2);
-    canvas.drawPath(path, _paint);
-  }
-
-  @override
-  bool shouldRepaint(CustomPainter oldDelegate) => oldDelegate != this;
-}
-
 class DiagonalBottomClipper extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
@@ -541,29 +302,4 @@ class DiagonalBottomClipper extends CustomClipper<Path> {
   }
 }
 
-class DiagonalClipper extends CustomClipper<Path> {
-  @override
-  Path getClip(Size size) {
-    final path = Path()
-      ..moveTo(20, 20) // Start from the top-left with rounded corner
-      ..lineTo(size.width - 20, 0) // Top-right straight line
-      ..quadraticBezierTo(
-          size.width, 0, size.width, 20) // Top-right rounded corner
-      ..lineTo(size.width, size.height - 40.h) // Right side straight down
-      ..lineTo(size.width, size.height - 30.h) // Right side straight down
-      ..quadraticBezierTo(size.width, size.height - 20.h, size.width - 20.w,
-          size.height - 10.h) // Bottom-right rounded corner
-      ..lineTo(20.w, size.height + 10.h) // Diagonal bottom line
-      ..quadraticBezierTo(0, size.height + 10.h, 0,
-          size.height) // Bottom-left outward rounded corner
-      ..lineTo(0, 50) // Left side straight up
-      ..quadraticBezierTo(0, 30, 20, 20); // Top-left rounded corner
 
-    return path;
-  }
-
-  @override
-  bool shouldReclip(CustomClipper<Path> oldClipper) {
-    return false;
-  }
-}

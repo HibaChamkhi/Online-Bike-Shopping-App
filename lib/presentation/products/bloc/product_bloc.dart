@@ -15,41 +15,15 @@ part 'product_state.dart';
 @injectable
 class ProductBloc extends Bloc<ProductEvent, ProductState> {
   final ProductsRepository repository;
-  // final BasketRepository basketRepository;
 
   ProductBloc({
-    // required this.basketRepository,
     required this.repository,
   }) : super(const ProductState()) {
     on<GetProductsEvent>(_onGetProductsEvent);
     on<GetAllFavoriteProductsByMeEvent>(_onGetAllFavoriteProductsByMeEvent);
     on<AddProductToFavoriteEvent>(_onAddProductToFavoriteEvent);
     on<RemoveProductFromFavoriteEvent>(_onRemoveProductFromFavoriteEvent);
-    // on<AddToBasketEvent>(_onAddToBasketEvent);
   }
-
-  // Future<void> _onAddToBasketEvent(
-  //     AddToBasketEvent event, Emitter<ProductState> emit) async {
-  //   final result = await basketRepository.addToBasket(event.bikeModel);
-  //
-  //   handleLoadResult<String, ProductState, UIStatus>(
-  //     result: result,
-  //     emit: emit,
-  //     state: state,
-  //     copyWith: ({
-  //       String? data,
-  //       String? message,
-  //       UIStatus? status,
-  //     }) =>
-  //         state.copyWith(
-  //           status: status,
-  //           message: message,
-  //         ),
-  //     loadingStatus: UIStatus.loading,
-  //     successStatus: UIStatus.success,
-  //     errorStatus: UIStatus.error,
-  //   );
-  // }
 
   Future<void> _onGetProductsEvent(
       GetProductsEvent event, Emitter<ProductState> emit) async {
@@ -65,10 +39,10 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
         UIStatus? status,
       }) =>
           state.copyWith(
-            data: data,
-            status: status,
-            message: message,
-          ),
+        data: data,
+        status: status,
+        message: message,
+      ),
       loadingStatus: UIStatus.loading,
       successStatus: UIStatus.success,
       errorStatus: UIStatus.error,
@@ -89,10 +63,10 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
         UIStatus? status,
       }) =>
           state.copyWith(
-            favoriteProductsByMe: data,
-            favoriteProductStatus: status,
-            message: message,
-          ),
+        favoriteProductsByMe: data,
+        favoriteProductStatus: status,
+        message: message,
+      ),
       loadingStatus: UIStatus.loading,
       successStatus: UIStatus.success,
       errorStatus: UIStatus.error,
@@ -113,9 +87,9 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
         UIStatus? status,
       }) =>
           state.copyWith(
-            status: status,
-            message: message,
-          ),
+              status: status,
+              message: message,
+              favoriteProductsByMe: state.favoriteProductsByMe),
       loadingStatus: UIStatus.loading,
       successStatus: UIStatus.success,
       errorStatus: UIStatus.error,
@@ -136,9 +110,9 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
         UIStatus? status,
       }) =>
           state.copyWith(
-            status: status,
-            message: message,
-          ),
+              status: status,
+              message: message,
+              favoriteProductsByMe: state.favoriteProductsByMe),
       loadingStatus: UIStatus.loading,
       successStatus: UIStatus.success,
       errorStatus: UIStatus.error,
