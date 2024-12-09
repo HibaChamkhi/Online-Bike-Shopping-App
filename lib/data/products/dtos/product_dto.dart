@@ -1,15 +1,16 @@
 
 import '../../../domain/products/models/product.dart';
 
+
 class BikeDto {
   final int id;
   final String name;
   final String description;
-  final dynamic price;
-  final String categoryId;
+  final double price;
+  final dynamic? categoryId;
   final String image;
   final String image3d;
-  final dynamic discount;
+  final double discount;
   final dynamic? quantity;
 
   BikeDto({
@@ -21,16 +22,17 @@ class BikeDto {
     required this.image,
     required this.image3d,
     required this.discount,
-     this.quantity,
+    this.quantity,
   });
 
   factory BikeDto.fromJson(Map<String, dynamic> json) {
+    print("jsoncqt $json");
     return BikeDto(
-      id: json['id'],
+      id: json['id'] as int,
       name: json['name'] as String,
       description: json['description'] as String,
       price: (json['price'] as num).toDouble(),
-      categoryId: json['category'] as String,
+      categoryId: json['category'] ,
       image: json['image'] as String,
       image3d: json['3dImage'] as String,
       discount: (json['discount'] as num).toDouble(),
@@ -44,13 +46,14 @@ class BikeDto {
       'name': name,
       'description': description,
       'price': price,
-      'category': categoryId,
+      'category': categoryId, // Fix for categoryId
       'image': image,
       '3dImage': image3d,
       'discount': discount,
       'quantity': quantity,
     };
   }
+
   factory BikeDto.fromModel(BikeModel model) {
     return BikeDto(
       id: model.id,
@@ -64,6 +67,7 @@ class BikeDto {
       quantity: model.quantity,
     );
   }
+
   BikeModel toModel() {
     return BikeModel(
       id: id,
@@ -78,4 +82,3 @@ class BikeDto {
     );
   }
 }
-

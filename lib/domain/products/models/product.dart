@@ -1,11 +1,12 @@
 import 'package:equatable/equatable.dart';
+import 'category.dart';
 
 class BikeModel extends Equatable {
   final int id;
   final String name;
   final String description;
   final dynamic price;
-  final String categoryId;
+  final dynamic? categoryId;
   final String image;
   final String image3d;
   final dynamic discount;

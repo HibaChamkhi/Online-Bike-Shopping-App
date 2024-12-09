@@ -109,7 +109,7 @@ class _ProductCardState extends State<ProductCard> {
                   ),
                   Spacer(),
                   Text(
-                    widget.bike.categoryId,
+                    widget.bike.categoryId.toString() ,
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 16,

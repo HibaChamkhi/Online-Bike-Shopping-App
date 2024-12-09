@@ -7,7 +7,6 @@ import '../../../../core/model/ui_state.dart';
 import '../../../../core/utils/handle_product_load_result.dart';
 import '../../../../domain/auth/repositories/auth_repository.dart';
 import 'login_state.dart';
-
 part 'login_event.dart';
 
 
@@ -30,10 +29,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       copyWith: ({
         Unit? data,
         String? message,
-        UIStatus? status, // Correct type here
+        UIStatus? status,
       }) =>
           state.copyWith(
-            status: status, // Pass UIStatus, not UIState
+            status: status,
             message: message,
           ),
       loadingStatus: UIStatus.loading,
@@ -41,21 +40,4 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       errorStatus: UIStatus.error,
     );
   }
-
-
-
-  // Future<void> _onLoginUserEvent(
-  //     LoginUserEvent event, Emitter<LoginState> emit) async {
-  //   emit(state.copyWith(loginStatus: LoginStatus.loading));
-  //
-  //   final failureOrSuccess =
-  //       await authRepository.signInUser(event.email, event.password);
-  //
-  //   emit(failureOrSuccess.fold(
-  //     (failure) => state.copyWith(
-  //         message: mapExceptionToMessage(failure),
-  //         loginStatus: LoginStatus.error),
-  //     (_) => state.copyWith(message: '', loginStatus: LoginStatus.success),
-  //   ));
-  // }
 }
